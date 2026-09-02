@@ -1,5 +1,7 @@
+import { copyFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
@@ -7,6 +9,34 @@ import { VitePWA } from 'vite-plugin-pwa'
 const pdfHtmlStub = fileURLToPath(
   new URL('./src/services/export/unsupportedPdfHtmlRenderer.ts', import.meta.url)
 )
+
+/**
+ * Emit `404.html` as a copy of `index.html`.
+ *
+ * GitHub Pages serves static files only: it has no rewrite rule to hand deep
+ * paths to a client-side router. Without this, every route except the root
+ * returned a hard 404 — `/dashboard`, `/guide`, `/processes/:code` — so shared
+ * links and page refreshes landed on GitHub's error page instead of the app.
+ *
+ * That was masked in a browser by the service worker, whose navigation fallback
+ * serves the cached shell. It only affected first visits, refreshes before the
+ * worker activated, and anyone with a cleared cache — which is exactly the person
+ * following a shared link.
+ *
+ * GitHub Pages serves `404.html` for unmatched paths, so copying the shell there
+ * boots the app and lets the router resolve the URL. The response still carries a
+ * 404 status, which is the accepted trade-off for SPAs on Pages.
+ */
+function githubPagesSpaFallback(): Plugin {
+  return {
+    name: 'github-pages-spa-fallback',
+    apply: 'build',
+    async closeBundle() {
+      const outDir = resolve(import.meta.dirname, 'dist')
+      await copyFile(resolve(outDir, 'index.html'), resolve(outDir, '404.html'))
+    },
+  }
+}
 
 export default defineConfig({
   base: '/mita-3.0-ssa/',
@@ -29,6 +59,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    githubPagesSpaFallback(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
