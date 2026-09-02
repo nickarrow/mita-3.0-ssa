@@ -33,6 +33,23 @@ export const MAX_VISIBLE_TAGS = 3;
 /** Minimum width for tag filter input */
 export const TAG_FILTER_MIN_WIDTH = 200;
 
+/**
+ * How long to wait after the last keystroke before persisting notes.
+ *
+ * Short enough that a reload or a browser Back cannot realistically lose work,
+ * long enough to avoid a database write per character.
+ */
+export const NOTES_AUTOSAVE_DELAY_MS = 600;
+
+/**
+ * Minimum width for the tag input in the assessment header.
+ *
+ * Without a floor, the flex row let the process title consume all available
+ * width and collapsed this field to ~144px on desktop (chips truncated, no room
+ * to type) and to 0px off-screen on narrow phones.
+ */
+export const TAG_INPUT_MIN_WIDTH = 240;
+
 // ===========================================
 // Progress Bars
 // ===========================================

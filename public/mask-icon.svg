@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!--
+    Safari pinned-tab / maskable icon. Must be a solid single-colour silhouette:
+    the browser applies its own colour, so no fill values are set here beyond black.
+  -->
+  <rect width="100" height="100" rx="20" fill="#000000"/>
+</svg>

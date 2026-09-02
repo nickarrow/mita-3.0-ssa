@@ -1,9 +1,10 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Box,
   Button,
   Chip,
+  Container,
   Dialog,
   DialogActions,
   DialogContent,
@@ -23,9 +24,9 @@ import {
 import { useRatings } from "../hooks/useRatings";
 import { useAttachments } from "../hooks/useAttachments";
 import { getCapabilityByCode } from "../services/blueprint";
-import { db } from "../services/db";
 import { BptSidebar, QuestionCard, TagInput } from "../components/assessment";
 import { formatDate } from "../utils/dateFormatters";
+import { usePageTitle } from "../hooks/usePageTitle";
 import {
   HEADER_HEIGHT,
   LINEAR_PROGRESS_HEIGHT,
@@ -33,6 +34,7 @@ import {
   PROGRESS_CONTAINER_MIN_WIDTH,
   SIDEBAR_DEFAULT_WIDTH,
   STICKY_HEADER_Z_INDEX,
+  TAG_INPUT_MIN_WIDTH,
 } from "../constants/ui";
 
 export default function Assessment() {
@@ -45,7 +47,7 @@ export default function Assessment() {
   // Check if we're in view-only mode
   const isViewMode = searchParams.get("mode") === "view";
 
-  const { assessment } = useCapabilityAssessment(id);
+  const { assessment, notFound } = useCapabilityAssessment(id);
   const { finalizeAssessment, updateTags, discardAssessment, revertEdit } =
     useCapabilityAssessments();
   const { getProgress, getAnsweredCount, getAverageScore } = useRatings(id);
@@ -60,13 +62,6 @@ export default function Assessment() {
 
   // Track if user has made any changes (dirty state)
   const [isDirty, setIsDirty] = useState(false);
-  // Track if this assessment has history (was previously finalized)
-  const [hasHistory, setHasHistory] = useState(false);
-
-  // Track original status - captured on first render when assessment is available
-  // Using a key pattern: store the assessment ID we captured status for
-  const [capturedAssessmentId, setCapturedAssessmentId] = useState<string | null>(null);
-  const [originalStatus, setOriginalStatus] = useState<"in_progress" | "finalized" | null>(null);
 
   // Track tags - captured on first render when assessment is available
   const [capturedTagsForId, setCapturedTagsForId] = useState<string | null>(null);
@@ -82,12 +77,7 @@ export default function Assessment() {
   const progress = getProgress(totalQuestions);
   const answeredCount = getAnsweredCount();
 
-  // Capture original status when assessment first loads (or when ID changes)
-  // This is a "sync external state" pattern - we're syncing from the database
-  if (assessment && capturedAssessmentId !== assessment.id) {
-    setCapturedAssessmentId(assessment.id);
-    setOriginalStatus(assessment.status);
-  }
+  usePageTitle(capability ? capability.processName : "Assessment");
 
   // Capture tags when assessment first loads (or when ID changes)
   if (assessment?.tags && capturedTagsForId !== assessment.id) {
@@ -95,22 +85,21 @@ export default function Assessment() {
     setLocalTags(assessment.tags);
   }
 
-  // Check if this assessment has history (was previously finalized)
-  useEffect(() => {
-    let cancelled = false;
-    if (assessment) {
-      db.assessmentHistory
-        .where("capabilityCode")
-        .equals(assessment.capabilityCode)
-        .count()
-        .then((count) => {
-          if (!cancelled) setHasHistory(count > 0);
-        });
-    }
-    return () => {
-      cancelled = true;
-    };
-  }, [assessment]);
+  /**
+   * Is this an edit session over a previously finalized result?
+   *
+   * Read straight off the row. `editAssessment` sets `editSnapshotId` to the
+   * snapshot it takes, so its presence is an exact answer.
+   *
+   * This previously counted history rows for the capability, which is a much
+   * looser question — "does any snapshot exist" rather than "am I editing". That
+   * gap was destructive in both directions: a brand-new assessment on a capability
+   * with imported or left-over history was treated as an edit, so Cancel restored
+   * an unrelated snapshot onto it, marked it finalized and deleted that snapshot;
+   * and deleting the snapshot backing a real edit turned Cancel into
+   * delete-everything.
+   */
+  const isEditSession = Boolean(assessment?.editSnapshotId);
 
   // Mark as dirty when user makes changes
   const markDirty = useCallback(() => {
@@ -145,17 +134,37 @@ export default function Assessment() {
   const handleCancel = async () => {
     if (!id || !assessment) return;
 
-    if (hasHistory) {
-      // Was editing a finalized assessment - revert to previous state
+    if (isEditSession) {
+      // Editing a previously finalized assessment - restore that result
       await revertEdit(id);
     } else {
-      // Was a new in-progress assessment - delete it entirely
+      // A new assessment that was never finalized - delete it entirely
       await discardAssessment(id);
     }
 
     setCancelDialogOpen(false);
     navigate("/dashboard");
   };
+
+  // A missing assessment (stale link, deleted record, hand-typed URL) previously
+  // sat on "Loading..." forever with no way out. Report it and offer a route back.
+  if (notFound || (assessment && !capability)) {
+    return (
+      <Container maxWidth="sm" sx={{ py: 6 }}>
+        <Typography variant="h5" component="h1" gutterBottom>
+          Assessment not found
+        </Typography>
+        <Typography color="text.secondary" sx={{ mb: 3 }}>
+          {notFound
+            ? "This assessment no longer exists. It may have been deleted, or the link may be out of date."
+            : `This assessment refers to capability "${assessment?.capabilityCode}", which is not part of this version of the MITA blueprint.`}
+        </Typography>
+        <Button variant="contained" onClick={() => navigate("/dashboard")}>
+          Back to Dashboard
+        </Button>
+      </Container>
+    );
+  }
 
   if (!assessment || !capability) {
     return (
@@ -165,13 +174,18 @@ export default function Assessment() {
     );
   }
 
-  // Determine cancel dialog message based on context
-  const getCancelDialogContent = () => {
-    if (hasHistory) {
-      return "Discard all changes made during this edit session? The assessment will be restored to its previous finalized state.";
-    }
-    return "Discard this assessment? All ratings and notes will be permanently deleted.";
-  };
+  /**
+   * Cancel means two different things, and the dialog must describe the one that
+   * will actually happen.
+   *
+   * All three strings derive from `isEditSession`, the same flag `handleCancel`
+   * branches on, so the dialog can only ever describe what will actually happen.
+   */
+  const cancelDialogTitle = isEditSession ? "Discard changes?" : "Discard this assessment?";
+  const cancelDialogBody = isEditSession
+    ? "Your previous finalized ratings, notes and score will be restored. Rating changes made during this session are lost; any files you uploaded are kept."
+    : "All ratings and notes for this assessment will be permanently deleted. This cannot be undone.";
+  const cancelConfirmLabel = isEditSession ? "Restore previous" : "Delete assessment";
 
   const showCancelWarning = true; // Always show warning since cancel has consequences
 
@@ -222,15 +236,30 @@ export default function Assessment() {
             </Button>
           )}
 
-          <Typography variant="overline" color="text.secondary">
+          {/*
+            component="div" matters: MUI's `overline` variant renders a <span> by
+            default, which flowed inline after the mobile "Show Process Details"
+            button and overlapped it.
+          */}
+          <Typography
+            variant="overline"
+            color="text.secondary"
+            component="div"
+            sx={{ display: "block" }}
+          >
             {capability.businessArea}
           </Typography>
 
-          {/* Title row with tags and progress */}
+          {/*
+            Title row with tags and progress. Stacks vertically on narrow screens
+            so the title, tag field and progress each get the full width instead
+            of competing for one row (which pushed the tag field off-screen).
+          */}
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: { xs: "stretch", md: "center" },
               justifyContent: "space-between",
               gap: 2,
             }}
@@ -238,18 +267,21 @@ export default function Assessment() {
             <Box
               sx={{
                 display: "flex",
-                alignItems: "center",
-                gap: 2,
+                flexDirection: { xs: "column", md: "row" },
+                alignItems: { xs: "stretch", md: "center" },
+                gap: { xs: 1, md: 2 },
                 flex: 1,
                 minWidth: 0,
               }}
             >
-              <Typography variant="h5" sx={{ flexShrink: 0 }}>
+              <Typography variant="h5" component="h1" sx={{ minWidth: 0 }}>
                 {capability.processName}
               </Typography>
-              {isViewMode && <Chip label="View Only" size="small" sx={{ flexShrink: 0 }} />}
-              {/* Tags inline */}
-              <Box sx={{ flex: 1, minWidth: 0 }}>
+              {isViewMode && (
+                <Chip label="View Only" size="small" sx={{ flexShrink: 0, alignSelf: "start" }} />
+              )}
+              {/* Tags inline on desktop, full-width row on mobile */}
+              <Box sx={{ flex: 1, minWidth: { md: TAG_INPUT_MIN_WIDTH } }}>
                 {isViewMode ? (
                   localTags.length > 0 ? (
                     <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
@@ -272,6 +304,7 @@ export default function Assessment() {
                   alignItems: "center",
                   gap: 3,
                   flexShrink: 0,
+                  flexWrap: "wrap",
                 }}
               >
                 <Box sx={{ textAlign: "right" }}>
@@ -304,22 +337,27 @@ export default function Assessment() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  alignItems: "flex-end",
-                  minWidth: PROGRESS_CONTAINER_MIN_WIDTH,
-                  maxWidth: PROGRESS_CONTAINER_MAX_WIDTH,
+                  alignItems: { xs: "stretch", md: "flex-end" },
+                  minWidth: { md: PROGRESS_CONTAINER_MIN_WIDTH },
+                  maxWidth: { md: PROGRESS_CONTAINER_MAX_WIDTH },
                   flexShrink: 0,
                 }}
               >
                 <LinearProgress
                   variant="determinate"
                   value={progress}
+                  aria-label={`${answeredCount} of ${totalQuestions} questions answered`}
                   sx={{
                     height: LINEAR_PROGRESS_HEIGHT,
                     borderRadius: 4,
                     width: "100%",
                   }}
                 />
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 0.5, textAlign: { xs: "left", md: "right" } }}
+                >
                   {answeredCount}/{totalQuestions} ({progress}%)
                 </Typography>
               </Box>
@@ -451,16 +489,14 @@ export default function Assessment() {
 
       {/* Cancel Confirmation Dialog */}
       <Dialog open={cancelDialogOpen} onClose={() => setCancelDialogOpen(false)}>
-        <DialogTitle>
-          {originalStatus === "finalized" ? "Discard Changes?" : "Discard Assessment?"}
-        </DialogTitle>
+        <DialogTitle>{cancelDialogTitle}</DialogTitle>
         <DialogContent>
-          <DialogContentText>{getCancelDialogContent()}</DialogContentText>
+          <DialogContentText>{cancelDialogBody}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setCancelDialogOpen(false)}>Back</Button>
+          <Button onClick={() => setCancelDialogOpen(false)}>Keep editing</Button>
           <Button onClick={handleCancel} color="error" variant="contained">
-            Discard
+            {cancelConfirmLabel}
           </Button>
         </DialogActions>
       </Dialog>

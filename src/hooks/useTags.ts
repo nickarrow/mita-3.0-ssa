@@ -1,10 +1,17 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { v4 as uuidv4 } from "uuid";
 import { db } from "../services/db";
+import { isValidTag, normalizeTag } from "../utils/tags";
 import type { Tag } from "../types";
 
 /**
- * Hook for managing tags
+ * Hook for reading the tag vocabulary used for autocomplete.
+ *
+ * Read-only by design. Tag *counts* are owned by `refreshTagUsage` in
+ * `useCapabilityAssessments`, which recomputes them from the assessments table
+ * whenever tags change. This hook previously also carried its own `ensureTag`
+ * writer and a `getTagsInUse` reader with different (finalized-only) semantics;
+ * both were unreachable and had already drifted from the live implementations, so
+ * they were removed rather than kept in sync.
  */
 export function useTags() {
   // Get all tags sorted by usage count (most used first)
@@ -24,78 +31,18 @@ export function useTags() {
   };
 
   /**
-   * Create or update a tag
-   */
-  const ensureTag = async (name: string): Promise<void> => {
-    // Normalize tag name (ensure it starts with #)
-    const normalizedName = name.startsWith("#") ? name : `#${name}`;
-
-    const existing = await db.tags.where("name").equals(normalizedName).first();
-    const now = new Date();
-
-    if (existing) {
-      await db.tags.update(existing.id, {
-        usageCount: existing.usageCount + 1,
-        lastUsed: now,
-      });
-    } else {
-      await db.tags.add({
-        id: uuidv4(),
-        name: normalizedName,
-        usageCount: 1,
-        lastUsed: now,
-      });
-    }
-  };
-
-  /**
-   * Get all unique tags currently in use (from finalized assessments)
-   */
-  const getTagsInUse = async (): Promise<string[]> => {
-    const assessments = await db.capabilityAssessments
-      .filter((a) => a.status === "finalized")
-      .toArray();
-
-    const tagSet = new Set<string>();
-    for (const assessment of assessments) {
-      for (const tag of assessment.tags) {
-        tagSet.add(tag);
-      }
-    }
-
-    return Array.from(tagSet).sort();
-  };
-
-  /**
-   * Delete a tag (removes from tag list, not from assessments)
+   * Delete a tag from the vocabulary. Does not remove it from assessments; the
+   * next `refreshTagUsage` will re-register it if any assessment still carries it.
    */
   const deleteTag = async (tagId: string): Promise<void> => {
     await db.tags.delete(tagId);
   };
 
-  /**
-   * Normalize a tag name (ensure # prefix, lowercase)
-   */
-  const normalizeTag = (name: string): string => {
-    const trimmed = name.trim().toLowerCase();
-    return trimmed.startsWith("#") ? trimmed : `#${trimmed}`;
-  };
-
-  /**
-   * Validate a tag name
-   */
-  const isValidTag = (name: string): boolean => {
-    const normalized = name.replace(/^#/, "").trim();
-    // Must be at least 1 character, alphanumeric with hyphens/underscores
-    return /^[a-zA-Z0-9][a-zA-Z0-9-_]*$/.test(normalized);
-  };
-
   return {
     tags: tags || [],
     getSuggestions,
-    ensureTag,
-    getTagsInUse,
     deleteTag,
+    // Re-exported so components have one obvious source for the rules.
     normalizeTag,
     isValidTag,
   };

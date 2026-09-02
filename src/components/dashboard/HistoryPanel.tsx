@@ -42,7 +42,7 @@ export function HistoryPanel({
   }
 
   return (
-    <Box sx={{ pl: 5, py: 1 }}>
+    <Box sx={{ pl: { xs: 1, md: 5 }, py: 1, minWidth: 0 }}>
       <Typography
         variant="caption"
         color="text.secondary"
@@ -58,6 +58,8 @@ export function HistoryPanel({
           sx={{
             display: "flex",
             alignItems: "center",
+            flexWrap: "wrap",
+            rowGap: 0.5,
             py: 0.5,
             borderBottom: "1px solid",
             borderColor: "divider",
@@ -67,7 +69,7 @@ export function HistoryPanel({
             borderRadius: 1,
           }}
         >
-          <Box sx={{ width: HISTORY_BADGE_WIDTH }}>
+          <Box sx={{ width: { xs: "auto", md: HISTORY_BADGE_WIDTH }, mr: { xs: 1, md: 0 } }}>
             <Chip
               label="Current"
               size="small"
@@ -75,13 +77,20 @@ export function HistoryPanel({
               sx={{ ...compactChipSx, fontWeight: 600 }}
             />
           </Box>
-          <Typography variant="body2" sx={{ width: HISTORY_DATE_WIDTH }}>
+          <Typography
+            variant="body2"
+            sx={{ width: { xs: "auto", md: HISTORY_DATE_WIDTH }, mr: { xs: 1, md: 0 } }}
+          >
             {formatDateTime(currentAssessment.finalizedAt || currentAssessment.updatedAt)}
           </Typography>
-          <Typography variant="body2" fontWeight={500} sx={{ width: HISTORY_SCORE_WIDTH }}>
+          <Typography
+            variant="body2"
+            fontWeight={500}
+            sx={{ width: { xs: "auto", md: HISTORY_SCORE_WIDTH }, mr: { xs: 1, md: 0 } }}
+          >
             Score: {currentAssessment.score?.toFixed(1)}
           </Typography>
-          <Box sx={{ display: "flex", gap: 0.5 }}>
+          <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
             {currentAssessment.tags.map((tag) => (
               <Chip key={tag} label={tag} size="small" variant="outlined" sx={compactChipSx} />
             ))}
@@ -96,24 +105,36 @@ export function HistoryPanel({
           sx={{
             display: "flex",
             alignItems: "center",
+            flexWrap: "wrap",
+            rowGap: 0.5,
             py: 0.5,
             borderBottom: "1px solid",
             borderColor: "divider",
           }}
         >
-          <Box sx={{ width: HISTORY_BADGE_WIDTH }} /> {/* Spacer for "Current" badge alignment */}
-          <Typography variant="body2" sx={{ width: HISTORY_DATE_WIDTH }}>
+          <Box sx={{ width: { xs: 0, md: HISTORY_BADGE_WIDTH } }} />{" "}
+          {/* Spacer for "Current" badge alignment */}
+          <Typography
+            variant="body2"
+            sx={{ width: { xs: "auto", md: HISTORY_DATE_WIDTH }, mr: { xs: 1, md: 0 } }}
+          >
             {formatDateTime(entry.snapshotDate)}
           </Typography>
-          <Typography variant="body2" fontWeight={500} sx={{ width: HISTORY_SCORE_WIDTH }}>
-            Score: {entry.score.toFixed(1)}
+          <Typography
+            variant="body2"
+            fontWeight={500}
+            sx={{ width: { xs: "auto", md: HISTORY_SCORE_WIDTH }, mr: { xs: 1, md: 0 } }}
+          >
+            {/* A snapshot can legitimately have no score (an imported assessment
+                that was finalized without one). Show that rather than a stand-in. */}
+            Score: {entry.score !== null ? entry.score.toFixed(1) : "—"}
           </Typography>
-          <Box sx={{ display: "flex", gap: 0.5 }}>
+          <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
             {entry.tags.map((tag) => (
               <Chip key={tag} label={tag} size="small" variant="outlined" sx={compactChipSx} />
             ))}
           </Box>
-          <Box sx={{ display: "flex", gap: 0.5, ml: 2 }}>
+          <Box sx={{ display: "flex", gap: 0.5, ml: { xs: 0, md: 2 } }}>
             <IconButton size="small" onClick={() => onViewHistory(entry)} title="View details">
               <VisibilityIcon fontSize="small" />
             </IconButton>

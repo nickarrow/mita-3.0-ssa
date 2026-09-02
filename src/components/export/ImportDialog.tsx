@@ -16,6 +16,7 @@ import {
   Paper,
   LinearProgress,
   Alert,
+  AlertTitle,
   List,
   ListItem,
   ListItemIcon,
@@ -31,6 +32,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import { importFromJson, importFromZip, readFileAsText } from "../../services/export";
 import type { ImportResult } from "../../services/export";
+import { MAX_VISIBLE_IMPORT_RESULTS } from "../../constants/export";
 
 interface ImportDialogProps {
   open: boolean;
@@ -215,14 +217,46 @@ export function ImportDialog({ open, onClose, onImportComplete }: ImportDialogPr
           </>
         ) : (
           <>
-            {/* Import Results */}
-            <Alert severity={result.success ? "success" : "warning"} sx={{ mb: 2 }}>
-              {result.success
-                ? "Import completed successfully!"
-                : `Import completed with ${result.errors.length} error(s)`}
-            </Alert>
+            {/*
+              Show the actual error text. This previously rendered only a count,
+              so every validation message the import service produces ("This file
+              uses export version 2.0...") was computed and then discarded, leaving
+              the user with "Import completed with 1 error(s)" and no explanation.
+              The wording also claimed completion for a total rejection.
+            */}
+            {result.success ? (
+              <Alert severity="success" sx={{ mb: 2 }}>
+                Import completed successfully!
+              </Alert>
+            ) : (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                <AlertTitle>
+                  {result.importedAsCurrent + result.importedAsHistory > 0
+                    ? "Import finished with problems"
+                    : "Nothing was imported"}
+                </AlertTitle>
+                {result.errors.length === 1 ? (
+                  <Typography variant="body2">{result.errors[0]}</Typography>
+                ) : (
+                  <Box component="ul" sx={{ m: 0, pl: 2.5 }}>
+                    {result.errors.slice(0, MAX_VISIBLE_IMPORT_RESULTS).map((error, index) => (
+                      <li key={index}>
+                        <Typography variant="body2">{error}</Typography>
+                      </li>
+                    ))}
+                  </Box>
+                )}
+                {result.errors.length > MAX_VISIBLE_IMPORT_RESULTS && (
+                  <Typography variant="body2" sx={{ mt: 0.5 }}>
+                    ... and {result.errors.length - MAX_VISIBLE_IMPORT_RESULTS} more
+                  </Typography>
+                )}
+              </Alert>
+            )}
 
-            <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+            {/* flexWrap matters: three chips in a row overflowed a 375px dialog,
+                clipping the second mid-word and pushing the third off-screen. */}
+            <Box sx={{ display: "flex", gap: 1, mb: 2, flexWrap: "wrap" }}>
               <Chip
                 icon={<CheckCircleIcon />}
                 label={`${result.importedAsCurrent} imported as current`}
@@ -248,10 +282,30 @@ export function ImportDialog({ open, onClose, onImportComplete }: ImportDialogPr
               </Typography>
             )}
 
+            {/* Records that were dropped or corrected. The import succeeded, but
+                the user needs to know their file was not taken verbatim. */}
+            {result.warnings.length > 0 && (
+              <Alert severity="info" sx={{ mb: 2 }}>
+                <AlertTitle>Some data was adjusted</AlertTitle>
+                <Box component="ul" sx={{ m: 0, pl: 2.5 }}>
+                  {result.warnings.slice(0, MAX_VISIBLE_IMPORT_RESULTS).map((warning, index) => (
+                    <li key={index}>
+                      <Typography variant="body2">{warning}</Typography>
+                    </li>
+                  ))}
+                </Box>
+                {result.warnings.length > MAX_VISIBLE_IMPORT_RESULTS && (
+                  <Typography variant="body2" sx={{ mt: 0.5 }}>
+                    ... and {result.warnings.length - MAX_VISIBLE_IMPORT_RESULTS} more
+                  </Typography>
+                )}
+              </Alert>
+            )}
+
             {result.details.length > 0 && (
               <Box sx={{ maxHeight: 200, overflow: "auto" }}>
                 <List dense>
-                  {result.details.slice(0, 10).map((item, index) => (
+                  {result.details.slice(0, MAX_VISIBLE_IMPORT_RESULTS).map((item, index) => (
                     <ListItem key={index} disableGutters>
                       <ListItemIcon sx={{ minWidth: 32 }}>
                         {item.action === "imported_current" && (
@@ -273,10 +327,10 @@ export function ImportDialog({ open, onClose, onImportComplete }: ImportDialogPr
                       />
                     </ListItem>
                   ))}
-                  {result.details.length > 10 && (
+                  {result.details.length > MAX_VISIBLE_IMPORT_RESULTS && (
                     <ListItem disableGutters>
                       <ListItemText
-                        primary={`... and ${result.details.length - 10} more`}
+                        primary={`... and ${result.details.length - MAX_VISIBLE_IMPORT_RESULTS} more`}
                         primaryTypographyProps={{
                           variant: "body2",
                           color: "text.secondary",

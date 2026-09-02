@@ -21,6 +21,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { APP_SHORT_NAME } from "../../constants/app";
 
 const navItems = [
   { label: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
@@ -61,10 +62,10 @@ export default function Layout() {
 
   // Mobile drawer content
   const mobileDrawer = (
-    <Box sx={{ width: 240 }}>
+    <Box component="nav" aria-label="Main navigation" sx={{ width: 240 }}>
       <Toolbar>
         <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 600 }}>
-          MITA 3.0 SS-A
+          {APP_SHORT_NAME}
         </Typography>
       </Toolbar>
       <List>
@@ -85,6 +86,34 @@ export default function Layout() {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      {/*
+        Skip link: the first tab stop, letting keyboard users bypass the nav.
+        Positioned off-screen until focused.
+      */}
+      <Box
+        component="a"
+        href="#main-content"
+        sx={{
+          // fixed, not absolute: with no positioned ancestor, `absolute` resolves
+          // against the document, so on a scrolled page the link focused
+          // off-screen instead of appearing at the top of the viewport.
+          position: "fixed",
+          left: 8,
+          top: -64,
+          zIndex: (t) => t.zIndex.appBar + 1,
+          px: 2,
+          py: 1,
+          borderRadius: 1,
+          backgroundColor: "background.paper",
+          color: "primary.main",
+          fontWeight: 600,
+          textDecoration: "none",
+          "&:focus": { top: 8 },
+        }}
+      >
+        Skip to main content
+      </Box>
+
       <AppBar position="fixed">
         <Toolbar>
           {/* Mobile menu button */}
@@ -100,24 +129,38 @@ export default function Layout() {
             </IconButton>
           )}
 
-          {/* Logo / Title */}
+          {/*
+            Rendered as a real button so it is focusable and announced. As a
+            plain clickable <div> it was invisible to keyboard and screen-reader
+            users despite being the route home.
+          */}
           <Typography
             variant="h6"
             noWrap
-            component="div"
+            component="button"
+            aria-label={`${APP_SHORT_NAME} — go to home page`}
             sx={{
               fontWeight: 600,
               cursor: "pointer",
               mr: 4,
+              background: "none",
+              border: "none",
+              color: "inherit",
+              font: "inherit",
+              p: 0,
             }}
             onClick={() => navigate("/")}
           >
-            MITA 3.0 SS-A
+            {APP_SHORT_NAME}
           </Typography>
 
           {/* Desktop navigation - right aligned */}
           {!isMobile && (
-            <Box sx={{ display: "flex", gap: 1, ml: "auto" }}>
+            <Box
+              component="nav"
+              aria-label="Main navigation"
+              sx={{ display: "flex", gap: 1, ml: "auto" }}
+            >
               {navItems.map((item) => (
                 <Button
                   key={item.path}
@@ -158,6 +201,7 @@ export default function Layout() {
       {/* Main content */}
       <Box
         component="main"
+        id="main-content"
         sx={{
           flexGrow: 1,
           mt: "64px",

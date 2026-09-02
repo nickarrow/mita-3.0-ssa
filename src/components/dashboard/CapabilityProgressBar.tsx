@@ -17,10 +17,19 @@ interface CapabilityProgressBarProps {
 export function CapabilityProgressBar({ status, progress }: CapabilityProgressBarProps) {
   const isFinalized = status === "finalized";
   const isInProgress = status === "in_progress";
-  const displayProgress = isFinalized ? 100 : progress;
+  // Show the real figure. Assuming 100% for anything finalized hid genuinely
+  // incomplete assessments, which imported data can produce.
+  const displayProgress = Math.max(0, Math.min(100, progress));
 
   return (
     <Box
+      // role="img" rather than "progressbar": this is a static summary in a table
+      // cell, not an operation in progress. It also avoids the double announcement
+      // that aria-label plus aria-valuenow produced ("30% answered, 30%").
+      role="img"
+      aria-label={
+        status === "not_assessed" ? "Not assessed" : `${displayProgress}% of questions answered`
+      }
       sx={{
         height: PROGRESS_BAR_HEIGHT_SMALL,
         borderRadius: 1,

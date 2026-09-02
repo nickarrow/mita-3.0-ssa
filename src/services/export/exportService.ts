@@ -18,9 +18,7 @@ import type {
   ExportProgressCallback,
 } from "./types";
 import { generatePdfReport } from "./pdfExport";
-
-/** Current export format version */
-const EXPORT_VERSION = "1.0";
+import { EXPORT_VERSION } from "../../constants/export";
 
 /** App version */
 const APP_VERSION = "3.0";
@@ -152,6 +150,10 @@ async function collectExportData(options: ExportOptions): Promise<ExportData> {
     blueprintVersion: BLUEPRINT_VERSION,
     scope,
     scopeDetails,
+    // Persist the state name the user supplied. Previously it was collected by
+    // the export dialog and then dropped for JSON/ZIP, so a backup carried no
+    // record of which agency produced it.
+    stateName: options.stateName,
     data: {
       assessments: assessmentsExport,
       ratings: ratingsExport,
@@ -231,6 +233,7 @@ export async function exportAsZip(
     appVersion: APP_VERSION,
     blueprintVersion: BLUEPRINT_VERSION,
     scope: options.scope,
+    stateName: options.stateName,
     contents: {
       dataJson: true,
       attachments: options.includeAttachments !== false,

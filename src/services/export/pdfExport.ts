@@ -9,6 +9,7 @@ import autoTable from "jspdf-autotable";
 import type { ExportData, ExportOptions } from "./types";
 import { getCapabilityByCode } from "../blueprint";
 import { PAGE, MARGIN, CONTENT_WIDTH, COLORS, getMaturityLevelName } from "./pdfStyles";
+import { PDF_DESCRIPTION_MAX_LENGTH } from "../../constants/export";
 
 const PAGE_WIDTH = PAGE.WIDTH;
 const PAGE_HEIGHT = PAGE.HEIGHT;
@@ -164,7 +165,7 @@ function generateCoverPage(doc: JsPDFWithAutoTable, data: ExportData, stateName:
     },
     {
       value: data.metadata.totalAttachments.toString(),
-      label: "Attachments",
+      label: data.metadata.totalAttachments === 1 ? "Attachment" : "Attachments",
       color: COLORS.darkGray,
     },
   ];
@@ -271,10 +272,11 @@ function generateExecutiveSummary(doc: JsPDFWithAutoTable, data: ExportData): nu
       headStyles: { fillColor: COLORS.primary, fontSize: 10 },
       styles: { fontSize: 9, cellPadding: 3 },
       columnStyles: {
-        0: { cellWidth: 70 },
+        0: { cellWidth: 68 },
+        // Wide enough for the "Capabilities" header; at 25mm it broke mid-word.
         1: { cellWidth: 20, halign: "center" },
-        2: { cellWidth: 25, halign: "center" },
-        3: { cellWidth: 45 },
+        2: { cellWidth: 34, halign: "center" },
+        3: { cellWidth: 42 },
       },
       margin: { left: MARGIN_LEFT, right: MARGIN_RIGHT },
     });
@@ -372,14 +374,21 @@ function generateCapabilitySection(
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(...COLORS.secondary);
-    const desc = capability.bpt.process_details.description.substring(0, 300);
+    const desc = capability.bpt.process_details.description.substring(
+      0,
+      PDF_DESCRIPTION_MAX_LENGTH
+    );
     const descLines = doc.splitTextToSize(desc + (desc.length >= 300 ? "..." : ""), CONTENT_WIDTH);
     doc.text(descLines, MARGIN_LEFT, yPos);
     yPos += descLines.length * 4 + 8;
   }
 
-  // Get ratings for this assessment
-  const ratings = data.data.ratings.filter((r) => r.capabilityAssessmentId === assessment.id);
+  // Get ratings for this assessment, in question order. Database order is
+  // arbitrary, which previously printed questions scrambled (Q9, Q10, Q8, Q6...)
+  // in a document intended for CMS submission.
+  const ratings = data.data.ratings
+    .filter((r) => r.capabilityAssessmentId === assessment.id)
+    .sort((a, b) => a.questionIndex - b.questionIndex);
 
   // Get attachments for this assessment, grouped by rating
   const attachmentsByRating = new Map<string, typeof data.data.attachments>();

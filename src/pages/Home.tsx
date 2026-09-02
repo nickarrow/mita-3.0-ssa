@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, Box, Button, Card, CardContent, Container, Grid, Typography } from "@mui/material";
 import SecurityIcon from "@mui/icons-material/Security";
@@ -5,9 +6,17 @@ import OfflineBoltIcon from "@mui/icons-material/OfflineBolt";
 import StorageIcon from "@mui/icons-material/Storage";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import WarningIcon from "@mui/icons-material/Warning";
+import { getBusinessAreas, getCapabilities } from "../services/blueprint";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 export default function Home() {
+  usePageTitle("About");
   const navigate = useNavigate();
+
+  // Derived from the loaded blueprint rather than hardcoded. The previous "75+"
+  // was inaccurate and would drift again the next time the blueprint changed.
+  const capabilityCount = useMemo(() => getCapabilities().length, []);
+  const businessAreaCount = useMemo(() => getBusinessAreas().length, []);
 
   const features = [
     {
@@ -96,7 +105,7 @@ export default function Home() {
             {
               step: "1",
               title: "Select a Capability",
-              desc: "Choose from 75+ MITA 3.0 capabilities organized by business area",
+              desc: `Choose from ${capabilityCount} MITA 3.0 capabilities across ${businessAreaCount} business areas`,
             },
             {
               step: "2",

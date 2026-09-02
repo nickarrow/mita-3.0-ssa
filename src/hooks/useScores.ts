@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "../services/db";
 import { getCapabilityByCode, getCapabilities } from "../services/blueprint";
@@ -11,6 +12,15 @@ export interface CapabilityScoreData {
   tags: string[];
   status: "not_assessed" | "in_progress" | "finalized";
   questionProgress: number; // 0-100 percentage of questions answered
+  /**
+   * Score from the previous finalized result, when a capability is currently
+   * being re-assessed. Without this the dashboard would show "—" for a
+   * capability that has a perfectly good prior result, making an in-flight edit
+   * look like the assessment was lost.
+   */
+  previousScore: number | null;
+  /** True when this in-progress assessment is a re-assessment of a prior result. */
+  isReassessment: boolean;
 }
 
 /**
@@ -32,6 +42,11 @@ export function useScores() {
       }
     }
 
+    // History snapshots, keyed by id. Only used to resolve an assessment's own
+    // `editSnapshotId` — see the comment where previousScore is set.
+    const history = await db.assessmentHistory.toArray();
+    const historyById = new Map(history.map((h) => [h.id, h]));
+
     // Build a map of capability code -> score data
     // For each capability, we want the finalized assessment (if exists)
     // or the in-progress one (for status display)
@@ -51,12 +66,19 @@ export function useScores() {
       const finalized = capAssessments.find((a) => a.status === "finalized");
       const inProgress = capAssessments.find((a) => a.status === "in_progress");
 
-      // Get total questions for this capability
+      // Get total questions for this capability. An unknown capability code (a
+      // retired code, or one from a different blueprint version via import) has no
+      // question count; report 0 progress rather than dividing by a fake 1, which
+      // would render values like 1100%.
       const capability = getCapabilityByCode(capabilityCode);
-      const totalQuestions = capability?.bcm.maturity_model.capability_questions.length || 1;
+      const totalQuestions = capability?.bcm.maturity_model.capability_questions.length ?? 0;
+      const progressFor = (assessmentId: string) => {
+        if (totalQuestions === 0) return 0;
+        const answeredCount = ratingsByAssessment.get(assessmentId) || 0;
+        return Math.round((Math.min(answeredCount, totalQuestions) / totalQuestions) * 100);
+      };
 
       if (finalized) {
-        const answeredCount = ratingsByAssessment.get(finalized.id) || 0;
         capabilityScores.set(capabilityCode, {
           capabilityCode,
           score: finalized.score ?? null,
@@ -64,24 +86,69 @@ export function useScores() {
           assessmentDate: finalized.finalizedAt || finalized.updatedAt,
           tags: finalized.tags,
           status: "finalized",
-          questionProgress: Math.round((answeredCount / totalQuestions) * 100),
+          questionProgress: progressFor(finalized.id),
+          previousScore: null,
+          isReassessment: false,
         });
       } else if (inProgress) {
-        const answeredCount = ratingsByAssessment.get(inProgress.id) || 0;
+        // A re-assessment keeps its prior result visible, resolved *only* through
+        // this assessment's own `editSnapshotId`.
+        //
+        // Resolving by "newest snapshot for this capability" instead treated any
+        // leftover history as a previous result. Since deleting an assessment
+        // leaves its history behind, a deleted score would reappear on the
+        // dashboard and back inside the business-area and overall averages.
+        const priorSnapshot = inProgress.editSnapshotId
+          ? historyById.get(inProgress.editSnapshotId)
+          : undefined;
+
         capabilityScores.set(capabilityCode, {
           capabilityCode,
-          score: null, // In-progress doesn't have a finalized score
+          score: null, // In-progress doesn't have a finalized score of its own
           assessmentId: inProgress.id,
           assessmentDate: inProgress.updatedAt,
+          // The row's own tags, always. `editAssessment` preserves them, so an
+          // empty list means the user cleared it - falling back to the snapshot's
+          // tags there made tag removal look like it hadn't saved.
           tags: inProgress.tags,
           status: "in_progress",
-          questionProgress: Math.round((answeredCount / totalQuestions) * 100),
+          questionProgress: progressFor(inProgress.id),
+          previousScore: priorSnapshot?.score ?? null,
+          isReassessment: Boolean(priorSnapshot),
         });
       }
     }
 
     return { capabilityScores };
   }, []);
+
+  /**
+   * Capability codes this build of the blueprint knows about.
+   *
+   * Imported data can reference codes from a different blueprint version. Those
+   * capabilities are invisible in the UI, so including them in aggregates produces
+   * numbers the user cannot account for. Every aggregate getter filters through
+   * this; the per-capability getters do not, so a direct lookup still works.
+   */
+  const knownCapabilityCodes = useMemo(() => new Set(getCapabilities().map((c) => c.code)), []);
+
+  /** Iterate only score data for capabilities present in the current blueprint. */
+  const knownScoreData = (): CapabilityScoreData[] => {
+    if (!scoreData) return [];
+    return [...scoreData.capabilityScores.values()].filter((d) =>
+      knownCapabilityCodes.has(d.capabilityCode)
+    );
+  };
+
+  /**
+   * The score a capability currently counts as in aggregates.
+   *
+   * A capability mid-re-assessment still counts at its previous result: that result
+   * stands until the re-assessment is finalized, so an area score should not
+   * collapse the moment someone opens an assessment to edit it.
+   */
+  const effectiveScore = (data: CapabilityScoreData | undefined): number | null =>
+    data?.score ?? data?.previousScore ?? null;
 
   /**
    * Get score data for a specific capability
@@ -105,9 +172,9 @@ export function useScores() {
 
     const scores: number[] = [];
     for (const code of capabilityCodes) {
-      const data = scoreData.capabilityScores.get(code);
-      if (data?.score !== null && data?.score !== undefined) {
-        scores.push(data.score);
+      const effective = effectiveScore(scoreData.capabilityScores.get(code));
+      if (effective !== null) {
+        scores.push(effective);
       }
     }
 
@@ -134,49 +201,32 @@ export function useScores() {
   };
 
   /**
-   * Get tags for a capability (from latest finalized)
+   * Tags on a capability's current assessment, whatever its status.
+   *
+   * Restricting this to finalized assessments made every tag disappear the moment
+   * a capability was opened for editing, which also emptied the dashboard filter.
    */
   const getCapabilityTags = (capabilityCode: string): string[] => {
-    const data = scoreData?.capabilityScores.get(capabilityCode);
-    // Only return tags from finalized assessments
-    if (data?.status === "finalized") {
-      return data.tags;
-    }
-    return [];
+    return scoreData?.capabilityScores.get(capabilityCode)?.tags ?? [];
   };
 
-  /**
-   * Get all unique tags in use across finalized assessments
-   */
+  /** Every tag in use across capabilities visible in this blueprint. */
   const getAllTagsInUse = (): string[] => {
-    if (!scoreData) return [];
-
     const tagSet = new Set<string>();
-    for (const data of scoreData.capabilityScores.values()) {
-      if (data.status === "finalized") {
-        for (const tag of data.tags) {
-          tagSet.add(tag);
-        }
+    for (const data of knownScoreData()) {
+      for (const tag of data.tags) {
+        tagSet.add(tag);
       }
     }
 
     return Array.from(tagSet).sort();
   };
 
-  /**
-   * Get capabilities that have a specific tag
-   */
+  /** Capabilities carrying a specific tag. */
   const getCapabilitiesByTag = (tag: string): string[] => {
-    if (!scoreData) return [];
-
-    const capabilities: string[] = [];
-    for (const [code, data] of scoreData.capabilityScores) {
-      if (data.status === "finalized" && data.tags.includes(tag)) {
-        capabilities.push(code);
-      }
-    }
-
-    return capabilities;
+    return knownScoreData()
+      .filter((data) => data.tags.includes(tag))
+      .map((data) => data.capabilityCode);
   };
 
   /**
@@ -201,12 +251,12 @@ export function useScores() {
     let finalized = 0;
     let inProgress = 0;
 
-    for (const data of scoreData.capabilityScores.values()) {
+    for (const data of knownScoreData()) {
       if (data.status === "finalized") finalized++;
       else if (data.status === "in_progress") inProgress++;
     }
 
-    const notAssessed = totalCapabilities - finalized - inProgress;
+    const notAssessed = Math.max(0, totalCapabilities - finalized - inProgress);
     return { total: totalCapabilities, finalized, inProgress, notAssessed };
   };
 
@@ -217,9 +267,10 @@ export function useScores() {
     if (!scoreData) return null;
 
     const scores: number[] = [];
-    for (const data of scoreData.capabilityScores.values()) {
-      if (data.status === "finalized" && data.score !== null) {
-        scores.push(data.score);
+    for (const data of knownScoreData()) {
+      const effective = effectiveScore(data);
+      if (effective !== null) {
+        scores.push(effective);
       }
     }
 

@@ -719,3 +719,141 @@ mita-3.0-ssa/
 ---
 
 *This document should be updated as implementation progresses.*
+
+---
+
+## September 2026 — Browser Audit Remediation
+
+A full browser-driven audit (Playwright, all seven routes) was run against the app and
+the findings were remediated in six waves. See `AUDIT_REMEDIATION_PLAN.md` for the
+findings, reproduction steps, and reasoning behind each fix.
+
+### Data loss (Wave 1)
+
+| Issue | Resolution |
+|-------|-----------|
+| Typed notes destroyed by clicking a rating | `useRatings` now exposes field-scoped writes (`setRatingLevel` / `setRatingNotes`), so neither path can overwrite the other's field with a stale value |
+| "Edit" then navigating away hid the previous score, tags and tag filter | `editAssessment` records an `editSnapshotId`; `useScores` exposes `previousScore` so the dashboard keeps showing the prior result during a re-assessment |
+| Revert orphaned attachments permanently | `revertEdit` restores ratings in place (matched on `questionIndex`) instead of recreating them with new ids, and rebuilds `attachmentIds` from the attachments table |
+| Stale score retained on in-progress rows | `editAssessment` clears `score` and `finalizedAt`; the prior value lives in the history snapshot |
+| Edit was destructive with no warning | Dashboard now confirms via a "Re-assess this capability?" dialog |
+
+### Import/export integrity (Wave 2)
+
+| Issue | Resolution |
+|-------|-----------|
+| Import committed data then reported failure | The whole merge runs in a single Dexie transaction — all-or-nothing |
+| Raw JS errors surfaced as user copy | New `importValidation.ts` validates the payload before any write and returns plain-language messages |
+| No field validation (accepted `score: 42`, `level: 99`, `questionIndex: 999`) | Every record is range-checked and normalized; rejected records are reported as warnings |
+| Missing `tags` / `history` keys aborted the import | These collections are now optional |
+| Tag import could throw `ConstraintError` after writing everything | Imported tags get fresh ids |
+| Ambiguous assessment selection when a capability had two rows | Deterministic resolution (finalized, then in-progress) |
+| Existing ratings destroyed with no history snapshot | Always snapshots when the local record has answered questions |
+| Finalized assessments always displayed 100% completion | Real progress is shown for every status |
+| State name collected then discarded for ZIP/JSON | Persisted into the export payload and manifest; JSON export now prompts too |
+| PDF printed questions out of order | Ratings are sorted by `questionIndex` |
+
+### Mobile and routing (Wave 3)
+
+- Assessment header stacks vertically below `md`. The tag field was previously rendered
+  0px wide and off-screen at phone widths, making tagging impossible on mobile.
+- Dashboard hides Tags/Status/Completion below `md` so the primary action stays on-screen
+  (the table previously overflowed and hid the "Start" button behind a horizontal scroll).
+- Added a catch-all route. Unmatched URLs previously rendered a completely blank page with
+  no header or navigation, because every route was a child of the layout route.
+- Invalid assessment ids now show a recoverable error instead of an indefinite "Loading...".
+
+### Correctness and copy (Wave 4)
+
+- Tag validation is now enforced on the single commit path (`isValidTag` was dead code
+  because MUI's `freeSolo` `onChange` bypassed it; `#!!bad tag!!` was accepted).
+- `usageCount` is recomputed from the assessments table instead of incremented per write.
+  It previously reached 8 for one tag on one assessment, corrupting autocomplete ordering.
+- "Hide Attachments" now works (it could never collapse once a file existed).
+- The cancel dialog's title, body and confirm label all derive from one condition. The
+  title previously said "Discard Assessment?" above body text promising a restore.
+- Expand toggles use functional `setState` (batched toggles were being dropped).
+- Capability counts are derived from the blueprint service so they cannot drift.
+
+### Accessibility (Wave 5)
+
+- Exactly one `<h1>` per page; statistic values no longer render as headings.
+- Per-route `document.title` via `usePageTitle`.
+- `<nav>` landmark, skip link, and `#main-content` target.
+- Row expanders, the `•••` action button and the logo have accessible names;
+  expanders and the attachment toggle expose `aria-expanded`.
+- Progress bars expose `role="progressbar"` / `role="img"` with text alternatives.
+- Visible `:focus-visible` outline (focus previously computed to `outline: none`).
+
+Full WCAG conformance still requires manual testing with assistive technology and expert
+review; this wave addressed the mechanically detectable issues.
+
+### Build and PWA (Wave 6)
+
+- Generated the full icon set (`pwa-192x192`, `pwa-512x512`, a padded
+  `pwa-maskable-512x512`, `apple-touch-icon`, `favicon.ico`, `mask-icon`). The manifest
+  previously declared icons that did not exist, so the app could not be installed
+  despite being marketed as installable. Icons now use the theme purple `#6B4E71`.
+- `html2canvas`, `canvg` and `dompurify` are aliased to a stub: jsPDF pulls them in for its
+  `.html()` renderer, which this app never uses. Total JS dropped from ~652 KB to
+  ~548 KB gzipped, and `dist` from 2.9 MB to 2.6 MB.
+
+---
+
+## Wave 7 — Review remediation and test coverage
+
+The Wave 1-6 change set was reviewed three ways (design review of the diff, an adversarial red-team pass
+against the running app, and a senior pre-merge review). All three returned *needs changes*, and several
+defects were in the Wave 1-6 code itself. See `AUDIT_REMEDIATION_PLAN.md` for the full account, including
+why they were missed.
+
+**Data destruction fixed**
+
+- Revert-vs-delete now derives from `editSnapshotId` rather than "does this capability have any history".
+  The old test meant discarding a *fresh* assessment on a capability with unrelated history restored that
+  snapshot onto it, marked it finalized, and destroyed the snapshot.
+- Deleting the history entry backing an in-progress re-assessment is blocked, with an explanation. It
+  previously turned "Discard changes" into delete-everything.
+- `AssessmentHistory.score` is now nullable, so nothing fabricates a score of 0 for a scoreless
+  assessment. A 0 rendered as "0.0", entered averages on a 1-5 scale, and failed this app's own import
+  validator on re-import.
+- `previousScore` resolves only through the assessment's own snapshot, so deleting a finalized assessment
+  no longer resurrects its score into the dashboard and the overall average.
+- `finalizeAssessment` is transactional and no longer archives references to attachment blobs it deletes.
+- `startAssessment` is idempotent per capability; double-clicking "Start" no longer creates two rows.
+
+**Notes now auto-save while typing** (600 ms debounce, plus flush on unmount, `pagehide` and
+`visibilitychange`). Saving only on blur meant a reload or browser Back silently discarded them.
+
+**Import reporting fixed.** `result.errors` is actually rendered — previously every validation message
+was computed and thrown away, leaving users with "Import completed with 1 error(s)" and no explanation.
+Per-item error handling was restored inside the transaction, and Dexie's raw messages are translated.
+Newly reported rather than silent: orphaned answers, duplicate ids, two assessments for one capability,
+unverifiable scores, malformed history, and merges that replace more answers than they supply.
+
+**Mobile.** Expanding a history row no longer widens the table from 341 px to 767 px (responsive
+`colSpan` plus a wrapping `HistoryPanel`). Import result chips wrap. 320 px no longer overflows.
+
+**Tests — `vitest` + `fake-indexeddb`, 108 tests in four suites.** `npm test` / `npm run test:watch`.
+`fake-indexeddb` is a real IndexedDB implementation, so Dexie runs unmodified with no abstraction layer.
+
+| Suite | Tests | Covers |
+|-------|-------|--------|
+| `importValidation.test.ts` | 54 | Every reject/coerce branch, boundaries, optional collections, hostile input |
+| `assessmentLifecycle.test.ts` | 22 | Edit/revert round-trip, rating identity, the negative discard case, tag counts |
+| `importService.test.ts` | 19 | Merge matrix, atomicity under forced failure, deterministic resolution |
+| `useRatings.test.ts` | 13 | Field-scoped writes — the notes-loss regression guard |
+
+This required extracting `src/services/assessmentLifecycle.ts` and `src/services/ratingWrites.ts` from
+their hooks. Neither ever touched component state.
+
+### Still outstanding
+
+| Item | Notes |
+|------|-------|
+| Two capabilities excluded from the blueprint | Upstream data issue in `mita-open-blueprint` — BCM/BPT filename mismatch. The app now warns in development. |
+| Main chunk exceeds 500 KB | 2.59 MB raw / 550 KB gzipped, dominated by the eagerly-inlined blueprint JSON. Acceptable for an offline-first PWA, but route-level code splitting or lazy blueprint loading is the next meaningful win. |
+| No component/interaction tests | The four suites cover the data-integrity surface. UI behaviour is still verified by hand. |
+| Toast/snackbar notifications | Still deferred |
+| Manual assistive-technology testing | Not automatable |
+| Deploy to GitHub Pages | Workflow exists, not yet run |

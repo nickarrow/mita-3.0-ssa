@@ -33,6 +33,7 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import HistoryIcon from "@mui/icons-material/History";
 import { ImportDialog, StateNameDialog } from "../components/export";
 import { useScores } from "../hooks/useScores";
+import { usePageTitle } from "../hooks/usePageTitle";
 import {
   exportAsJson,
   exportAsZip,
@@ -42,9 +43,10 @@ import {
   generateFilename,
 } from "../services/export";
 
-type PendingExport = { type: "zip" } | { type: "pdf" };
+type PendingExport = { type: "zip" } | { type: "pdf" } | { type: "json" };
 
 export default function ImportExport() {
+  usePageTitle("Import & Export");
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [importSuccess, setImportSuccess] = useState(false);
   const [stateNameDialogOpen, setStateNameDialogOpen] = useState(false);
@@ -83,6 +85,9 @@ export default function ImportExport() {
       case "pdf":
         await handleExportPdf(stateName);
         break;
+      case "json":
+        await handleExportJson(stateName);
+        break;
     }
   };
 
@@ -102,11 +107,11 @@ export default function ImportExport() {
     }
   };
 
-  const handleExportJson = async () => {
+  const handleExportJson = async (stateName: string) => {
     setExporting("json");
     setError(null);
     try {
-      const json = await exportAsJson({ scope: "full", format: "json" });
+      const json = await exportAsJson({ scope: "full", format: "json", stateName });
       downloadText(json, generateFilename("data", "json"), "application/json");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Export failed");
@@ -148,13 +153,15 @@ export default function ImportExport() {
             <Typography variant="overline" color="text.secondary">
               Total Capabilities
             </Typography>
-            <Typography variant="h5">{statusCounts.total}</Typography>
+            <Typography variant="h5" component="p">
+              {statusCounts.total}
+            </Typography>
           </Grid>
           <Grid size={{ xs: 6, sm: 3 }}>
             <Typography variant="overline" color="text.secondary">
               Finalized
             </Typography>
-            <Typography variant="h5" color="success.main">
+            <Typography variant="h5" component="p" color="success.main">
               {statusCounts.finalized}
             </Typography>
           </Grid>
@@ -162,7 +169,7 @@ export default function ImportExport() {
             <Typography variant="overline" color="text.secondary">
               In Progress
             </Typography>
-            <Typography variant="h5" color="warning.main">
+            <Typography variant="h5" component="p" color="warning.main">
               {statusCounts.inProgress}
             </Typography>
           </Grid>
@@ -170,7 +177,7 @@ export default function ImportExport() {
             <Typography variant="overline" color="text.secondary">
               Overall Score
             </Typography>
-            <Typography variant="h5" color="primary.main">
+            <Typography variant="h5" component="p" color="primary.main">
               {overallScore !== null ? overallScore.toFixed(1) : "—"}
             </Typography>
           </Grid>
@@ -319,7 +326,7 @@ export default function ImportExport() {
                   <CardActions>
                     <Button
                       startIcon={<DataObjectIcon />}
-                      onClick={handleExportJson}
+                      onClick={() => startExportWithStateName({ type: "json" })}
                       disabled={!hasData || exporting !== null}
                     >
                       {exporting === "json" ? "Exporting..." : "Export JSON"}
@@ -457,7 +464,13 @@ export default function ImportExport() {
           setPendingExport(null);
         }}
         onConfirm={handleStateNameConfirm}
-        exportType={pendingExport?.type === "pdf" ? "PDF report" : "export"}
+        exportType={
+          pendingExport?.type === "pdf"
+            ? "PDF report"
+            : pendingExport?.type === "json"
+              ? "JSON file"
+              : "backup"
+        }
       />
 
       {/* Import Dialog */}

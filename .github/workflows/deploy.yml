@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Run the checks on pull requests too. Without this they only ran after merge,
+  # at deploy time, so a regression could be merged before anything caught it.
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -30,6 +34,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Gate the deploy on the checks. This workflow deploys straight to GitHub
+      # Pages on every push to main, so a failure here is the last thing standing
+      # between a regression and production.
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
       - name: Build
         run: npm run build
 
@@ -42,6 +55,8 @@ jobs:
           path: dist
 
   deploy:
+    # Pull requests run the build job for its checks, but must never deploy.
+    if: github.event_name != 'pull_request'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

@@ -21,8 +21,14 @@ export function StackedProgressBar({ finalized, inProgress, total }: StackedProg
   const inProgressPercent = total > 0 ? (inProgress / total) * 100 : 0;
   const notStartedPercent = total > 0 ? (notStarted / total) * 100 : 0;
 
+  // The segment counts are rendered as visual text only, which conveys nothing
+  // about what they represent. A single summary label describes the whole bar.
+  const summary = `${finalized} finalized, ${inProgress} in progress, ${notStarted} not assessed, of ${total} capabilities`;
+
   return (
     <Box
+      role="img"
+      aria-label={summary}
       sx={{
         display: "flex",
         height: PROGRESS_BAR_HEIGHT_LARGE,
