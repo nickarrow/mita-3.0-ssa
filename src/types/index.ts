@@ -18,6 +18,17 @@ export interface CapabilityAssessment {
   updatedAt: Date;
   finalizedAt?: Date;
   score?: number; // Calculated average (1-5) when finalized
+  /**
+   * Set while re-assessing a previously finalized capability: the id of the
+   * AssessmentHistory snapshot taken when editing began.
+   *
+   * This is the assessment's "previous result" pointer. It tells the dashboard
+   * which score and tags to keep showing during the re-assessment, and tells
+   * revertEdit exactly which snapshot to restore. Resolving the snapshot by
+   * newest date instead would pick up an imported entry with a later date and
+   * restore (and delete) the wrong record.
+   */
+  editSnapshotId?: string;
 }
 
 // Rating for a single question within an assessment
@@ -52,7 +63,15 @@ export interface AssessmentHistory {
   capabilityCode: string; // "CM_Establish_Case"
   snapshotDate: Date; // When this version was finalized
   tags: string[]; // Tags at time of snapshot
-  score: number; // Maturity score (1-5)
+  /**
+   * Maturity score (1-5), or null when the snapshotted assessment had no score.
+   *
+   * Nullable deliberately. A non-nullable number forces callers to invent a value
+   * for scoreless assessments, and substituting 0 produces a score outside the
+   * 1-5 scale that then flows into averages, renders as "0.0", and is rejected by
+   * this app's own import validator. Absent is a real state; represent it.
+   */
+  score: number | null;
   ratings: HistoricalRating[]; // Full ratings snapshot
   blueprintVersion: string;
 }

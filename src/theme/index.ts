@@ -71,6 +71,22 @@ const theme = createTheme({
     borderRadius: 16, // More rounded, friendly
   },
   components: {
+    /**
+     * Visible focus indicator for keyboard users.
+     *
+     * MUI's defaults leave focused icon buttons and table controls with
+     * `outline: none` and only a faint background tint, which is not a reliable
+     * focus indicator. This applies a consistent, high-contrast ring to anything
+     * reached by keyboard, without affecting mouse clicks (`:focus-visible`).
+     */
+    MuiCssBaseline: {
+      styleOverrides: {
+        "*:focus-visible": {
+          outline: "3px solid #4B2E51",
+          outlineOffset: "2px",
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {

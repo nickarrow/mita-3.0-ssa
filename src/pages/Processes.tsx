@@ -23,6 +23,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { visuallyHidden } from "@mui/utils";
 import MenuIcon from "@mui/icons-material/Menu";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
@@ -32,12 +33,14 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import { getBusinessAreas, getCapabilityByCode } from "../services/blueprint";
 import { BptContent } from "../components/bpt";
 import { HEADER_HEIGHT } from "../constants/ui";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 // Width of the navigation panel
 const NAV_PANEL_WIDTH = 320;
 const NAV_PANEL_WIDTH_MOBILE = 280;
 
 export default function Processes() {
+  usePageTitle("Business Processes");
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -260,6 +263,14 @@ export default function Processes() {
 
   return (
     <Box sx={{ display: "flex", height: `calc(100vh - ${HEADER_HEIGHT}px)` }}>
+      {/*
+        The visible page heading lives inside the nav panel, which is a drawer on
+        mobile and therefore absent from the document. This gives the page exactly
+        one h1 at every viewport without duplicating visible text.
+      */}
+      <Typography variant="h1" component="h1" sx={visuallyHidden}>
+        Business Processes
+      </Typography>
       {/* Navigation panel - desktop */}
       {!isMobile && (
         <Paper

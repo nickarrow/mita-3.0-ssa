@@ -6,11 +6,11 @@ A Progressive Web App (PWA) enabling Medicaid agencies to self-assess their IT m
 
 ## Overview
 
-This tool allows state Medicaid agencies to evaluate their current IT capabilities across 72 business capabilities defined in the MITA 3.0 framework. All data is stored locally in your browser—nothing is transmitted to any server.
+This tool allows state Medicaid agencies to evaluate their current IT capabilities across the business capabilities defined in the MITA 3.0 framework. All data is stored locally in your browser—nothing is transmitted to any server.
 
 ### Key Features
 
-- **72 Business Capabilities** — Assess maturity across all MITA 3.0 business areas
+- **74 Business Capabilities** — Assess maturity across all MITA 3.0 business areas
 - **Offline-First** — Works without internet after initial load
 - **Privacy-First** — All data stays in your browser (IndexedDB)
 - **Assessment History** — Track changes over time with automatic snapshots
@@ -23,14 +23,23 @@ This tool allows state Medicaid agencies to evaluate their current IT capabiliti
 | Business Area | Capabilities |
 |---------------|--------------|
 | Business Relationship Management | 4 |
-| Care Management | 9 |
+| Care Management | 8 |
 | Contractor Management | 9 |
-| Eligibility & Enrollment Management | 4 |
+| Eligibility and Enrollment Management | 8 |
 | Financial Management | 19 |
 | Operations Management | 9 |
 | Performance Management | 5 |
-| Plan Management | 8 |
+| Plan Management | 7 |
 | Provider Management | 5 |
+| **Total** | **74** |
+
+> **Note:** The source blueprint contains 76 BCM and 76 BPT files, but two capabilities
+> are currently excluded because their BCM and BPT filenames use mismatched capability
+> codes (`Treatment_Plans` vs `Treatment_Plan`, and `Maintain_Reference` vs
+> `Manage_Reference`). A capability requires both files to be usable. This is a data
+> issue in the upstream [MITA Open Blueprint](https://github.com/naretakis/mita-open-blueprint)
+> repository; the app logs a console warning in development when it detects unpaired
+> codes. Once the filenames agree, the count rises to 76 with no app changes needed.
 
 ## Tech Stack
 
@@ -69,7 +78,21 @@ npm run dev
 | `npm run dev` | Start development server with hot reload |
 | `npm run build` | Build for production |
 | `npm run preview` | Preview production build locally |
+| `npm test` | Run the test suite once |
+| `npm run test:watch` | Run tests in watch mode |
 | `npm run lint` | Run ESLint |
+| `npm run format` | Format `src/` with Prettier |
+
+### Testing
+
+Tests run under [Vitest](https://vitest.dev/) against
+[`fake-indexeddb`](https://github.com/dumbmatter/fakeIndexedDB), a real in-memory IndexedDB
+implementation. Because the app talks to Dexie directly with no abstraction layer, the data-layer tests
+exercise the same code paths the browser does, including transactions and compound indexes.
+
+Coverage is concentrated on the data-integrity surface — import validation, the assessment lifecycle
+(edit, revert, finalize) and rating persistence — because that is where a silent bug costs a user their
+work. UI behaviour is verified by hand.
 
 ## Deployment
 

@@ -8,6 +8,7 @@ import Assessment from "./pages/Assessment";
 import Processes from "./pages/Processes";
 import ImportExport from "./pages/ImportExport";
 import Guide from "./pages/Guide";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
             <Route path="processes/:code" element={<Processes />} />
             <Route path="import-export" element={<ImportExport />} />
             <Route path="guide" element={<Guide />} />
+            {/* Catch-all inside Layout so the header and nav stay available */}
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>

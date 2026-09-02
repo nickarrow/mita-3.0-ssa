@@ -47,6 +47,7 @@ function buildCapabilitiesMap(): Map<string, { bcm?: BCM; bpt?: BPT }> {
 function buildCapabilities(): Capability[] {
   const capMap = buildCapabilitiesMap();
   const capabilities: Capability[] = [];
+  const unpaired: string[] = [];
 
   for (const [code, data] of capMap.entries()) {
     if (data.bcm && data.bpt) {
@@ -57,7 +58,21 @@ function buildCapabilities(): Capability[] {
         bcm: data.bcm,
         bpt: data.bpt,
       });
+    } else {
+      unpaired.push(`${code} (missing ${data.bcm ? "BPT" : "BCM"})`);
     }
+  }
+
+  // A capability needs both halves to be usable, but dropping one silently means
+  // it vanishes from the entire app with no signal. Two capabilities were lost
+  // this way to BCM/BPT filename mismatches. Surface it during development so a
+  // future mismatch is caught immediately rather than by counting rows.
+  if (unpaired.length > 0 && import.meta.env.DEV) {
+    console.warn(
+      `[blueprint] ${unpaired.length} capability code(s) have only one of BCM/BPT and were excluded:\n  ` +
+        unpaired.sort().join("\n  ") +
+        "\nThe BCM and BPT filenames must use identical capability codes."
+    );
   }
 
   return capabilities.sort((a, b) => {
@@ -70,7 +85,9 @@ function buildCapabilities(): Capability[] {
 
 // Build business areas with their capabilities
 function buildBusinessAreas(): BusinessArea[] {
-  const capabilities = buildCapabilities();
+  // Via the cache, not buildCapabilities() directly: building twice also logged
+  // the unpaired-capability warning twice on startup.
+  const capabilities = getCapabilities();
   const areaMap = new Map<string, Capability[]>();
 
   for (const cap of capabilities) {
@@ -107,6 +124,7 @@ function buildBusinessAreas(): BusinessArea[] {
 // Cached data
 let cachedCapabilities: Capability[] | null = null;
 let cachedBusinessAreas: BusinessArea[] | null = null;
+let cachedCapabilitiesByCode: Map<string, Capability> | null = null;
 
 // Public API
 export function getCapabilities(): Capability[] {
@@ -123,8 +141,18 @@ export function getBusinessAreas(): BusinessArea[] {
   return cachedBusinessAreas;
 }
 
+/**
+ * Look up a capability by code.
+ *
+ * Map-backed rather than a linear scan: this is called once per capability inside
+ * the score aggregation and once per rating in the PDF generator, so a `find` over
+ * all capabilities made those loops quadratic.
+ */
 export function getCapabilityByCode(code: string): Capability | undefined {
-  return getCapabilities().find((c) => c.code === code);
+  if (!cachedCapabilitiesByCode) {
+    cachedCapabilitiesByCode = new Map(getCapabilities().map((c) => [c.code, c]));
+  }
+  return cachedCapabilitiesByCode.get(code);
 }
 
 export function getCapabilityByProcessName(processName: string): Capability | undefined {

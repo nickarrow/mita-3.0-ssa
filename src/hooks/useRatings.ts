@@ -1,6 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { v4 as uuidv4 } from "uuid";
 import { db } from "../services/db";
+import * as writes from "../services/ratingWrites";
 import type { Rating } from "../types";
 
 /**
@@ -15,61 +15,22 @@ export function useRatings(capabilityAssessmentId: string | undefined) {
     [capabilityAssessmentId]
   );
 
-  /**
-   * Save a rating for a question
-   * Returns the rating ID (useful for attachments)
-   */
-  const saveRating = async (
-    questionIndex: number,
-    level: 1 | 2 | 3 | 4 | 5 | null,
-    notes: string = ""
-  ): Promise<string | undefined> => {
-    if (!capabilityAssessmentId) return undefined;
+  // The write implementations live in services/ratingWrites so they can be tested
+  // without rendering a component. Bound here to this hook's assessment id.
+  const setRatingLevel = (questionIndex: number, level: 1 | 2 | 3 | 4 | 5 | null) =>
+    capabilityAssessmentId
+      ? writes.setRatingLevel(capabilityAssessmentId, questionIndex, level)
+      : Promise.resolve(undefined);
 
-    const now = new Date();
-    let ratingId: string | undefined;
+  const setRatingNotes = (questionIndex: number, notes: string) =>
+    capabilityAssessmentId
+      ? writes.setRatingNotes(capabilityAssessmentId, questionIndex, notes)
+      : Promise.resolve(undefined);
 
-    // Use transaction to prevent race conditions creating duplicate ratings
-    await db.transaction("rw", [db.ratings, db.capabilityAssessments], async () => {
-      // Check if rating exists for this question using compound index
-      const existing = await db.ratings
-        .where("[capabilityAssessmentId+questionIndex]")
-        .equals([capabilityAssessmentId, questionIndex])
-        .first();
-
-      if (existing) {
-        // Update existing rating
-        await db.ratings.update(existing.id, {
-          level,
-          notes,
-          carriedForward: false, // Clear carried forward flag on edit
-          updatedAt: now,
-        });
-        ratingId = existing.id;
-      } else {
-        // Create new rating
-        ratingId = uuidv4();
-        const rating: Rating = {
-          id: ratingId,
-          capabilityAssessmentId,
-          questionIndex,
-          level,
-          notes,
-          carriedForward: false,
-          attachmentIds: [], // Initialize empty attachments array
-          updatedAt: now,
-        };
-        await db.ratings.add(rating);
-      }
-
-      // Update assessment timestamp
-      await db.capabilityAssessments.update(capabilityAssessmentId, {
-        updatedAt: now,
-      });
-    });
-
-    return ratingId;
-  };
+  const ensureRating = (questionIndex: number) =>
+    capabilityAssessmentId
+      ? writes.ensureRating(capabilityAssessmentId, questionIndex)
+      : Promise.resolve(undefined);
 
   /**
    * Get rating for a specific question
@@ -79,12 +40,17 @@ export function useRatings(capabilityAssessmentId: string | undefined) {
   };
 
   /**
-   * Get progress (percentage of questions answered)
+   * Progress as a percentage of questions answered, clamped to 0-100.
+   *
+   * Clamped because this drives the `progress < 100` gate on Finalize. The
+   * compound index on ratings is not declared unique, so more answered rows than
+   * questions is representable; without the clamp that would open the gate with
+   * real questions still unanswered. `useScores.progressFor` clamps identically.
    */
   const getProgress = (totalQuestions: number): number => {
     if (!ratings || totalQuestions === 0) return 0;
     const answered = ratings.filter((r) => r.level !== null).length;
-    return Math.round((answered / totalQuestions) * 100);
+    return Math.round((Math.min(answered, totalQuestions) / totalQuestions) * 100);
   };
 
   /**
@@ -114,7 +80,9 @@ export function useRatings(capabilityAssessmentId: string | undefined) {
 
   return {
     ratings: ratings || [],
-    saveRating,
+    setRatingLevel,
+    setRatingNotes,
+    ensureRating,
     getRating,
     getProgress,
     getAnsweredCount,

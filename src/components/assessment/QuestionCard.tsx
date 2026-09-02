@@ -4,7 +4,7 @@
  * Displays a single assessment question with rating options, notes, and attachments.
  */
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -24,7 +24,11 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { useRatings } from "../../hooks/useRatings";
 import { AttachmentUpload } from "./AttachmentUpload";
 import { compactChipSx } from "../../theme/sharedStyles";
-import { QUESTION_NUMBER_MIN_WIDTH, NOTES_TEXTAREA_ROWS } from "../../constants/ui";
+import {
+  QUESTION_NUMBER_MIN_WIDTH,
+  NOTES_TEXTAREA_ROWS,
+  NOTES_AUTOSAVE_DELAY_MS,
+} from "../../constants/ui";
 import type { CapabilityQuestion, Attachment } from "../../types";
 
 interface AttachmentHandlers {
@@ -51,7 +55,7 @@ export function QuestionCard({
   readOnly = false,
   attachmentHandlers,
 }: QuestionCardProps) {
-  const { getRating, saveRating } = useRatings(assessmentId);
+  const { getRating, setRatingLevel, setRatingNotes, ensureRating } = useRatings(assessmentId);
   const rating = getRating(questionIndex);
 
   // Use rating notes as source of truth, local state only for editing
@@ -61,20 +65,71 @@ export function QuestionCard({
   // Derive notes value: use local when editing, otherwise use rating
   const notes = isEditingNotes ? localNotes : rating?.notes || "";
 
+  /**
+   * Notes auto-save while typing, like every other input in the app.
+   *
+   * Saving only on blur meant a reload or a browser Back discarded whatever was
+   * typed, with no prompt — and nothing else in the app behaves that way, so there
+   * was no reason for a user to expect it. The ref mirrors the latest text so the
+   * debounce and the unmount flush can persist it without re-subscribing.
+   */
+  const pendingNotesRef = useRef<{ value: string; saved: string } | null>(null);
+  const debounceRef = useRef<number | undefined>(undefined);
+  const saveNotesRef = useRef(setRatingNotes);
+
+  // `useRatings` returns a fresh closure each render, so the ref has to be kept
+  // current. Done in an effect rather than during render.
+  useEffect(() => {
+    saveNotesRef.current = setRatingNotes;
+  }, [setRatingNotes]);
+
+  const flushNotesRef = useRef(async () => {
+    const pending = pendingNotesRef.current;
+    if (!pending || pending.value === pending.saved) return;
+    pendingNotesRef.current = { value: pending.value, saved: pending.value };
+    await saveNotesRef.current(questionIndex, pending.value);
+  });
+
+  useEffect(() => {
+    if (readOnly) return;
+    const flush = flushNotesRef.current;
+    // pagehide covers reload and tab close; visibilitychange covers backgrounding
+    // on mobile, where pagehide is unreliable.
+    const onHide = () => void flush();
+    window.addEventListener("pagehide", onHide);
+    document.addEventListener("visibilitychange", onHide);
+    return () => {
+      window.removeEventListener("pagehide", onHide);
+      document.removeEventListener("visibilitychange", onHide);
+      // Unmount covers in-app navigation, including the browser Back button.
+      void flush();
+    };
+  }, [readOnly]);
+
   // Derive expanded states from data
   const notesExpanded = readOnly ? !!rating?.notes : !!rating?.notes || isEditingNotes;
 
   // Get attachments for this rating
   const attachments = rating?.id ? attachmentHandlers.getAttachmentsForRating(rating.id) : [];
 
-  // Derive attachments expanded from whether there are attachments
-  const [attachmentsManuallyExpanded, setAttachmentsManuallyExpanded] = useState(false);
-  const attachmentsExpanded = attachments.length > 0 || attachmentsManuallyExpanded;
+  /**
+   * Attachment panel visibility: null means "follow the data" (open when files
+   * exist), true/false is an explicit user choice.
+   *
+   * A plain boolean OR'd with `attachments.length > 0` could never be collapsed
+   * once a file existed, so the "Hide Attachments" button did nothing.
+   */
+  const [attachmentsOverride, setAttachmentsOverride] = useState<boolean | null>(null);
+  const attachmentsExpanded = attachmentsOverride ?? attachments.length > 0;
 
   const handleLevelChange = async (level: 1 | 2 | 3 | 4 | 5) => {
     if (readOnly) return;
     onDirty();
-    saveRating(questionIndex, level, notes);
+    // Clicking a level blurs the notes textarea, so handleNotesBlur may fire
+    // around the same time. Flush any pending notes edit first, then write only
+    // the level, so neither write can clobber the other's field.
+    await flushNotes();
+    await setRatingLevel(questionIndex, level);
   };
 
   const handleNotesChange = (value: string) => {
@@ -83,26 +138,45 @@ export function QuestionCard({
       setIsEditingNotes(true);
     }
     setLocalNotes(value);
+    onDirty();
+
+    pendingNotesRef.current = {
+      value,
+      saved: pendingNotesRef.current?.saved ?? rating?.notes ?? "",
+    };
+
+    if (debounceRef.current !== undefined) {
+      window.clearTimeout(debounceRef.current);
+    }
+    debounceRef.current = window.setTimeout(() => {
+      void flushNotesRef.current();
+    }, NOTES_AUTOSAVE_DELAY_MS);
   };
 
-  const handleNotesBlur = () => {
+  /** Persist a pending notes edit immediately. Safe to call redundantly. */
+  const flushNotes = async () => {
     if (readOnly) return;
-    if (isEditingNotes && localNotes !== (rating?.notes || "")) {
-      onDirty();
-      saveRating(questionIndex, rating?.level || null, localNotes);
+    if (debounceRef.current !== undefined) {
+      window.clearTimeout(debounceRef.current);
+      debounceRef.current = undefined;
     }
+    await flushNotesRef.current();
+  };
+
+  const handleNotesBlur = async () => {
+    if (readOnly) return;
+    await flushNotes();
     setIsEditingNotes(false);
   };
 
   const handleUpload = async (file: File, description?: string) => {
-    if (!rating?.id) {
-      // Need to create a rating first - saveRating returns the new rating ID
-      const newRatingId = await saveRating(questionIndex, null, notes);
-      if (newRatingId) {
-        await attachmentHandlers.uploadAttachment(newRatingId, file, description);
-      }
-    } else {
-      await attachmentHandlers.uploadAttachment(rating.id, file, description);
+    let ratingId = rating?.id;
+    if (!ratingId) {
+      // Attaching to an untouched question - create the rating row first
+      ratingId = await ensureRating(questionIndex);
+    }
+    if (ratingId) {
+      await attachmentHandlers.uploadAttachment(ratingId, file, description);
     }
     onDirty();
   };
@@ -276,7 +350,8 @@ export function QuestionCard({
             <Button
               size="small"
               startIcon={<AttachFileIcon />}
-              onClick={() => setAttachmentsManuallyExpanded(!attachmentsManuallyExpanded)}
+              onClick={() => setAttachmentsOverride(!attachmentsExpanded)}
+              aria-expanded={attachmentsExpanded}
               sx={{ mb: 1 }}
             >
               {attachmentsExpanded

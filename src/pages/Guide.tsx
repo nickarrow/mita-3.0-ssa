@@ -26,8 +26,10 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import WarningIcon from "@mui/icons-material/Warning";
 import InfoIcon from "@mui/icons-material/Info";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 export default function Guide() {
+  usePageTitle("Guide");
   const navigate = useNavigate();
 
   const steps = [
@@ -35,7 +37,7 @@ export default function Guide() {
       icon: <DashboardIcon color="primary" />,
       title: "Start from the Dashboard",
       description:
-        'The Dashboard shows all MITA 3.0 capabilities organized by business area. Find the capability you want to assess and click "Start Assessment" or "Continue" if you have one in progress.',
+        'The Dashboard lists every MITA 3.0 capability grouped by business area. Expand an area, then click "Start" on the capability you want to assess. If you already have one in progress, use the "•••" menu and choose "Resume".',
     },
     {
       icon: <AssessmentIcon color="primary" />,

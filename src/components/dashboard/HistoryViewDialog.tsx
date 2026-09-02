@@ -58,7 +58,7 @@ export function HistoryViewDialog({ entry, open, onClose }: HistoryViewDialogPro
                 Score
               </Typography>
               <Typography variant="body2" fontWeight={500}>
-                {entry.score.toFixed(1)} / 5.0
+                {entry.score !== null ? `${entry.score.toFixed(1)} / 5.0` : "Not scored"}
               </Typography>
             </Box>
             <Box>

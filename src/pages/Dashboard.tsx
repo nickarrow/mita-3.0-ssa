@@ -22,7 +22,10 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
@@ -51,9 +54,22 @@ import {
   TAG_FILTER_MIN_WIDTH,
 } from "../constants/ui";
 import type { AssessmentHistory } from "../types";
+import { usePageTitle } from "../hooks/usePageTitle";
+
+/**
+ * Columns hidden on narrow screens.
+ *
+ * At phone widths the six-column table overflowed its container, pushing the
+ * Action column (and with it the primary "Start" button) off-screen behind a
+ * horizontal scroll with no affordance. Name, Score and Action are the ones
+ * users act on, so the rest drop away below the md breakpoint.
+ */
+const SECONDARY_COLUMN_SX = { display: { xs: "none", md: "table-cell" } } as const;
 
 export default function Dashboard() {
+  usePageTitle("Dashboard");
   const navigate = useNavigate();
+  const theme = useTheme();
   const businessAreas = useMemo(() => getBusinessAreas(), []);
   const {
     startAssessment,
@@ -66,11 +82,16 @@ export default function Dashboard() {
   const { deleteHistoryEntry } = useHistory();
   const {
     getCapabilityScore,
+    getCapabilityScoreData,
     getBusinessAreaScore,
     getCapabilityTags,
     getCapabilityProgress,
     getAllTagsInUse,
   } = useScores();
+
+  // Matches SECONDARY_COLUMN_SX: three columns drop out below the md breakpoint.
+  const showSecondaryColumns = useMediaQuery(theme.breakpoints.up("md"));
+  const visibleColumnCount = showSecondaryColumns ? 6 : 3;
 
   const [expandedAreas, setExpandedAreas] = useState<Set<string>>(new Set());
   const [expandedCapabilities, setExpandedCapabilities] = useState<Set<string>>(new Set());
@@ -84,7 +105,11 @@ export default function Dashboard() {
   >("not_assessed");
 
   // Dialog states
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<{ assessmentId: string; name: string } | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [blockedDeleteName, setBlockedDeleteName] = useState<string | null>(null);
+  const [startingCapability, setStartingCapability] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{
     type: "assessment" | "history";
     id: string;
@@ -107,25 +132,36 @@ export default function Dashboard() {
     return Array.from(tagSet).sort();
   };
 
+  /**
+   * Toggle helpers use the functional setState form deliberately.
+   *
+   * Reading the Set from the closure meant several toggles dispatched in the same
+   * React batch all started from the same stale snapshot, so only the last one
+   * survived.
+   */
   const toggleArea = (areaName: string) => {
-    const newExpanded = new Set(expandedAreas);
-    if (newExpanded.has(areaName)) {
-      newExpanded.delete(areaName);
-    } else {
-      newExpanded.add(areaName);
-    }
-    setExpandedAreas(newExpanded);
+    setExpandedAreas((current) => {
+      const next = new Set(current);
+      if (next.has(areaName)) {
+        next.delete(areaName);
+      } else {
+        next.add(areaName);
+      }
+      return next;
+    });
   };
 
   const toggleCapability = (code: string, event: React.MouseEvent) => {
     event.stopPropagation();
-    const newExpanded = new Set(expandedCapabilities);
-    if (newExpanded.has(code)) {
-      newExpanded.delete(code);
-    } else {
-      newExpanded.add(code);
-    }
-    setExpandedCapabilities(newExpanded);
+    setExpandedCapabilities((current) => {
+      const next = new Set(current);
+      if (next.has(code)) {
+        next.delete(code);
+      } else {
+        next.add(code);
+      }
+      return next;
+    });
   };
 
   // Menu handlers
@@ -177,11 +213,23 @@ export default function Dashboard() {
     if (menuCapabilityCode) {
       const finalized = getLatestFinalized(menuCapabilityCode);
       if (finalized) {
-        await editAssessment(finalized.id);
-        navigate(`/assessment/${finalized.id}`);
+        // Confirm first. Editing converts every rating into an unconfirmed
+        // suggestion, so an unintended click would leave the capability looking
+        // unassessed until the user re-confirms all of it.
+        setEditTarget({ assessmentId: finalized.id, name: finalized.processName });
+        setEditDialogOpen(true);
       }
     }
     handleMenuClose();
+  };
+
+  const handleConfirmEdit = async () => {
+    if (!editTarget) return;
+    await editAssessment(editTarget.assessmentId);
+    setEditDialogOpen(false);
+    const target = editTarget.assessmentId;
+    setEditTarget(null);
+    navigate(`/assessment/${target}`);
   };
 
   const handleDeleteFromMenu = () => {
@@ -218,6 +266,16 @@ export default function Dashboard() {
 
   const handleDeleteHistory = (entry: AssessmentHistory) => {
     const capability = getCapabilityByCode(entry.capabilityCode);
+
+    // Refuse to delete the snapshot an in-flight re-assessment depends on.
+    // Deleting it used to strip the only copy of the previous result, after which
+    // "Discard changes" had nothing to restore and deleted the assessment instead.
+    const inProgress = getInProgress(entry.capabilityCode);
+    if (inProgress?.editSnapshotId === entry.id) {
+      setBlockedDeleteName(capability?.processName || entry.capabilityCode);
+      return;
+    }
+
     setDeleteTarget({
       type: "history",
       id: entry.id,
@@ -311,14 +369,25 @@ export default function Dashboard() {
         }}
       >
         <Box>
-          <Typography variant="h5" component="h2">
+          <Typography variant="h5" component="h1">
             MITA 3.0 State Self-Assessment Dashboard
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Click on any business area start, view, or edit a capability maturity assessment
+            Expand a business area to start, view, or edit a capability maturity assessment
           </Typography>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        {/* Wraps and allows shrinking: on a 320px viewport a fixed-width filter
+            plus the summary chip pushed the page into horizontal overflow. */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            flexWrap: "wrap",
+            maxWidth: "100%",
+            minWidth: 0,
+          }}
+        >
           {allTags.length > 0 && (
             <Autocomplete
               multiple
@@ -326,11 +395,12 @@ export default function Dashboard() {
               options={allTags}
               value={selectedTags}
               onChange={(_, newValue) => setSelectedTags(newValue)}
+              sx={{ minWidth: 0, maxWidth: "100%" }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   placeholder="Filter by tags..."
-                  sx={{ minWidth: TAG_FILTER_MIN_WIDTH }}
+                  sx={{ minWidth: { xs: 0, sm: TAG_FILTER_MIN_WIDTH } }}
                 />
               )}
               renderTags={(value, getTagProps) =>
@@ -353,20 +423,29 @@ export default function Dashboard() {
       </Box>
 
       <TableContainer component={Paper} variant="outlined">
-        <Table size="small">
+        <Table
+          size="small"
+          // Tighter cells on very narrow screens (320px) so the three visible
+          // columns fit without a horizontal scroll region.
+          sx={{
+            "& .MuiTableCell-root": {
+              px: { xs: 0.5, sm: 2 },
+            },
+          }}
+        >
           <TableHead>
             <TableRow sx={{ backgroundColor: "grey.50" }}>
               <TableCell>Business Area / Capability</TableCell>
               <TableCell align="center" width={70}>
                 Score
               </TableCell>
-              <TableCell align="center" width={180}>
+              <TableCell align="center" width={180} sx={SECONDARY_COLUMN_SX}>
                 Tags
               </TableCell>
-              <TableCell align="center" width={120}>
+              <TableCell align="center" width={120} sx={SECONDARY_COLUMN_SX}>
                 Status
               </TableCell>
-              <TableCell align="center" width={70}>
+              <TableCell align="center" width={70} sx={SECONDARY_COLUMN_SX}>
                 Completion
               </TableCell>
               <TableCell align="center" width={80}>
@@ -388,7 +467,15 @@ export default function Dashboard() {
                   <TableRow hover onClick={() => toggleArea(area.name)} sx={{ cursor: "pointer" }}>
                     <TableCell>
                       <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                        <IconButton size="small" sx={{ p: 0.25 }}>
+                        {/* Named and state-exposing: previously an unlabelled
+                            button with no aria-expanded, announced as just
+                            "button" with no indication of collapsed/expanded. */}
+                        <IconButton
+                          size="small"
+                          sx={{ p: 0.25 }}
+                          aria-label={`${isExpanded ? "Collapse" : "Expand"} ${area.name}`}
+                          aria-expanded={isExpanded}
+                        >
                           {isExpanded ? (
                             <KeyboardArrowDownIcon fontSize="small" />
                           ) : (
@@ -409,7 +496,7 @@ export default function Dashboard() {
                         {areaScore !== null ? areaScore.toFixed(1) : "—"}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell align="center" sx={SECONDARY_COLUMN_SX}>
                       <Box
                         sx={{
                           display: "flex",
@@ -437,14 +524,14 @@ export default function Dashboard() {
                         )}
                       </Box>
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={SECONDARY_COLUMN_SX}>
                       <StackedProgressBar
                         finalized={stats.finalized}
                         inProgress={stats.inProgress}
                         total={stats.total}
                       />
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell align="center" sx={SECONDARY_COLUMN_SX}>
                       <Typography
                         variant="body2"
                         sx={{
@@ -469,6 +556,7 @@ export default function Dashboard() {
 
                       const status = getCapabilityStatus(cap.code);
                       const score = getCapabilityScore(cap.code);
+                      const previousScore = getCapabilityScoreData(cap.code)?.previousScore ?? null;
                       const tags = getCapabilityTags(cap.code);
                       const progress = getCapabilityProgress(cap.code);
                       const isCapExpanded = expandedCapabilities.has(cap.code);
@@ -487,7 +575,12 @@ export default function Dashboard() {
                                 }}
                                 onClick={(e) => toggleCapability(cap.code, e)}
                               >
-                                <IconButton size="small" sx={{ p: 0.25 }}>
+                                <IconButton
+                                  size="small"
+                                  sx={{ p: 0.25 }}
+                                  aria-label={`${isCapExpanded ? "Hide" : "Show"} assessment history for ${cap.processName}`}
+                                  aria-expanded={isCapExpanded}
+                                >
                                   {isCapExpanded ? (
                                     <KeyboardArrowDownIcon fontSize="small" />
                                   ) : (
@@ -498,15 +591,29 @@ export default function Dashboard() {
                               </Box>
                             </TableCell>
                             <TableCell align="center">
-                              <Typography
-                                variant="body2"
-                                fontWeight={score !== null ? 500 : 400}
-                                color={score !== null ? "text.primary" : "text.disabled"}
-                              >
-                                {score !== null ? score.toFixed(1) : "—"}
-                              </Typography>
+                              {score !== null ? (
+                                <Typography variant="body2" fontWeight={500} color="text.primary">
+                                  {score.toFixed(1)}
+                                </Typography>
+                              ) : previousScore !== null ? (
+                                // Mid-re-assessment: keep the previous result visible so an
+                                // in-flight edit does not look like lost data.
+                                <Tooltip title="Previous score — re-assessment in progress">
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    sx={{ fontStyle: "italic" }}
+                                  >
+                                    {previousScore.toFixed(1)}
+                                  </Typography>
+                                </Tooltip>
+                              ) : (
+                                <Typography variant="body2" color="text.disabled">
+                                  —
+                                </Typography>
+                              )}
                             </TableCell>
-                            <TableCell align="center">
+                            <TableCell align="center" sx={SECONDARY_COLUMN_SX}>
                               <Box
                                 sx={{
                                   display: "flex",
@@ -515,15 +622,25 @@ export default function Dashboard() {
                                   justifyContent: "center",
                                 }}
                               >
-                                {tags.map((tag) => (
+                                {/* Cap the visible chips like the business-area rows do,
+                                    so a heavily tagged capability can't stretch the row. */}
+                                {tags.slice(0, MAX_VISIBLE_TAGS).map((tag) => (
                                   <Chip key={tag} label={tag} size="small" sx={compactChipSx} />
                                 ))}
+                                {tags.length > MAX_VISIBLE_TAGS && (
+                                  <Chip
+                                    label={`+${tags.length - MAX_VISIBLE_TAGS}`}
+                                    size="small"
+                                    variant="outlined"
+                                    sx={compactChipSx}
+                                  />
+                                )}
                               </Box>
                             </TableCell>
-                            <TableCell>
+                            <TableCell sx={SECONDARY_COLUMN_SX}>
                               <CapabilityProgressBar status={status} progress={progress} />
                             </TableCell>
-                            <TableCell align="center">
+                            <TableCell align="center" sx={SECONDARY_COLUMN_SX}>
                               <Typography
                                 variant="body2"
                                 sx={{
@@ -536,9 +653,10 @@ export default function Dashboard() {
                                         : "text.secondary",
                                 }}
                               >
-                                {status === "not_assessed"
-                                  ? "—"
-                                  : `${status === "finalized" ? 100 : progress}%`}
+                                {/* Report real progress. Assuming 100% for anything
+                                    finalized hid genuinely incomplete assessments,
+                                    which imported data can produce. */}
+                                {status === "not_assessed" ? "—" : `${progress}%`}
                               </Typography>
                             </TableCell>
                             <TableCell align="center">
@@ -546,9 +664,19 @@ export default function Dashboard() {
                                 <Button
                                   size="small"
                                   variant="contained"
+                                  // Disabled while the create is in flight. Without
+                                  // this a double-click fired two startAssessment
+                                  // calls before either finished.
+                                  disabled={startingCapability !== null}
                                   onClick={async () => {
-                                    const assessmentId = await startAssessment(cap.code);
-                                    navigate(`/assessment/${assessmentId}`);
+                                    if (startingCapability !== null) return;
+                                    setStartingCapability(cap.code);
+                                    try {
+                                      const assessmentId = await startAssessment(cap.code);
+                                      navigate(`/assessment/${assessmentId}`);
+                                    } finally {
+                                      setStartingCapability(null);
+                                    }
                                   }}
                                   sx={{
                                     textTransform: "none",
@@ -564,6 +692,10 @@ export default function Dashboard() {
                                   size="small"
                                   variant="outlined"
                                   onClick={(e) => handleMenuOpen(e, cap.code, status)}
+                                  // "•••" alone gives assistive tech nothing to
+                                  // announce, and there is one per row.
+                                  aria-label={`Actions for ${cap.processName}`}
+                                  aria-haspopup="menu"
                                   sx={{
                                     textTransform: "none",
                                     width: ACTION_BUTTON_WIDTH,
@@ -579,7 +711,16 @@ export default function Dashboard() {
 
                           {isCapExpanded && (
                             <TableRow>
-                              <TableCell colSpan={6} sx={{ backgroundColor: "grey.100", py: 1 }}>
+                              {/*
+                                colSpan must match the number of *visible* columns.
+                                A table's width is the widest row, so a hardcoded 6
+                                re-expanded the table to six columns on phones and
+                                undid the column hiding above.
+                              */}
+                              <TableCell
+                                colSpan={visibleColumnCount}
+                                sx={{ backgroundColor: "grey.100", py: 1 }}
+                              >
                                 <HistoryPanel
                                   capabilityCode={cap.code}
                                   currentAssessment={getLatestFinalized(cap.code)}
@@ -665,6 +806,39 @@ export default function Dashboard() {
           </MenuItem>
         )}
       </Menu>
+
+      <Dialog open={Boolean(blockedDeleteName)} onClose={() => setBlockedDeleteName(null)}>
+        <DialogTitle>This entry can&apos;t be deleted yet</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {`This is the saved result that "${blockedDeleteName}" will be restored to if you discard the
+             re-assessment currently in progress. Finalize or discard that re-assessment first, then you
+             can delete this entry.`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setBlockedDeleteName(null)} variant="contained">
+            Got it
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
+        <DialogTitle>Re-assess this capability?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {`The current result for "${editTarget?.name}" will be saved to history, and each rating will
+             become a suggestion you need to re-confirm. Your previous score stays visible on the dashboard
+             until you finalize the new one.`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleConfirmEdit} variant="contained">
+            Re-assess
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
         <DialogTitle>

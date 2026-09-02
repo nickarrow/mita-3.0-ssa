@@ -89,6 +89,8 @@ export interface ExportData {
     capabilityCode?: string;
     capabilityName?: string;
   };
+  /** State/agency name captured at export time, for identifying the source. */
+  stateName?: string;
   data: {
     assessments: AssessmentExport[];
     ratings: RatingExport[];
@@ -116,6 +118,11 @@ export interface ImportResult {
   skipped: number;
   attachmentsRestored: number;
   errors: string[];
+  /**
+   * Non-fatal issues: records that were dropped or corrected during validation.
+   * The import still succeeded, but the user should know what changed.
+   */
+  warnings: string[];
   details: ImportItemResult[];
 }
 
