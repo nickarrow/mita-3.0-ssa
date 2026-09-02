@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Run the checks on pull requests too. Without this they only ran after merge,
+  # at deploy time, so a regression could be merged before anything caught it.
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -51,6 +55,8 @@ jobs:
           path: dist
 
   deploy:
+    # Pull requests run the build job for its checks, but must never deploy.
+    if: github.event_name != 'pull_request'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
