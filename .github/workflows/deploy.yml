@@ -46,6 +46,15 @@ jobs:
       - name: Build
         run: npm run build
 
+      # GitHub Pages has no SPA rewrite: without this file every route except the
+      # root returns a hard 404 for anyone whose service worker hasn't activated
+      # yet, which is exactly the person following a shared link.
+      - name: Verify SPA fallback was emitted
+        run: |
+          test -f dist/404.html || { echo "dist/404.html missing — deep links will 404"; exit 1; }
+          cmp -s dist/index.html dist/404.html || { echo "dist/404.html differs from index.html"; exit 1; }
+          echo "SPA fallback present and matches index.html"
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
