@@ -1,5 +1,19 @@
 # Refactoring Plan: Code Quality Improvements
 
+> **Historical record — completed January 2026.** The refactor described here was carried out;
+> `src/constants/ui.ts`, `src/theme/sharedStyles.ts`, `src/utils/` and the split
+> `components/dashboard/` and `components/assessment/` directories are its result, and that
+> rationale is why they exist.
+>
+> **Do not read it as a to-do list.** Every line count in "Current State" has drifted, two
+> planned files were never created (`CoverageOverview.tsx`, `utils/historyHelpers.ts`), one
+> `eslint-disable` remains rather than three, and the recommendation *not* to split
+> `BptSidebar.tsx` was later reversed — its rendering now lives in `components/bpt/BptContent.tsx`
+> with the text parsing in `bptTextParsing.ts`.
+>
+> For current state see [`README.md`](README.md) and the Current state section of
+> [`IMPLEMENTATION_STATUS.md`](IMPLEMENTATION_STATUS.md).
+
 **Goal:** Clean up LLM-isms and improve code quality while maintaining prototype velocity.
 
 **Scope:** File splitting, DRY violations, magic numbers, TypeScript strict mode cleanup  

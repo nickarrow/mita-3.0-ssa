@@ -1,11 +1,21 @@
 # Audit Remediation Plan
 
+> **Historical record — completed September 2, 2026.** All seven waves landed. This is kept
+> for the reproductions and the reasoning behind each fix, which is why several fixes look
+> the way they do.
+>
+> **Do not read the "Audit context" section as a current description of the app.** It was
+> accurate on September 1, 2026 and parts of it are now wrong — most importantly it states
+> there are no Dexie `.upgrade()` callbacks, and there are two (v6 and v7, the latter
+> migrating stored question indices). Corrections are marked inline as
+> **[since superseded]**.
+>
+> For current state see [`README.md`](README.md) and the Current state section of
+> [`IMPLEMENTATION_STATUS.md`](IMPLEMENTATION_STATUS.md).
+
 Findings from a Playwright browser audit of the running app on **September 1, 2026**. Every item below was
 reproduced in a real browser against `npm run dev` (`http://localhost:5173/mita-3.0-ssa/`), not inferred
 from reading code. Items marked **[verified]** include the exact reproduction.
-
-This document is the working record for the remediation effort. It carries enough detail to resume work
-from a cold start.
 
 ---
 
@@ -86,7 +96,7 @@ export/import constants consolidated; progress bars use one ARIA pattern.
 
 ### 7F. Tests
 
-`vitest` + `fake-indexeddb`, **108 tests** in four suites. `fake-indexeddb` is a real IndexedDB
+`vitest` + `fake-indexeddb`, **108 tests** in four suites (272 in 12 suites today). `fake-indexeddb` is a real IndexedDB
 implementation, so Dexie runs unmodified — transactions, compound indexes and all.
 
 | Suite | Covers |
@@ -117,8 +127,8 @@ Every red-team reproduction was re-run in the browser:
 | Import result dialog at 375 px | 2 of 3 chips clipped | Nothing off-screen |
 | Page overflow at 320 px | 33 px | None |
 
-`npm test` (108 passing), `tsc -b`, `eslint`, `prettier --check` and `npm run build` are all clean.
-Total JS is now **548 KB gzipped**, down from 652 KB before Wave 6.
+`npm test` (108 passing at the time; 272 today), `tsc -b`, `eslint`, `prettier --check` and `npm run build` are all clean.
+Total JS is now **548 KB gzipped**, down from 652 KB before Wave 6. (~556 kB today, after the 76-capability dataset.)
 
 ---
 
@@ -140,12 +150,18 @@ resolving.
 - Every route has a unique title and exactly one `<h1>`; nav landmark and skip link present.
 - Zero console errors; the only warning is the intentional blueprint pairing diagnostic.
 
-**Deliberately still open**
+**Deliberately still open** *(as of Wave 7 — see the annotations)*
 - **BP-1** (below): the two excluded capabilities need a filename fix in the upstream
   `mita-open-blueprint` repo. The app now warns about it in development instead of failing silently.
+  **[since superseded]** Resolved. Upstream renamed the two BCM files *and* added a stable
+  `process_id`; the app now pairs on that rather than on filenames, so a future naming
+  mismatch cannot drop a capability. 76 capabilities.
 - Main chunk remains 2.58 MB raw / 549 KB gzipped, dominated by the eagerly inlined blueprint JSON.
   Route-level code splitting or lazy blueprint loading is the next meaningful win.
+  **[since superseded]** Now 2.60 MB raw / ~556 kB gzipped. Still the next meaningful win.
 - Toast/snackbar notifications, manual assistive-technology testing, and the GitHub Pages deploy.
+  **[since superseded]** The deploy is done — live, and released from `main` on every push.
+  The other two remain open.
 
 ---
 
@@ -158,13 +174,22 @@ no auth, no network I/O. All state is local to the browser.
 Dev URL is `http://localhost:5173/mita-3.0-ssa/`. Navigating to `/` without the basename renders nothing.
 
 **Routes:** `/` Home, `/dashboard`, `/assessment/:id` (+`?mode=view`), `/processes`, `/processes/:code`,
-`/import-export`, `/guide`. No catch-all.
+`/import-export`, `/guide`. No catch-all. **[since superseded]** Wave 3.3 added one: `path="*"`
+renders `NotFound` inside `Layout`.
 
 **Data model:** `capabilityAssessments` (one row per capability, status `in_progress` | `finalized`),
 `ratings` (FK `capabilityAssessmentId`, compound index `[capabilityAssessmentId+questionIndex]`,
 `level` is `1..5 | null`), `assessmentHistory` (keyed by `capabilityCode`, **not** by assessment id),
 `tags`, `attachments` (raw `Blob`). Dexie schema starts at v3; v4 is a no-op duplicate of v3; v5 adds
 `attachments`. **There are no `.upgrade()` callbacks anywhere.**
+
+> **[since superseded — read this before touching the schema]** There are now two, and both
+> migrate user data. **v6** backfills `editSnapshotId` onto re-assessments that were already
+> in flight. **v7** remaps stored `questionIndex` values for the four capabilities whose
+> question lists changed shape in the 2026-09-02 blueprint extraction, and stamps
+> `blueprintRevision`. A rating identifies its question only by array position, so adding a
+> schema version without understanding v7 is how stored ratings get silently misaligned. See
+> `src/services/db.ts` and `src/services/blueprintRevision.ts`.
 
 **Useful debugging snippet** (works in Playwright `page.evaluate`):
 
@@ -223,7 +248,14 @@ These were tested and behave correctly. Several are listed as untested in `IMPLE
 These are **data problems in the `mita-open-blueprint` source repo**, not app bugs. They should be fixed
 there so every downstream consumer benefits. No app-side data edits are made by this plan.
 
-### BP-1. Two capabilities silently disappear due to BCM/BPT filename mismatches [verified]
+### BP-1. Two capabilities silently disappear due to BCM/BPT filename mismatches [verified] — **RESOLVED**
+
+> **Resolved, September 2026. Do not act on the upstream instruction below.** Upstream
+> renamed the two BCM files to match their BPTs *and* added `process_id`, a stable identifier
+> that is identical across a BCM/BPT pair. The app now pairs on `process_id`
+> (`src/services/blueprint.ts`), so a filename disagreement can no longer drop a capability.
+> The count is 76, Care Management shows 9 and Plan Management 8. The record below is kept
+> because it explains why pairing works the way it does.
 
 `src/data/` holds 76 BCM + 76 BPT files, but the app builds only **74** capabilities. `blueprint.ts`
 emits a capability only `if (data.bcm && data.bpt)`, and two pairs never match because the filenames

@@ -1,5 +1,18 @@
 # MITA 3.0 SS-A — Feature Port Implementation Plan
 
+> **Historical record — completed January 29, 2026.** Every task below shipped: attachments,
+> JSON/ZIP/PDF export, import with merge, the Guide and Import/Export pages, and the
+> navigation rework. The unchecked boxes are an artefact of the plan never being ticked off,
+> not work outstanding. See Phases 3.1–3.5 of
+> [`IMPLEMENTATION_STATUS.md`](IMPLEMENTATION_STATUS.md) for the outcome.
+>
+> **The `mita-4.0-reference/` directory this plan refers to no longer exists**, so none of the
+> "Reference Files (4.0)" paths resolve. The dependencies it asks you to install
+> (`jszip`, `jspdf`, `jspdf-autotable`) are already in `package.json`, the database is at v7
+> rather than the v5 targeted here, and `csvExport.ts` was never created.
+>
+> Retained only as a record of what was ported and why. Safe to delete.
+
 ## Overview
 
 This document outlines the implementation plan for porting key features from the MITA 4.0 SS-A Tool to the MITA 3.0 version. The 4.0 reference implementation is available at `mita-4.0-reference/` within this workspace.

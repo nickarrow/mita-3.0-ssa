@@ -25,20 +25,36 @@ Deployed and live at https://nickarrow.github.io/mita-3.0-ssa/, built and releas
 |---|---|
 | Capabilities | 76, across 9 business areas |
 | Maturity questions | 837 |
-| Tests | 246, under Vitest against `fake-indexeddb` |
+| Tests | 272, in 12 suites, under Vitest against `fake-indexeddb` |
 | Dexie schema | v7 |
 | Bundle | ~556 kB gzipped, single chunk |
 
-Everything in the phase tables below is complete. The items once listed here as
-outstanding — PWA icons, offline verification, responsive testing, the accessibility
-audit and deployment — were all done during the September 2026 audit and the two
-follow-ups; see `AUDIT_REMEDIATION_PLAN.md` for the reproductions and evidence.
+The phase tables below are complete apart from toast notifications, which were never
+built. The other items once listed as outstanding — PWA icons, offline verification,
+responsive testing, the accessibility audit and deployment — were all done during the
+September 2026 audit and its follow-ups; see `AUDIT_REMEDIATION_PLAN.md` for the
+reproductions and evidence.
+
+### Since Wave 7
+
+Two further changes landed after the audit, and are not in the phase tables:
+
+- **Blueprint refresh.** Upstream re-verified all 152 records against the source CMS
+  PDFs. Capabilities went 74 → 76 (BCM/BPT pairing moved from filenames to the upstream
+  `process_id`), questions 835 → 837. Four capabilities had questions inserted or removed,
+  so stored `questionIndex` values needed remapping: `BLUEPRINT_REVISION` plus a Dexie v7
+  upgrade and an equivalent rewrite on the import path. Added `tools/sync-blueprint.mjs`
+  and `src/data/NOTICE.md`.
+- **Import integrity and polish.** ZIP re-import no longer duplicates attachments; a JSON
+  restore reports the files it cannot carry; imported tags are normalized so the dashboard
+  filter matches them. Semantic palette `50` tints now resolve, BPT section toggles are
+  keyboard operable, and the dev-only icon path bug is fixed.
 
 ### Genuinely still open
 
 - **Toast/snackbar notifications.** Never built. Actions confirm through dialogs and
   inline alerts instead, which has proved sufficient.
-- **Route-level code splitting.** The bundle is one chunk dominated by 1.9 MB of eagerly
+- **Route-level code splitting.** The bundle is one chunk dominated by ~1.3 MB of eagerly
   inlined blueprint JSON, so every visitor downloads all 76 capabilities to read one
   page. The win is time-to-interactive on a first visit, not total bytes — the service
   worker precaches everything for offline use regardless — so it is worth measuring
@@ -226,15 +242,18 @@ Major architectural change from multi-capability assessments to single-capabilit
 | Update Dashboard title | ✅ | "MITA State Self-Assessment Dashboard" |
 | Improve Dashboard subtitle | ✅ | Better user guidance |
 
-### Phase 2.7: PWA & Polish ⬜
+### Phase 2.7: PWA & Polish ✅ (except toasts)
+
+Not completed in the v2.x phases — these were picked up later, during the
+September 2026 audit and its follow-ups.
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Add PWA icons | ⬜ | 192x192, 512x512 |
-| Test offline functionality | ⬜ | |
-| Responsive testing | ⬜ | |
-| Toast notifications | ⬜ | |
-| Deploy to GitHub Pages | ⬜ | |
+| Add PWA icons | ✅ | Wave 6. `public/` holds 192, 512, maskable-512, apple-touch, favicon.ico/svg, mask-icon |
+| Test offline functionality | ✅ | Wave 6. Service worker precaches 19 entries; installability verified |
+| Responsive testing | ✅ | Waves 3 and 7. Verified at 320, 375 and 768 px |
+| Toast notifications | ⬜ | Never built. Dialogs and inline alerts carry the confirmations |
+| Deploy to GitHub Pages | ✅ | Live; released from `main` on every push, gated on lint, tests and the SPA fallback |
 
 ---
 
@@ -372,7 +391,7 @@ Major architectural change from multi-capability assessments to single-capabilit
 | React Router | ✅ | v7 with basename for GitHub Pages |
 | Dexie Database | ✅ | v4 with reactive hooks, compound indexes |
 | PWA Plugin | ✅ | vite-plugin-pwa configured |
-| Blueprint Data | ✅ | 72 BCM + 72 BPT files bundled |
+| Blueprint Data | ✅ | 76 BCM + 76 BPT files bundled (72 at the time of writing) |
 | GitHub Actions | ✅ | Workflow file created |
 
 ### Data Layer ✅
@@ -428,8 +447,8 @@ mita-3.0-ssa/
 │   │   │   └── index.ts                # v3.0 - new
 │   │   └── layout/Layout.tsx
 │   ├── data/
-│   │   ├── bcm/                 # 72 BCM JSON files
-│   │   └── bpt/                 # 72 BPT JSON files
+│   │   ├── bcm/                 # 76 BCM JSON files
+│   │   └── bpt/                 # 76 BPT JSON files (+ images/)
 │   ├── hooks/
 │   │   ├── useAttachments.ts            # v3.0 - new
 │   │   ├── useCapabilityAssessments.ts  # v2.0 - updated v3.0
@@ -445,7 +464,7 @@ mita-3.0-ssa/
 │   │   └── ImportExport.tsx     # v3.0 - new
 │   ├── services/
 │   │   ├── blueprint.ts
-│   │   ├── db.ts                # v5 schema (attachments)
+│   │   ├── db.ts                # v7 schema (+ questionIndex migration)
 │   │   └── export/              # v3.0 - new directory
 │   │       ├── exportService.ts
 │   │       ├── importService.ts
@@ -862,7 +881,7 @@ unverifiable scores, malformed history, and merges that replace more answers tha
 **Mobile.** Expanding a history row no longer widens the table from 341 px to 767 px (responsive
 `colSpan` plus a wrapping `HistoryPanel`). Import result chips wrap. 320 px no longer overflows.
 
-**Tests — `vitest` + `fake-indexeddb`, 108 tests in four suites.** `npm test` / `npm run test:watch`.
+**Tests — `vitest` + `fake-indexeddb`, 108 tests in four suites** (272 in 12 suites today). `npm test` / `npm run test:watch`.
 `fake-indexeddb` is a real IndexedDB implementation, so Dexie runs unmodified with no abstraction layer.
 
 | Suite | Tests | Covers |
@@ -877,11 +896,14 @@ their hooks. Neither ever touched component state.
 
 ### Still outstanding
 
-| Item | Notes |
-|------|-------|
-| Two capabilities excluded from the blueprint | Upstream data issue in `mita-open-blueprint` — BCM/BPT filename mismatch. The app now warns in development. |
-| Main chunk exceeds 500 KB | 2.59 MB raw / 550 KB gzipped, dominated by the eagerly-inlined blueprint JSON. Acceptable for an offline-first PWA, but route-level code splitting or lazy blueprint loading is the next meaningful win. |
-| No component/interaction tests | The four suites cover the data-integrity surface. UI behaviour is still verified by hand. |
-| Toast/snackbar notifications | Still deferred |
-| Manual assistive-technology testing | Not automatable |
-| Deploy to GitHub Pages | Workflow exists, not yet run |
+Superseded by [Current state](#current-state) at the top of this file, which is
+maintained. Kept for the record of what was outstanding as of Wave 7.
+
+| Item | Status as of Wave 7 | Now |
+|------|--------------------|-----|
+| Two capabilities excluded from the blueprint | Upstream BCM/BPT filename mismatch | **Resolved.** Pairing moved to the upstream `process_id`, so filenames no longer decide it. 76 capabilities. |
+| Main chunk exceeds 500 KB | 2.59 MB raw / 550 KB gzipped | **Still open.** 2.60 MB raw / ~556 kB gzipped. |
+| No component/interaction tests | Four suites, data-integrity only | **Still open** for component tests; the suite is now 12 files / 272 tests. |
+| Toast/snackbar notifications | Deferred | **Still open**, and arguably fine — see Current state. |
+| Manual assistive-technology testing | Not automatable | **Still open.** |
+| Deploy to GitHub Pages | Workflow existed, not yet run | **Done.** Live, and released from `main` on every push. |

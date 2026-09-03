@@ -10,7 +10,7 @@ This tool allows state Medicaid agencies to evaluate their current IT capabiliti
 
 ### Key Features
 
-- **74 Business Capabilities** — Assess maturity across all MITA 3.0 business areas
+- **76 Business Capabilities** — Assess maturity across all MITA 3.0 business areas
 - **Offline-First** — Works without internet after initial load
 - **Privacy-First** — All data stays in your browser (IndexedDB)
 - **Assessment History** — Track changes over time with automatic snapshots

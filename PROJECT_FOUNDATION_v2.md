@@ -1,11 +1,31 @@
 # MITA 3.0 Self-Assessment Tool — Project Foundation
 
+> **Historical record — the v2.2 design, January 2026.** Kept because it is the only written
+> record of *why* the app is shaped the way it is: one assessment per capability rather than a
+> multi-capability container, per-question ratings, tags instead of a fixed taxonomy, and
+> bundling the blueprint JSON rather than fetching it. The "Open Questions (Resolved)" table is
+> worth reading before revisiting any of those.
+>
+> **The status tables and code snippets are stale.** Phases 2.1–2.7 are marked "Not Started"
+> and are complete. The tech-stack table says React 18 / Router 6 / MUI 5; it is 19 / 7 / 7.
+> Capability counts say 72; it is 76. `AssessmentHistory.score` is documented as `number` but
+> is `number | null` — deliberately, so nothing fabricates a score of 0. The Application
+> Structure lists `CoverageTable.tsx` and `CapabilityRow.tsx`, which were never built.
+>
+> **The embedded `deploy.yml` is not the shipped workflow** and must not be used to regenerate
+> it: the real one also runs on pull requests and gates the deploy on lint, tests and a check
+> that `dist/404.html` was emitted. That last gate is what keeps deep links working on GitHub
+> Pages.
+>
+> For current state see [`README.md`](README.md) and the Current state section of
+> [`IMPLEMENTATION_STATUS.md`](IMPLEMENTATION_STATUS.md).
+
 ## Overview
 
 A Progressive Web App (PWA) enabling Medicaid agencies to self-assess their MITA (Medicaid Information Technology Architecture) maturity. The application is fully client-side, offline-first, and stores all data locally in the browser.
 
 **Project Start Date:** January 7, 2026  
-**Target Deployment:** GitHub Pages (`naretakis.github.io/mita-3.0-ssa`)
+**Target Deployment:** GitHub Pages (`nickarrow.github.io/mita-3.0-ssa`)
 
 ---
 
@@ -57,7 +77,7 @@ Next.js excels at server-side rendering, API routes, and hybrid apps — feature
 
 ## Data Source
 
-**Repository:** [github.com/naretakis/mita-open-blueprint](https://github.com/naretakis/mita-open-blueprint)
+**Repository:** [github.com/nickarrow/mita-open-blueprint](https://github.com/nickarrow/mita-open-blueprint)
 
 ### Structure
 
@@ -859,7 +879,7 @@ These are explicitly out of scope for MVP but documented for future consideratio
 
 ## References
 
-- [MITA Open Blueprint Repository](https://github.com/naretakis/mita-open-blueprint)
+- [MITA Open Blueprint Repository](https://github.com/nickarrow/mita-open-blueprint)
 - [MITA Framework (CMS)](https://www.medicaid.gov/medicaid/data-systems/medicaid-information-technology-architecture/index.html)
 - [Vite Documentation](https://vitejs.dev/)
 - [Material UI Documentation](https://mui.com/)
