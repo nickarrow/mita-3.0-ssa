@@ -115,6 +115,18 @@ export async function importFromJson(
   const migration = migrateImportPayload(data);
   warnings.push(...migration.warnings);
 
+  // A JSON export records which files were attached but cannot carry the files
+  // themselves — the blobs only travel in a ZIP. Restoring from JSON therefore brings
+  // back the assessment and loses its evidence, which the user should hear at the
+  // moment it happens rather than discovering later that the paperclips are gone.
+  if (data.data.attachments.length > 0) {
+    warnings.push(
+      `This backup lists ${data.data.attachments.length} attached file(s), but a JSON ` +
+        `backup does not contain the files themselves. Re-import the matching ZIP backup ` +
+        `to restore them.`
+    );
+  }
+
   onProgress?.(30, "Processing assessments...");
 
   return await runImport(data, warnings, onProgress);
@@ -205,6 +217,8 @@ export async function importFromZip(
 
   const pending: { attachment: Omit<Attachment, "id" | "ratingId">; ratingId: string }[] = [];
   const unmatched: string[] = [];
+  /** Archive entries already present on their target question, so not stored again. */
+  let duplicates = 0;
 
   for (const { path, file } of attachmentFiles) {
     const fileName = path.split("/").pop() ?? "";
@@ -244,6 +258,27 @@ export async function importFromZip(
         .first();
       if (!rating) {
         unmatched.push(fileName);
+        continue;
+      }
+
+      // Skip a file already attached to this question.
+      //
+      // Attachment restore runs whenever the merge succeeded, including when every
+      // assessment was skipped as identical — which is exactly what re-importing the
+      // same backup produces. Without this check each re-import stored another full
+      // copy of every blob and appended another id to `rating.attachmentIds`, so a
+      // user recovering from a backup twice silently doubled their storage use with no
+      // way to tell the copies apart or remove them.
+      //
+      // Matched on file name and size rather than the archive's attachment id: ids are
+      // re-minted on every import (by design, to avoid colliding with unrelated local
+      // rows), so the id in the archive never matches what a previous import stored.
+      const existing = await db.attachments.where("ratingId").equals(rating.id).toArray();
+      const alreadyAttached = existing.some(
+        (a) => a.fileName === attachmentMeta.fileName && a.fileSize === attachmentMeta.fileSize
+      );
+      if (alreadyAttached) {
+        duplicates += 1;
         continue;
       }
 
@@ -292,6 +327,14 @@ export async function importFromZip(
   if (unmatched.length > 0) {
     result.warnings.push(
       `${unmatched.length} file(s) in this backup could not be matched to a question and were not restored: ${unmatched.slice(0, 3).join(", ")}${unmatched.length > 3 ? ", ..." : ""}`
+    );
+  }
+
+  // Said explicitly rather than left to inference. Re-importing a backup is a normal
+  // recovery action, and silence here reads as "the files were lost".
+  if (duplicates > 0) {
+    result.warnings.push(
+      `${duplicates} file(s) were already attached to their question and were not added again.`
     );
   }
 
