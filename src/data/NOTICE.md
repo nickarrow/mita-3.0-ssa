@@ -22,13 +22,25 @@ step when re-syncing.
 ## Re-syncing
 
 ```bash
-npm run sync:blueprint          # dry run: report what would change
-npm run sync:blueprint -- --write
+npm run sync:blueprint                          # dry run: report what would change
+npm run sync:blueprint -- --write               # apply
+npm run sync:blueprint -- --ref <branch|tag|sha> # pin a specific upstream revision
 ```
 
-The script refuses to write when the upstream question counts move, because a
-change to the number or order of questions invalidates stored `questionIndex`
-values and needs a migration. See `src/services/blueprintRevision.ts`.
+The script refuses to write when the upstream question counts move, because a change to
+the number or order of questions invalidates stored `questionIndex` values. A rating
+identifies its question only by position in the capability's question array, so shifting
+one silently re-points every answer below it. When that happens:
+
+1. Work out what upstream inserted or removed, and where.
+2. Add a `CapabilityIndexShift` for each affected capability in
+   `src/services/blueprintRevision.ts`.
+3. Bump `BLUEPRINT_REVISION` and add a Dexie version whose upgrade calls
+   `migrateToRevision`.
+4. Re-run with `--write --allow-index-changes`.
+
+Without step 4's flag the script will keep refusing, which is the point — copying the
+files in and shipping is the one sequence that corrupts stored ratings.
 
 ## License
 

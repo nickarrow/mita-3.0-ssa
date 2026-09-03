@@ -1,11 +1,24 @@
 # MITA 3.0 Self-Assessment Tool — Project Foundation
 
+> **Historical record — the v1.0 design, January 2026.** Superseded by
+> `PROJECT_FOUNDATION_v2.md`, which replaced the multi-capability data model described here
+> with one assessment per capability. Kept only as the record of what v1.0 was and why it was
+> abandoned.
+>
+> **Do not use this as a reference for the current app.** Its data model
+> (`Assessments`/`Assessment Capabilities` tables), its file tree and its screen specs all
+> describe code that no longer exists. The tech-stack table is also out of date: the app runs
+> React 19, React Router 7 and MUI 7, not 18/6/5. Capability counts here say 72; it is 76.
+>
+> For current state see [`README.md`](README.md) and the Current state section of
+> [`IMPLEMENTATION_STATUS.md`](IMPLEMENTATION_STATUS.md).
+
 ## Overview
 
 A Progressive Web App (PWA) enabling Medicaid agencies to self-assess their MITA (Medicaid Information Technology Architecture) maturity. The application is fully client-side, offline-first, and stores all data locally in the browser.
 
 **Project Start Date:** January 7, 2026  
-**Target Deployment:** GitHub Pages (`naretakis.github.io/mita-3.0-ssa`)
+**Target Deployment:** GitHub Pages (`nickarrow.github.io/mita-3.0-ssa`)
 
 ---
 
@@ -47,7 +60,7 @@ Next.js excels at server-side rendering, API routes, and hybrid apps — feature
 
 ## Data Source
 
-**Repository:** [github.com/naretakis/mita-open-blueprint](https://github.com/naretakis/mita-open-blueprint)
+**Repository:** [github.com/nickarrow/mita-open-blueprint](https://github.com/nickarrow/mita-open-blueprint)
 
 ### Structure
 
@@ -698,7 +711,7 @@ These are explicitly out of scope for MVP but documented for future consideratio
 
 ## References
 
-- [MITA Open Blueprint Repository](https://github.com/naretakis/mita-open-blueprint)
+- [MITA Open Blueprint Repository](https://github.com/nickarrow/mita-open-blueprint)
 - [MITA Framework (CMS)](https://www.medicaid.gov/medicaid/data-systems/medicaid-information-technology-architecture/index.html)
 - [Vite Documentation](https://vitejs.dev/)
 - [Material UI Documentation](https://mui.com/)
