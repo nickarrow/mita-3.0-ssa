@@ -219,6 +219,13 @@ export async function importFromZip(
   const unmatched: string[] = [];
   /** Archive entries already present on their target question, so not stored again. */
   let duplicates = 0;
+  /**
+   * Per rating, how many stored copies of each `fileName::fileSize` are still unclaimed
+   * by an archive entry. Populated lazily and decremented as entries match, so two
+   * identical-looking files on one question are deduped one-for-one rather than
+   * collapsing to a single copy.
+   */
+  const existingByRating = new Map<string, Map<string, number>>();
 
   for (const { path, file } of attachmentFiles) {
     const fileName = path.split("/").pop() ?? "";
@@ -273,11 +280,33 @@ export async function importFromZip(
       // Matched on file name and size rather than the archive's attachment id: ids are
       // re-minted on every import (by design, to avoid colliding with unrelated local
       // rows), so the id in the archive never matches what a previous import stored.
-      const existing = await db.attachments.where("ratingId").equals(rating.id).toArray();
-      const alreadyAttached = existing.some(
-        (a) => a.fileName === attachmentMeta.fileName && a.fileSize === attachmentMeta.fileSize
-      );
-      if (alreadyAttached) {
+      //
+      // Counted, not merely tested for presence. A question can legitimately hold two
+      // files with the same name and size, and a presence test would skip *both*
+      // archive entries once one copy existed locally — so deleting one and restoring
+      // from the backup would not bring it back. Each existing copy is claimed by at
+      // most one archive entry.
+      //
+      // Name and size is a heuristic, not an identity: two genuinely different documents
+      // that happen to share both will be treated as the same file, and the stored one
+      // wins. The alternative is hashing every blob on both sides on every import, which
+      // costs a full read of all evidence to improve a case that requires a same-named,
+      // same-length, different-content file. The failure mode is a file not restored,
+      // never a wrong file attached to a question.
+      let remaining = existingByRating.get(rating.id);
+      if (!remaining) {
+        remaining = new Map<string, number>();
+        for (const stored of await db.attachments.where("ratingId").equals(rating.id).toArray()) {
+          const key = `${stored.fileName}::${stored.fileSize}`;
+          remaining.set(key, (remaining.get(key) ?? 0) + 1);
+        }
+        existingByRating.set(rating.id, remaining);
+      }
+
+      const key = `${attachmentMeta.fileName}::${attachmentMeta.fileSize}`;
+      const unclaimed = remaining.get(key) ?? 0;
+      if (unclaimed > 0) {
+        remaining.set(key, unclaimed - 1);
         duplicates += 1;
         continue;
       }

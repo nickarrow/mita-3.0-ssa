@@ -170,6 +170,71 @@ describe("re-importing the same ZIP", () => {
 
     expect(await db.attachments.count()).toBe(2);
   });
+
+  it("keeps both copies when one question holds two identical-looking files", async () => {
+    // A question can legitimately hold two files with the same name and size. Testing
+    // only for *presence* skipped both archive entries once one copy existed locally.
+    const assessmentId = await seedFinalizedAssessment();
+    await seedAttachment(assessmentId, 0, "duplicate-name.txt");
+    await seedAttachment(assessmentId, 0, "duplicate-name.txt");
+    const zip = await backup();
+
+    await importFromZip(zip);
+
+    expect(await db.attachments.count()).toBe(2);
+  });
+
+  it("restores the missing one when a question held two and one was deleted", async () => {
+    // The case a presence test got wrong: with one copy left locally, both archive
+    // entries matched it and neither was restored, so the deleted file never came back.
+    const assessmentId = await seedFinalizedAssessment();
+    await seedAttachment(assessmentId, 0, "duplicate-name.txt");
+    await seedAttachment(assessmentId, 0, "duplicate-name.txt");
+    const zip = await backup();
+
+    const [first] = await db.attachments.toArray();
+    const owner = await db.ratings.get(first.ratingId);
+    await db.attachments.delete(first.id);
+    await db.ratings.update(first.ratingId, {
+      attachmentIds: (owner?.attachmentIds ?? []).filter((id) => id !== first.id),
+    });
+    expect(await db.attachments.count()).toBe(1);
+
+    const result = await importFromZip(zip);
+
+    expect(result.attachmentsRestored).toBe(1);
+    expect(await db.attachments.count()).toBe(2);
+    expect(await findDanglingAttachmentIds()).toEqual([]);
+  });
+
+  it("restores a same-name file whose size changed", async () => {
+    // Size is part of the identity, so an edited file is a different file and comes back
+    // alongside the one already stored rather than being mistaken for it.
+    const assessmentId = await seedFinalizedAssessment();
+    await seedAttachment(assessmentId, 0, "report.txt");
+    const zip = await backup();
+
+    const [stored] = await db.attachments.toArray();
+    await db.attachments.update(stored.id, { fileSize: 999 });
+
+    const result = await importFromZip(zip);
+
+    expect(result.attachmentsRestored).toBe(1);
+    expect(await db.attachments.count()).toBe(2);
+  });
+
+  it("is a no-op for a backup with no attachments", async () => {
+    await seedFinalizedAssessment();
+    const zip = await backup();
+
+    const result = await importFromZip(zip);
+
+    expect(result.success).toBe(true);
+    expect(result.attachmentsRestored).toBe(0);
+    expect(result.warnings.some((w) => /already attached|could not be matched/i.test(w))).toBe(
+      false
+    );
+  });
 });
 
 describe("malformed archives", () => {
