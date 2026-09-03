@@ -6,6 +6,7 @@
   "sub_category": "Plan Administration",
   "process_name": "Maintain Program Policy",
   "process_code": "PL",
+  "process_id": "PL_MAINTAIN_PROGRAM_POLICY",
   "maturity_model": {
     "capability_questions": [
       {
@@ -24,10 +25,10 @@
         "question": "How adaptable is the process to change?",
         "levels": {
           "level_1": "SMA is unable to adapt easily to changes to the program policy and provide timely information to stakeholders.",
-          "level_2": "SMA is able to develop and maintained policy with collaboration from other agencies that encourages flexibility. Maintain Program Policy",
+          "level_2": "SMA is able to develop and maintained policy with collaboration from other agencies that encourages flexibility.",
           "level_3": "SMA develops and maintains policy with collaboration from other intrastate agencies. SMA quickly distributes modifications to policy to stakeholders.",
-          "level_4": "SMA develops and maintains policy with collaboration from other interstate agencies. SMA distributes in near- real time modifications to policy to stakeholders.",
-          "level_5": "SMA develops and maintains policy with collaboration from other intrastate agencies. SMA distributes in near- real time modifications to policy to stakeholders."
+          "level_4": "SMA develops and maintains policy with collaboration from other interstate agencies. SMA distributes in near-real time modifications to policy to stakeholders.",
+          "level_5": "SMA develops and maintains policy with collaboration from other intrastate agencies. SMA distributes in near-real time modifications to policy to stakeholders."
         }
       },
       {
@@ -68,7 +69,7 @@
         "question": "How timely is the end-to-end process?",
         "levels": {
           "level_1": "Process meets threshold or mandated requirements for timeliness (i.e., the process achieves results within the time specified by law or regulation). SMA develops program policy in an ad hoc manner. Time to complete process is indeterminate.",
-          "level_2": "Process timeliness improves through use of automation. SMA conducts more frequent review and modification to program policy. Timeliness exceeds legal requirements. Maintain Program Policy",
+          "level_2": "Process timeliness improves through use of automation. SMA conducts more frequent review and modification to program policy. Timeliness exceeds legal requirements.",
           "level_3": "Timeliness improves via state and federal collaboration, use of information sharing, standards, and regional information exchange hubs. SMA develops, modifies, tracks, and report on program policy in less time than at Level 2.",
           "level_4": "Information is available in near real time. Processes that use clinical information result in immediate action, response, and results. SMA has interstate interoperability, which further improves timeliness over Level 3.",
           "level_5": "Information is available in real time. Processes improve further through connectivity with other States and with federal agencies. Most processes execute at the point of service. Results are almost immediate."
@@ -90,8 +91,8 @@
         "question": "How accessible is the information in the process?",
         "levels": {
           "level_1": "SMA stores information in disparate systems including paper storage and obtains information manually. Program policy is vague and incomplete.",
-          "level_2": "Program policy is up-to-date and more accurate. SMA stores information in disparate systems, but automation and standards increase accessibility over Maintain Program Policy Level 1.",
-          "level_3": "SMA obtains information easily and exchanges with intrastate agencies and entities based on MITA Framework and industry standards. Program policy is central, up- to-date and accurate. Accessibility is greater than Level 2.",
+          "level_2": "Program policy is up-to-date and more accurate. SMA stores information in disparate systems, but automation and standards increase accessibility over Level 1.",
+          "level_3": "SMA obtains information easily and exchanges with intrastate agencies and entities based on MITA Framework and industry standards. Program policy is central, up-to-date and accurate. Accessibility is greater than Level 2.",
           "level_4": "SMA obtains information easily and exchanges with interstate agencies and entities. Accessibility is greater than Level 3.",
           "level_5": "SMA obtains information easily and exchanges with national agencies and entities. Accessibility is greater than Level 4."
         }

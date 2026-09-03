@@ -6,13 +6,14 @@
   "sub_category": "Contract Management",
   "process_name": "Produce Solicitation",
   "process_code": "CO",
+  "process_id": "CO_PRODUCE_SOLICITATION",
   "maturity_model": {
     "capability_questions": [
       {
         "category": "Business Capability Descriptions",
         "question": "How integrated or central is the process?",
         "levels": {
-          "level_1": "The process is re- invented each time a solicitation is necessary. SMA stores the procurement information for manual reuse, and it is not possible to share information.",
+          "level_1": "The process is re-invented each time a solicitation is necessary. SMA stores the procurement information for manual reuse, and it is not possible to share information.",
           "level_2": "Contract information is in a central location and is electronic. There is coordination between agencies. Requirements tracking and maintenance are central.",
           "level_3": "SMA centralizes and automates contract information. Coordination between agencies eliminates duplication of contracted services.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other national standards by interstate agencies and entities allow for shared business services.",
@@ -80,9 +81,9 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
           "level_2": "Nationally recognized and state-specific standards improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
-          "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision- making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
-          "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision- making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }
       },
       {

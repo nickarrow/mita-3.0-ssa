@@ -6,6 +6,7 @@
   "sub_category": "Payment and Reporting",
   "process_name": "Generate Remittance Advice",
   "process_code": "OM",
+  "process_id": "OM_GENERATE_REMITTANCE_ADVICE",
   "process_details": {
     "description": "The Generate Remittance Advice business process describes the activity of preparing remittance advice/encounter Electronic Data Interchange (EDI) transactions that providers use to reconcile their accounts receivables. This business process begins with receipt of information resulting from the Process Claim business process, performing required manipulation according to business rules and formatting the results into the required output information that process sends to Send Outbound Transaction.",
     "trigger_events": {

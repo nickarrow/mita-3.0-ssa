@@ -21,6 +21,7 @@ import {
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HistoryIcon from "@mui/icons-material/History";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useRatings } from "../../hooks/useRatings";
 import { AttachmentUpload } from "./AttachmentUpload";
 import { compactChipSx } from "../../theme/sharedStyles";
@@ -230,6 +231,40 @@ export function QuestionCard({
           )}
           {rating?.level && <CheckCircleIcon color="success" fontSize="small" />}
         </Box>
+
+        {/*
+          Guidance CMS attaches to the question. Rendered above the levels because it
+          can change which level applies at all: Calculate Spend-Down Amount records
+          that levels 4 and 5 are not relevant to it, and nothing in the level text
+          says so. Upstream moved these out of the question string into their own
+          field, so without this they are simply dropped.
+        */}
+        {question.note && (
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              alignItems: "flex-start",
+              mb: 1.5,
+              p: 1.25,
+              borderLeft: 3,
+              borderColor: "info.main",
+              backgroundColor: "action.hover",
+              borderRadius: 1,
+            }}
+          >
+            <InfoOutlinedIcon
+              sx={{ fontSize: 18, color: "info.main", mt: 0.15, flexShrink: 0 }}
+              aria-hidden="true"
+            />
+            <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
+              <Box component="span" sx={{ fontWeight: 600 }}>
+                Note:{" "}
+              </Box>
+              {question.note}
+            </Typography>
+          </Box>
+        )}
 
         <FormControl component="fieldset" sx={{ width: "100%" }}>
           <RadioGroup value={rating?.level?.toString() || ""}>

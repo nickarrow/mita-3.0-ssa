@@ -6,6 +6,7 @@
   "sub_category": "Accounts Receivable Management",
   "process_name": "Prepare Member Premium Invoice",
   "process_code": "FM",
+  "process_id": "FM_PREPARE_MEMBER_PREMIUM_INVOICE",
   "maturity_model": {
     "capability_questions": [
       {

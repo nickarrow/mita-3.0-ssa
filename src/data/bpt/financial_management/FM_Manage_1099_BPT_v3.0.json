@@ -6,6 +6,7 @@
   "sub_category": "Accounts Payable Management",
   "process_name": "Manage 1099",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_1099",
   "process_details": {
     "description": "The Manage 1099 business process describes how the State Medicaid Agency (SMA) handles IRS 1099 forms including preparation, maintenance, and corrections. Any payment or adjustment in payment made to a single Social Security Number (SSN) or federal Tax ID Number (TIN) impacts the business process. The Manage 1099 business process receives payment and/or recoupment information from the Process Claim business process or from the Manage Accounts Payable Information business process. The Manage 1099 business process may also receive requests for additional copies of a specific IRS 1099 form or receive notification of an error or a needed correction. The business process provides additional requested copies via the Manage Provider Communication or Manage Contractor Communication business processes. Staff researches error notifications and requests for corrections for validity and generate a corrected 1099 or a brief explanation of findings.",
     "trigger_events": {

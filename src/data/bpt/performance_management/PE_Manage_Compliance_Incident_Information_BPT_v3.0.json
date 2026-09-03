@@ -6,8 +6,9 @@
   "sub_category": "Compliance Management",
   "process_name": "Manage Compliance Incident Information",
   "process_code": "PE",
+  "process_id": "PE_MANAGE_COMPLIANCE_INCIDENT_INFORMATION",
   "process_details": {
-    "description": "The Manage Compliance Incident Information business process is responsible for the monitoring of incidents of utilization anomalies. Activities include referring (e.g., escalation) incident to another incident manager or agency, modificatio incident information, journaling activities, and disposition of incident.",
+    "description": "The Manage Compliance Incident Information business process is responsible for the monitoring of incidents of utilization anomalies. Activities include referring (e.g., escalation) incident to another incident manager or agency, modifications to incident information, journaling activities, and disposition of incident.",
     "trigger_events": {
       "environment_based": [
         "Staff periodically reviews incident.",

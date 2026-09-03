@@ -6,6 +6,7 @@
   "sub_category": "Compliance Management",
   "process_name": "Determine Adverse Action Incident",
   "process_code": "PE",
+  "process_id": "PE_DETERMINE_ADVERSE_ACTION_INCIDENT",
   "maturity_model": {
     "capability_questions": [
       {
@@ -35,7 +36,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of HIPAA and state- specific standards.",
+          "level_2": "SMA applies a mix of HIPAA and state-specific standards.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for exchange of information with state and federal law enforcement, CMS, and intrastate agencies.",
           "level_4": "SMA adopts MITA Framework, industry standards, nationally recognized standards for exchange of information with state, district, and federal law enforcement, CMS, and interstate agencies.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other recognized standards for exchange of information with state, district, and federal law enforcement, CMS, and other federal agencies."
@@ -56,7 +57,7 @@
         "category": "Business Capability Quality: Timeliness of Process",
         "question": "How timely is the end-to-end process?",
         "levels": {
-          "level_1": "Process meets threshold or mandated requirements for timeliness (i.e., the process achieves results within the time specified by law or regulation). Case management is primarily a manual process including a desk review of medical records and evidence, request for additional data, on- site audit of provider location, and final disposition and reporting. The process requires three (3) months or more from the time SMA identifies the case.",
+          "level_1": "Process meets threshold or mandated requirements for timeliness (i.e., the process achieves results within the time specified by law or regulation). Case management is primarily a manual process including a desk review of medical records and evidence, request for additional data, on-site audit of provider location, and final disposition and reporting. The process requires three (3) months or more from the time SMA identifies the case.",
           "level_2": "Process timeliness improves through use of automation. Timeliness exceeds legal requirements. From the time SMA identifies a case, the process completes in two (2) months or less.",
           "level_3": "Timeliness improves via state and federal collaboration, use of information sharing, standards, and regional information exchange hubs. Timeliness exceeds Level 2.The process requires1 month or less to reach resolution. SMA distributes Notice of appeal rights within 15 minutes or less 100% of the time.",
           "level_4": "Information is available in near real time. Processes that use adverse action incident information result in immediate action, response, and results. SMA has interstate interoperability, which further improves timeliness over Level 3.",
@@ -69,7 +70,7 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
           "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
           "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision-making is automatic using regional standardized business rules definitions s. Accuracy rating is at 99% or higher.",
           "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }
@@ -79,7 +80,7 @@
         "question": "How accessible is the information in the process?",
         "levels": {
           "level_1": "SMA stores information in disparate systems including paper storage and obtains information manually. SMA has limited access to data because of is inconsistent and untimely receipt of information. Data acquisition to support the case may take 60 business days or more.",
-          "level_2": "SMA stores information in disparate systems, but automation and HIPAA standards Determine Adverse Action Incident increase accessibility over Level 1.",
+          "level_2": "SMA stores information in disparate systems, but automation and HIPAA standards increase accessibility over Level 1.",
           "level_3": "SMA obtains information easily and exchanges with state and federal law enforcement, CMS, and intrastate agencies and entities based on MITA Framework and industry standards. Access to information takes 24 hours or less.",
           "level_4": "SMA obtains information easily and exchanges with state, district, and federal law enforcement, CMS, and interstate agencies and entities. Accessibility is greater than Level 3.",
           "level_5": "SMA obtains information easily and exchanges with state, district, and federal law enforcement, CMS, and other federal agencies and entities. Accessibility is greater than Level 4."
@@ -90,7 +91,7 @@
         "question": "What is the cost of the process compared to the benefits of its results?",
         "levels": {
           "level_1": "High relative cost due to low number of automatic, standardized tasks.",
-          "level_2": "Automation improves process and allows focus on exception resolution, improving cost effectiveness ratio over Level 1. Determine Adverse Action Incident",
+          "level_2": "Automation improves process and allows focus on exception resolution, improving cost effectiveness ratio over Level 1.",
           "level_3": "SMA adopts MITA Framework, industry standards, state and federal law enforcement, CMS, and other nationally recognized standards further improving cost effectiveness ratio over Level 2.",
           "level_4": "SMA adopts MITA Framework, industry standards, state, district, and federal law enforcement, CMS, and other nationally recognized standards for interstate information exchange. SMA increases cost effectiveness ratio over Level 3.",
           "level_5": "SMA adopts MITA Framework, industry standards, state, district, and federal law enforcement, CMS, other federal agencies, and other nationally recognized standards for national (and international) information exchange. SMA increases cost effectiveness ratio over level 4."
@@ -112,7 +113,7 @@
         "question": "How accurate are the results of the process?",
         "levels": {
           "level_1": "Manual processes result in greater opportunity for human error. Accuracy is low.",
-          "level_2": "Automation and standardized business rules definitions reduce error and improve accuracy Determine Adverse Action Incident above Level 1.",
+          "level_2": "Automation and standardized business rules definitions reduce error and improve accuracy above Level 1.",
           "level_3": "SMA adopts MITA Framework, industry standards and information exchange with state and federal law enforcement, CMS, and intrastate agencies and entities improving accuracy to 98% or higher.",
           "level_4": "SMA adopts MITA Framework, industry standards and information exchange with state, district, and federal law enforcement, CMS, and interstate agencies and entities improving accuracy to 98% or higher.",
           "level_5": "SMA adopts MITA Framework, industry standards and information exchange with state, district, and federal law enforcement, CMS, and other federal agencies and entities improving accuracy to 98% or higher."

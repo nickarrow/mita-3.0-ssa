@@ -6,6 +6,7 @@
   "sub_category": "Claims Adjudication",
   "process_name": "Submit Electronic Attachment",
   "process_code": "OM",
+  "process_id": "OM_SUBMIT_ELECTRONIC_ATTACHMENT",
   "maturity_model": {
     "capability_questions": [
       {
@@ -13,7 +14,7 @@
         "question": "Is the process primarily manual or automatic?",
         "levels": {
           "level_1": "The process consists primarily of manual paper-based activity to accomplish tasks.",
-          "level_2": "SMA uses a mix of manual and automatic processes to Submit Electronic Attachment accomplish tasks.",
+          "level_2": "SMA uses a mix of manual and automatic processes to accomplish tasks.",
           "level_3": "SMA automates process to the full extent possible within the intrastate.",
           "level_4": "SMA automates process to the full extent possible across the interstate.",
           "level_5": "SMA automates process to the full extent possible across the nation."
@@ -23,7 +24,7 @@
         "category": "Business Capability Descriptions",
         "question": "How is clinical information requested and received when this information is required to process a transaction (claim, service authorization request, treatment plan) or for other processes?",
         "levels": {
-          "level_1": "SMA requests medical and dental records via telephone or mail and responder delivers copies in paper format (including X- rays) via mail certified mail and facsimile.",
+          "level_1": "SMA requests medical and dental records via telephone or mail and responder delivers copies in paper format (including X-rays) via mail certified mail and facsimile.",
           "level_2": "SMA receives a mix of paper and electronic attachments and returns a mix of electronic and paper formats.",
           "level_3": "SMA receives the majority of transactions and attachments electronically. SMA continues to accept paper attachments from a small number of providers who still submit paper transactions.",
           "level_4": "SMA no longer requires attachments because the payer has direct access to the clinical information stored in the Health Information Exchange (HIE).",
@@ -35,7 +36,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of HIPAA and state- specific standards.",
+          "level_2": "SMA applies a mix of HIPAA and state-specific standards.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for intrastate exchange of information.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for clinical and interstate information exchange.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national exchange of information."
@@ -90,8 +91,8 @@
         "question": "How accurate is the information in the process?",
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
-          "level_2": "HIPAA standard transactions improve accuracy of information but the decision- making process may be erroneous or misleading. Accuracy is higher than at Level Submit Electronic Attachment 1.",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy is 99.9% or higher.",
+          "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy is 99.9% or higher.",
           "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy is 99.9% or higher.",
           "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision-making is automatic using national standardized business rules definitions. Accuracy is 99.9% or higher."
         }

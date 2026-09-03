@@ -6,6 +6,7 @@
   "sub_category": "Health Plan Administration",
   "process_name": "Manage Health Plan Information",
   "process_code": "PL",
+  "process_id": "PL_MANAGE_HEALTH_PLAN_INFORMATION",
   "process_details": {
     "description": "The Manage Health Plan Information business process includes evaluation of federal or state regulations, legislative and judicial mandates, federal or state audits governing board or commission directives, Quality Improvement Organization’s findings, enterprise decisions, and consumer pressure to develop or enhance enterprise business rules, benefit plans and services available to members. The State Medicaid Agency (SMA) collaboratively develops Health Plan service offerings with input and review by other agencies and stakeholders. This business process ensures the organization is on track with the goals and objectives of the SMA and is in concert with statewide goals.",
     "trigger_events": {

@@ -75,7 +75,9 @@ export default function Assessment() {
 
   const totalQuestions = capability?.bcm.maturity_model.capability_questions.length || 0;
   const progress = getProgress(totalQuestions);
-  const answeredCount = getAnsweredCount();
+  // Range-scoped so an unreachable rating (one pointing past the end of the question
+  // list) cannot inflate the count or the displayed score.
+  const answeredCount = getAnsweredCount(totalQuestions);
 
   usePageTitle(capability ? capability.processName : "Assessment");
 
@@ -312,7 +314,7 @@ export default function Assessment() {
                     Score
                   </Typography>
                   <Typography variant="h6" color="primary">
-                    {getAverageScore()?.toFixed(1) || "—"} / 5.0
+                    {getAverageScore(totalQuestions)?.toFixed(1) || "—"} / 5.0
                   </Typography>
                 </Box>
                 <Box sx={{ textAlign: "right" }}>

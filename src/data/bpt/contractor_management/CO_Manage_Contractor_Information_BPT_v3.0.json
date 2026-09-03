@@ -6,6 +6,7 @@
   "sub_category": "Contractor Information Management",
   "process_name": "Manage Contractor Information",
   "process_code": "CO",
+  "process_id": "CO_MANAGE_CONTRACTOR_INFORMATION",
   "process_details": {
     "description": "The Manage Contractor Information business process is responsible for managing all operational aspects of the Contractor (e.g., managed care, at-risk mental health or dental care, primary care physician, Recovery Audit Contractor (RAC)) data store. This business process receives a request for addition, deletion, or modification to Contractor information, validates the request, and applies the instruction.\nNOTE: Requires billing agents, clearinghouses, or other alternate payees (as defined by the Secretary) to register with Medicaid agency.",
     "trigger_events": {

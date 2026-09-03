@@ -6,6 +6,7 @@
   "sub_category": "Accounts Receivable Management",
   "process_name": "Manage Accounts Receivable Funds",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_ACCOUNTS_RECEIVABLE_FUNDS",
   "process_details": {
     "description": "The Manage Accounts Receivable Funds business process is responsible for all operations aspects of the collection of payment owed to the State Medicaid Agency (SMA). Activities in this business process comply with Cash Management Improvement Act (CMIA), Governmental Accounting Standards Board (GASB) standards and Generally Accepted Accounting Principles (GAAP).",
     "trigger_events": {

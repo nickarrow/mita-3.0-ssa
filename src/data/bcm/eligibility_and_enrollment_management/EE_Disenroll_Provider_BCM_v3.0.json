@@ -6,6 +6,7 @@
   "sub_category": "Provider Enrollment",
   "process_name": "Disenroll Provider",
   "process_code": "EE",
+  "process_id": "EE_DISENROLL_PROVIDER",
   "maturity_model": {
     "capability_questions": [
       {
@@ -58,9 +59,9 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
           "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1",
-          "level_3": "SMA automates the collection of provider disenrollment increasing the reliability of SMA’s internal information. External sources of provider disenrollment information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_3": "SMA automates the collection of provider disenrollment increasing the reliability of SMA’s internal information. External sources of provider disenrollment information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
           "level_4": "SMA automates the collection of provider disenrollment information increasing the reliability of regional sources of information. SMA adopts MITA Framework and provider disenrollment standards for information exchange with regional agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
-          "level_5": "SMA adopts MITA Framework and industry standards for national information exchange. Decision- making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
+          "level_5": "SMA adopts MITA Framework and industry standards for national information exchange. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }
       },
       {

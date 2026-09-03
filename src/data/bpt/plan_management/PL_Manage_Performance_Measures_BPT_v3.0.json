@@ -6,6 +6,7 @@
   "sub_category": "Health Plan Management",
   "process_name": "Manage Performance Measures",
   "process_code": "PL",
+  "process_id": "PL_MANAGE_PERFORMANCE_MEASURES",
   "process_details": {
     "description": "The Manage Performance Measures business process involves the design, implementation, and maintenance of mechanisms and measures the State Medicaid Agency (SMA) uses to monitor the business activities and performance of the State Medicaid Enterprise’s business processes and programs. This includes the steps involved in defining the criteria by which the SMA measures activities and programs (e.g., Consumer Assessment of Healthcare Providers and Systems (CAPHS) and Healthcare Effectiveness Data and Information Set (HEDIS) measures). This business process develops the reports and other mechanisms that it uses to track activity and effectiveness at all levels of monitoring. Business Intelligence analysis (i.e., historical, current and predictive views of business operations) occurs within this process.\nExamples of performance measures and associated reports may be things such as: Goal: The SMA makes prompt and accurate payments to providers. Measurement: Pay or deny 95% of all clean claims within 30 days of receipt. Mechanism: The SMA generates weekly report on claims processing timelines.\nGoal: Accurately and efficiently, draw and report funds in accordance with the federal Cash Management Improvement Act (CMIA) and general cash management principles and timeframes to maximize non-general fund recovery. Measurement: Draw 98% of funds with the minimum time allowed under CMIA. Mechanism: The SMA generates monthly report on funds drawn.\n Goal: Improve health care outcomes for Medicaid members. Measurement: Reduce emergency room visits by ten percent by assigning a primary care case manager. Mechanism: The SMA generates monthly report comparing emergency room usage by member for the period prior to and after Primary Care Case Managers (PCCM) assignment.",
     "trigger_events": {
@@ -34,8 +35,7 @@
     ],
     "diagrams": [],
     "shared_data": [
-      "Business Activity data store including performance information (e.g., CAPHS and",
-      "HEDIS measures)"
+      "Business Activity data store including performance information (e.g., CAPHS and HEDIS measures)"
     ],
     "predecessor_processes": [
       "NOTE: Any MITA business process could be a predecessor to any performance monitoring activity depending on the performance measures.",

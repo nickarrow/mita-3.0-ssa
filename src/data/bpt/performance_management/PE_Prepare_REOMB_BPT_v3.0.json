@@ -6,6 +6,7 @@
   "sub_category": "Compliance Management",
   "process_name": "Prepare REOMB",
   "process_code": "PE",
+  "process_id": "PE_PREPARE_REOMB",
   "process_details": {
     "description": "The Prepare REOMB business process is responsible for the creation of Recipient Explanation of Medicaid Benefits (REOMB) for detecting payment problems. The State Medicaid Agency (SMA) sends the REOMB to randomly selected members of Medicaid services. It gives information on the Medicaid services paid on behalf of the member. The communication includes the provider's name, the date(s) of services, and the payment amount(s). Instructions on the communication tell the member what to do if the provider did not actually perform any of the listed services billed directly to him/her by the provider.\nNOTE: This business process does not include the handling of returned information.",
     "trigger_events": {

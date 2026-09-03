@@ -6,6 +6,7 @@
   "sub_category": "Fiscal Management",
   "process_name": "Formulate Budget",
   "process_code": "FM",
+  "process_id": "FM_FORMULATE_BUDGET",
   "process_details": {
     "description": "The Formulate Budget business process:\n• Examines the current budget revenue stream and trends, and expenditures.\n• Assesses external factors affecting the program.\n• Assesses agency initiatives and plans.\n• Models different budget scenarios.\n• Periodically produces a new budget.",
     "trigger_events": {

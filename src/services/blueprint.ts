@@ -12,32 +12,49 @@ const bptModules = import.meta.glob<BPT>("../data/bpt/**/*.json", {
   import: "default",
 });
 
-// Extract capability code from filename (e.g., "CM_Establish_Case" from "CM_Establish_Case_BCM_v3.0.json")
+/**
+ * Extract this app's capability code from a filename
+ * (e.g. "CM_Establish_Case" from "CM_Establish_Case_BCM_v3.0.json").
+ *
+ * Still filename-derived because this value is persisted on every assessment;
+ * changing how it is computed would orphan stored rows. It is no longer used to
+ * pair the two halves — see `buildCapabilitiesMap`.
+ */
 function extractCapabilityCode(filename: string): string {
   const match = filename.match(/([A-Z]{2}_[^_]+(?:_[^_]+)*?)_(?:BCM|BPT)_v/);
   return match ? match[1] : "";
 }
 
-// Build the capabilities map
-function buildCapabilitiesMap(): Map<string, { bcm?: BCM; bpt?: BPT }> {
-  const capMap = new Map<string, { bcm?: BCM; bpt?: BPT }>();
+/**
+ * Group BCM and BPT records into pairs, keyed on the upstream `process_id`.
+ *
+ * Pairing on `process_id` rather than on the filename is the whole point. CMS
+ * names two processes inconsistently across its own appendices, so the BCM and BPT
+ * filenames for those disagreed and this app silently built 74 capabilities from
+ * 152 files — two capabilities vanished from the dashboard, the process tree and
+ * every average, with no error. `process_id` is upstream's answer to that: one
+ * value per process, identical on both halves, regardless of spelling.
+ *
+ * The app's own `code` still comes from the filename, so stored assessments keep
+ * resolving. Pairing and identity are deliberately separate concerns here.
+ */
+function buildCapabilitiesMap(): Map<string, { bcm?: BCM; bpt?: BPT; code?: string }> {
+  const capMap = new Map<string, { bcm?: BCM; bpt?: BPT; code?: string }>();
 
-  // Process BCM files
   for (const [path, bcm] of Object.entries(bcmModules)) {
-    const code = extractCapabilityCode(path);
-    if (code) {
-      const existing = capMap.get(code) || {};
-      capMap.set(code, { ...existing, bcm });
-    }
+    const existing = capMap.get(bcm.process_id) || {};
+    // The BCM's filename supplies the app-facing code. Taken from the BCM half
+    // specifically, and only here, so a single rule decides it.
+    capMap.set(bcm.process_id, {
+      ...existing,
+      bcm,
+      code: extractCapabilityCode(path),
+    });
   }
 
-  // Process BPT files
-  for (const [path, bpt] of Object.entries(bptModules)) {
-    const code = extractCapabilityCode(path);
-    if (code) {
-      const existing = capMap.get(code) || {};
-      capMap.set(code, { ...existing, bpt });
-    }
+  for (const [, bpt] of Object.entries(bptModules)) {
+    const existing = capMap.get(bpt.process_id) || {};
+    capMap.set(bpt.process_id, { ...existing, bpt });
   }
 
   return capMap;
@@ -49,29 +66,34 @@ function buildCapabilities(): Capability[] {
   const capabilities: Capability[] = [];
   const unpaired: string[] = [];
 
-  for (const [code, data] of capMap.entries()) {
-    if (data.bcm && data.bpt) {
+  for (const [processId, data] of capMap.entries()) {
+    if (data.bcm && data.bpt && data.code) {
       capabilities.push({
-        code,
+        code: data.code,
         processName: data.bcm.process_name,
         businessArea: data.bcm.business_area,
         bcm: data.bcm,
         bpt: data.bpt,
       });
     } else {
-      unpaired.push(`${code} (missing ${data.bcm ? "BPT" : "BCM"})`);
+      const missing = !data.bcm ? "BCM" : !data.bpt ? "BPT" : "a parseable filename";
+      unpaired.push(`${processId} (missing ${missing})`);
     }
   }
 
-  // A capability needs both halves to be usable, but dropping one silently means
-  // it vanishes from the entire app with no signal. Two capabilities were lost
-  // this way to BCM/BPT filename mismatches. Surface it during development so a
-  // future mismatch is caught immediately rather than by counting rows.
-  if (unpaired.length > 0 && import.meta.env.DEV) {
+  // A capability needs both halves to be usable, but dropping one silently means it
+  // vanishes from the entire app with no signal. Two capabilities were lost that way
+  // when pairing was done by filename. Pairing now uses `process_id`, so this should be
+  // unreachable — it stays as the tripwire that reports an unpaired record rather than
+  // letting us discover it by counting rows.
+  //
+  // Warned in production too, not just DEV. A capability disappearing is exactly the
+  // class of failure this change set exists to remove, and gating the only signal behind
+  // a dev build reproduced it for every real user.
+  if (unpaired.length > 0) {
     console.warn(
-      `[blueprint] ${unpaired.length} capability code(s) have only one of BCM/BPT and were excluded:\n  ` +
-        unpaired.sort().join("\n  ") +
-        "\nThe BCM and BPT filenames must use identical capability codes."
+      `[blueprint] ${unpaired.length} process_id(s) lack a complete BCM/BPT pair and were excluded:\n  ` +
+        unpaired.sort().join("\n  ")
     );
   }
 

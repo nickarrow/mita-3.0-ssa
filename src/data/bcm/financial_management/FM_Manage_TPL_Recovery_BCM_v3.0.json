@@ -6,6 +6,7 @@
   "sub_category": "Accounts Receivable Management",
   "process_name": "Manage TPL Recovery",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_TPL_RECOVERY",
   "maturity_model": {
     "capability_questions": [
       {
@@ -14,7 +15,7 @@
         "levels": {
           "level_1": "The process consists primarily of manual activity to accomplish tasks. The process is primarily manual utilizing a mix of paper, telephone, facsimile, and some proprietary Electronic Data Interchange (EDI).",
           "level_2": "SMA uses a mix of manual and automatic processes to accomplish tasks.",
-          "level_3": "SMA automates process to the full extent possible within the intrastate. The process uses MITA Framework, industry standards, for payer- to-payer Coordination of Benefits (COB) process reducing the burden to providers and optimizing timeliness.",
+          "level_3": "SMA automates process to the full extent possible within the intrastate. The process uses MITA Framework, industry standards, for payer-to-payer Coordination of Benefits (COB) process reducing the burden to providers and optimizing timeliness.",
           "level_4": "SMA automates process to the full extent possible across the interstate.",
           "level_5": "SMA automates process to the full extent possible across the nation."
         }
@@ -56,11 +57,11 @@
         "category": "Business Capability Descriptions",
         "question": "How does the State Medicaid Agency conduct coordination of benefits (COB)?",
         "levels": {
-          "level_1": "SMA primarily conducts TPL recovery via payer- to-provider COB.",
-          "level_2": "Some TPL recovery is payer-to-provider and the remaining is payer-to- payer COB.",
-          "level_3": "SMA conducts TPL recovery via payer- to-payer COB. SMA has communications available electronically to members and providers.",
-          "level_4": "SMA conducts TPL recovery via payer- to-payer COB.",
-          "level_5": "SMA conducts TPL recovery via payer- to-payer COB."
+          "level_1": "SMA primarily conducts TPL recovery via payer-to-provider COB.",
+          "level_2": "Some TPL recovery is payer-to-provider and the remaining is payer-to-payer COB.",
+          "level_3": "SMA conducts TPL recovery via payer-to-payer COB. SMA has communications available electronically to members and providers.",
+          "level_4": "SMA conducts TPL recovery via payer-to-payer COB.",
+          "level_5": "SMA conducts TPL recovery via payer-to-payer COB."
         }
       },
       {
@@ -91,7 +92,7 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
           "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "Automation of information collection and workflow increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy is 99% or higher.",
+          "level_3": "Automation of information collection and workflow increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy is 99% or higher.",
           "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
           "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }

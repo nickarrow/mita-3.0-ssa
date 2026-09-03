@@ -6,6 +6,7 @@
   "sub_category": "Contractor Support",
   "process_name": "Perform Contractor Outreach",
   "process_code": "CO",
+  "process_id": "CO_PERFORM_CONTRACTOR_OUTREACH",
   "process_details": {
     "description": "The Perform Contractor Outreach business process is responsible for sending information such as public health alerts, new programs, and/or modifications in the Medicaid Program policies and procedures. For prospective contractors (e.g., managed care, at-risk mental health or dental care, primary care physician), States Medicaid Agency (SMA) develops contractor outreach information for prospective contractors identified by analyzing Medicaid business needs. For currently enrolled contractors, information may relate to public health alerts, public service announcements, and other objectives. The SMA communicates contractor outreach information by a variety of methods such as email, mail, publication, mobile device, facsimile, telephone, web or Electronic Data Interchange (EDI). The SMA produces, distributes, tracks, and archives all contractor outreach communications according to state rules.",
     "trigger_events": {

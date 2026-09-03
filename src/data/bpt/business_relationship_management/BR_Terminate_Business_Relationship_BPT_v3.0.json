@@ -6,6 +6,7 @@
   "sub_category": "Standards Management",
   "process_name": "Terminate Business Relationship",
   "process_code": "BR",
+  "process_id": "BR_TERMINATE_BUSINESS_RELATIONSHIP",
   "process_details": {
     "description": "The Terminate Business Relationship business process cancels the agreement between the State Medicaid Agency (SMA) and the business partner such as the intrastate, interstate and federal agencies.",
     "trigger_events": {

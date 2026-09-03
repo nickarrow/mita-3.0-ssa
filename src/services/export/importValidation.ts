@@ -12,6 +12,7 @@
  */
 
 import { getCapabilityByCode } from "../blueprint";
+import { questionCountAtRevision, resolveRecordRevision } from "../blueprintRevision";
 import {
   MAX_MATURITY_LEVEL,
   MAX_PLAUSIBLE_QUESTION_INDEX,
@@ -96,12 +97,53 @@ function normalizeTags(value: unknown): string[] {
 }
 
 /**
- * Number of questions for a capability, or null when this build doesn't know the
- * capability. Used to reject ratings pointing at questions that don't exist.
+ * Number of questions a capability had in the extraction `revision` was written
+ * against, or null when this build doesn't know the capability.
+ *
+ * Bounds must be checked in the coordinate system the file uses, not the current
+ * one. EE_Enroll_Provider dropped from 13 questions to 12, so a legitimate answer to
+ * question 13 in an older backup is only out of range if you measure it against
+ * today's list — and discarding it here would pre-empt the index migration that
+ * knows the question was removed. The migration reports that as a removal, which is
+ * what happened; "question 13 does not exist" describes the wrong thing.
  */
-function questionCountFor(capabilityCode: string): number | null {
+function questionCountFor(capabilityCode: string, revision: string | undefined): number | null {
   const capability = getCapabilityByCode(capabilityCode);
-  return capability ? capability.bcm.maturity_model.capability_questions.length : null;
+  if (!capability) return null;
+  return (
+    questionCountAtRevision(capabilityCode, revision) ??
+    capability.bcm.maturity_model.capability_questions.length
+  );
+}
+
+/**
+ * Drop ratings that collide on `[capabilityAssessmentId, questionIndex]`.
+ *
+ * The compound index is not unique, so a file carrying two answers for one question
+ * writes both. `getRating` resolves with `find`, so the UI shows an arbitrary one and
+ * edits touch only that row — while the others stay invisible, count toward progress,
+ * and are averaged into the finalized score. Keeping the first occurrence is arbitrary
+ * but deterministic; the point is that exactly one survives and the user is told.
+ */
+function dedupeRatings(ratings: RatingExport[], warnings: string[]): RatingExport[] {
+  const seen = new Set<string>();
+  const kept: RatingExport[] = [];
+  let collisions = 0;
+  for (const rating of ratings) {
+    const key = `${rating.capabilityAssessmentId}::${rating.questionIndex}`;
+    if (seen.has(key)) {
+      collisions += 1;
+      continue;
+    }
+    seen.add(key);
+    kept.push(rating);
+  }
+  if (collisions > 0) {
+    warnings.push(
+      `${collisions} duplicate answer(s) for questions that already had one were not imported.`
+    );
+  }
+  return kept;
 }
 
 function validateAssessment(raw: unknown, warnings: string[]): AssessmentExport | null {
@@ -144,6 +186,11 @@ function validateAssessment(raw: unknown, warnings: string[]): AssessmentExport 
     status,
     tags: normalizeTags(raw.tags),
     blueprintVersion: isNonEmptyString(raw.blueprintVersion) ? raw.blueprintVersion : "3.0",
+    // Left undefined when absent rather than defaulted: absence means "written
+    // before revisions were tracked", which is what triggers the index migration.
+    // Defaulting it to the current revision would claim this record's indices are
+    // already correct and silently skip the correction it needs.
+    blueprintRevision: isNonEmptyString(raw.blueprintRevision) ? raw.blueprintRevision : undefined,
     createdAt: normalizeDate(raw.createdAt) ?? updatedAt,
     updatedAt,
     finalizedAt: normalizeDate(raw.finalizedAt),
@@ -155,7 +202,16 @@ function validateRating(
   raw: unknown,
   assessmentsById: Map<string, AssessmentExport>,
   warnings: string[],
-  orphanCount: { total: number }
+  orphanCount: { total: number },
+  /**
+   * File-level revision, used as the fallback when a record carries none.
+   *
+   * Passed in so this resolves the coordinate system exactly as
+   * `migrateImportPayload` does. When the two disagreed, a payload whose file said
+   * "current" and whose records said nothing was bounds-checked in old coordinates and
+   * then never migrated — answers landed on the wrong questions with no warning.
+   */
+  fileRevision: string | undefined
 ): RatingExport | null {
   if (!isObject(raw)) return null;
   if (!isNonEmptyString(raw.id) || !isNonEmptyString(raw.capabilityAssessmentId)) return null;
@@ -173,10 +229,13 @@ function validateRating(
   if (typeof raw.questionIndex !== "number" || !Number.isInteger(raw.questionIndex)) return null;
   if (raw.questionIndex < 0) return null;
 
-  // Normally bounded by the capability's real question count. For a capability
-  // this build doesn't recognize that count is unknown, so fall back to a sanity
-  // ceiling rather than accepting any integer.
-  const questionCount = questionCountFor(parent.capabilityCode);
+  const parentRevision = resolveRecordRevision(parent.blueprintRevision, fileRevision);
+
+  // Normally bounded by the capability's question count in the extraction this
+  // record was written against. For a capability this build doesn't recognize that
+  // count is unknown, so fall back to a sanity ceiling rather than accepting any
+  // integer.
+  const questionCount = questionCountFor(parent.capabilityCode, parentRevision);
   const limit = questionCount ?? MAX_PLAUSIBLE_QUESTION_INDEX;
   if (raw.questionIndex >= limit) {
     warnings.push(
@@ -209,7 +268,12 @@ function validateRating(
   };
 }
 
-function validateHistoryEntry(raw: unknown, warnings: string[]): AssessmentHistory | null {
+function validateHistoryEntry(
+  raw: unknown,
+  warnings: string[],
+  /** File-level revision, the fallback when the snapshot carries none. */
+  fileRevision: string | undefined
+): AssessmentHistory | null {
   if (!isObject(raw)) return null;
   if (!isNonEmptyString(raw.id) || !isNonEmptyString(raw.capabilityCode)) return null;
 
@@ -236,7 +300,14 @@ function validateHistoryEntry(raw: unknown, warnings: string[]): AssessmentHisto
     return null;
   }
 
-  const questionCount = questionCountFor(raw.capabilityCode);
+  // Bounded in this snapshot's own coordinate system, for the same reason as
+  // ratings: a snapshot from an older extraction is not malformed just because a
+  // question has since been removed.
+  const snapshotRevision = resolveRecordRevision(
+    isNonEmptyString(raw.blueprintRevision) ? raw.blueprintRevision : undefined,
+    fileRevision
+  );
+  const questionCount = questionCountFor(raw.capabilityCode, snapshotRevision);
   const indexLimit = questionCount ?? MAX_PLAUSIBLE_QUESTION_INDEX;
   const rawRatings = Array.isArray(raw.ratings) ? raw.ratings : [];
   const ratings: HistoricalRating[] = rawRatings
@@ -275,6 +346,7 @@ function validateHistoryEntry(raw: unknown, warnings: string[]): AssessmentHisto
     score: score.value ?? null,
     ratings,
     blueprintVersion: isNonEmptyString(raw.blueprintVersion) ? raw.blueprintVersion : "3.0",
+    blueprintRevision: isNonEmptyString(raw.blueprintRevision) ? raw.blueprintRevision : undefined,
   };
 }
 
@@ -410,10 +482,15 @@ export function validateImportPayload(raw: unknown): ValidationOutcome {
 
   const assessmentsById = new Map(assessments.map((a) => [a.id, a]));
 
+  const fileRevision = isNonEmptyString(raw.blueprintRevision) ? raw.blueprintRevision : undefined;
+
   const orphanCount = { total: 0 };
-  const ratings = section.ratings
-    .map((entry) => validateRating(entry, assessmentsById, warnings, orphanCount))
-    .filter((entry): entry is RatingExport => entry !== null);
+  const ratings = dedupeRatings(
+    section.ratings
+      .map((entry) => validateRating(entry, assessmentsById, warnings, orphanCount, fileRevision))
+      .filter((entry): entry is RatingExport => entry !== null),
+    warnings
+  );
 
   if (orphanCount.total > 0) {
     warnings.push(
@@ -433,7 +510,7 @@ export function validateImportPayload(raw: unknown): ValidationOutcome {
   }
 
   const history = rawHistory
-    .map((entry) => validateHistoryEntry(entry, warnings))
+    .map((entry) => validateHistoryEntry(entry, warnings, fileRevision))
     .filter((entry): entry is AssessmentHistory => entry !== null);
 
   const tags = rawTags
@@ -465,6 +542,7 @@ export function validateImportPayload(raw: unknown): ValidationOutcome {
     exportDate: normalizeDate(raw.exportDate) ?? new Date().toISOString(),
     appVersion: isNonEmptyString(raw.appVersion) ? raw.appVersion : "unknown",
     blueprintVersion: isNonEmptyString(raw.blueprintVersion) ? raw.blueprintVersion : "3.0",
+    blueprintRevision: isNonEmptyString(raw.blueprintRevision) ? raw.blueprintRevision : undefined,
     scope:
       raw.scope === "full" || raw.scope === "business_area" || raw.scope === "capability"
         ? raw.scope

@@ -6,6 +6,7 @@
   "sub_category": "Contractor Information Management",
   "process_name": "Inquire Contractor Information",
   "process_code": "CO",
+  "process_id": "CO_INQUIRE_CONTRACTOR_INFORMATION",
   "process_details": {
     "description": "The Inquire Contractor Information business process receives requests for contract (e.g., managed care, at-risk mental health or dental care, Primary Care Physician (PCP)) verification from authorized providers, programs or business associates, performs the inquiry, and prepares the response for the Send Outbound Transaction.",
     "trigger_events": {

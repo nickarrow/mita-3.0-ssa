@@ -6,6 +6,7 @@
   "sub_category": "Standards Management",
   "process_name": "Manage Business Relationship Communication",
   "process_code": "BR",
+  "process_id": "BR_MANAGE_BUSINESS_RELATIONSHIP_COMMUNICATION",
   "process_details": {
     "description": "The Manage Business Relationship Communication business process receives requests for information, appointments, and assistance from business partners, such as inquiries related to a Service Level Agreement (SLA). This business process includes the log, research, development, approval and delivery of routine or ad hoc messages. Information communicated by a variety of methods such as email, mail, publication, mobile device, facsimile, telephone, web or Electronic Data Interchange (EDI).",
     "trigger_events": {

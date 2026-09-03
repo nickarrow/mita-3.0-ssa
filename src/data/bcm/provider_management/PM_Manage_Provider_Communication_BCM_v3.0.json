@@ -6,6 +6,7 @@
   "sub_category": "Provider Support",
   "process_name": "Manage Provider Communication",
   "process_code": "PM",
+  "process_id": "PM_MANAGE_PROVIDER_COMMUNICATION",
   "maturity_model": {
     "capability_questions": [
       {
@@ -13,7 +14,7 @@
         "question": "Is the process primarily manual or automatic?",
         "levels": {
           "level_1": "The process consists primarily of manual activity to accomplish tasks. SMA conducts this process primarily via paper, facsimile, and telephone.",
-          "level_2": "SMA uses a mix of manual and automatic processes Manage Provider Communication to accomplish tasks. The process increases the use of electronic methods. SMA accepts inquiries that provider responds to online or by telephone.",
+          "level_2": "SMA uses a mix of manual and automatic processes to accomplish tasks. The process increases the use of electronic methods. SMA accepts inquiries that provider responds to online or by telephone.",
           "level_3": "SMA automates process to the full extent possible within the intrastate including communication delivery by email, paper, mobile devices, Automatic Voice Response System (AVRS), telephone, facsimile, web portal or Electronic Data Interchange (EDI) transaction. Portal includes usability features or functions that accommodate the needs of persons with disabilities, including those who use assistive technology.",
           "level_4": "SMA automates process to the full extent possible within the region.",
           "level_5": "SMA automates process to the full extent possible across the nation."
@@ -35,7 +36,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of HIPAA and state- specific standards. SMA establishes a formal Communications Management Plan.",
+          "level_2": "SMA applies a mix of HIPAA and state-specific standards. SMA establishes a formal Communications Management Plan.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for intrastate state exchange of information.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for regional exchange of information.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national exchange of information."
@@ -57,7 +58,7 @@
         "question": "How timely is the end-to-end process?",
         "levels": {
           "level_1": "Process meets threshold or mandated requirements for timeliness (i.e., the process achieves results within the time specified by law or regulation).Requests may take multiple business days.",
-          "level_2": "Process timeliness improves through use of automation. Providers have access to self- services via a web portal resolving their inquiries themselves. SMA answers most requests in 24 hours or less. Multiple web portals may exist as providers may work with multiple agencies. Timeliness exceeds legal requirements.",
+          "level_2": "Process timeliness improves through use of automation. Providers have access to self-services via a web portal resolving their inquiries themselves. SMA answers most requests in 24 hours or less. Multiple web portals may exist as providers may work with multiple agencies. Timeliness exceeds legal requirements.",
           "level_3": "Timeliness improves via state and federal collaboration, use of information sharing, standards, and regional information exchange hubs. SMA responds to most common inquiries in real-time. Exceptions may require 24 hours or less. SMA integrates web portals so providers have consistent way of communicating.",
           "level_4": "Information is available in near real time. SMA has regional interoperability, which further improves timeliness over Level 3.",
           "level_5": "Information is available in real time. Processes improve further through connectivity with other States and with federal agencies. Most processes execute at the point of service. Results are almost immediate."
@@ -69,9 +70,9 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
           "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
           "level_4": "Automation of information collection increases the reliability of regional agencies’ internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange by regional agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
-          "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision- making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
+          "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }
       },
       {
@@ -108,7 +109,7 @@
         }
       },
       {
-        "category": "Business Capability Quality: Data Access and Accuracy",
+        "category": "Business Capability Quality: Accuracy of Process Results",
         "question": "How accurate are the process results?",
         "levels": {
           "level_1": "Manual processes result in greater opportunity for human error. Accuracy is low.",

@@ -6,6 +6,7 @@
   "sub_category": "Plan Administration",
   "process_name": "Develop Agency Goals and Objectives",
   "process_code": "PL",
+  "process_id": "PL_DEVELOP_AGENCY_GOALS_AND_OBJECTIVES",
   "maturity_model": {
     "capability_questions": [
       {
@@ -24,10 +25,10 @@
         "question": "How adaptable is the process to change?",
         "levels": {
           "level_1": "SMA is unable to adapt easily to changes to the goals and objectives. SMA is unable to provide timely information to stakeholders.",
-          "level_2": "SMA is able to develop and maintain goals and objectives with collaboration from Develop Agency Goals and Objectives other agencies that encourages flexibility.",
+          "level_2": "SMA is able to develop and maintain goals and objectives with collaboration from other agencies that encourages flexibility.",
           "level_3": "SMA develops and maintains goals and objectives with collaboration from other intrastate agencies. SMA quickly distributes modifications to policy to stakeholders.",
-          "level_4": "SMA develops and maintains goals and objectives with collaboration from other interstate agencies. SMA distributes in near- real time modifications to policy to stakeholders.",
-          "level_5": "SMA develops and maintains goals and objectives with collaboration from other intrastate agencies. SMA distributes in near- real time modifications to policy to stakeholders."
+          "level_4": "SMA develops and maintains goals and objectives with collaboration from other interstate agencies. SMA distributes in near-real time modifications to policy to stakeholders.",
+          "level_5": "SMA develops and maintains goals and objectives with collaboration from other intrastate agencies. SMA distributes in near-real time modifications to policy to stakeholders."
         }
       },
       {
@@ -46,7 +47,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of nationally recognized and state-specific standards. Develop Agency Goals and Objectives",
+          "level_2": "SMA applies a mix of nationally recognized and state-specific standards.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for intrastate exchange of information.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for clinical and interstate information exchange.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national exchange of information."
@@ -68,7 +69,7 @@
         "question": "How timely is the end-to-end process?",
         "levels": {
           "level_1": "Process meets threshold or mandated requirements for timeliness (i.e., the process achieves results within the time specified by law or regulation). SMA develops goals and objectives in an ad hoc manner. Time to complete process is indeterminate.",
-          "level_2": "Process timeliness improves through use of automation. SMA conducts more frequent review and modification to goals and objectives. The process completes in less than one (1) month. Develop Agency Goals and Objectives",
+          "level_2": "Process timeliness improves through use of automation. SMA conducts more frequent review and modification to goals and objectives. The process completes in less than one (1) month.",
           "level_3": "Timeliness improves via state and federal collaboration, use of information sharing, standards, and regional information exchange hubs. SMA develops, modifies, tracks, and report on goals and objectives in generally less than one (1) week.",
           "level_4": "Information is available in near real time. Processes that use clinical information result in immediate action, response, and results. SMA has interstate interoperability, which further improves timeliness over Level 3.",
           "level_5": "Information is available in real time. Processes improve further through connectivity with other States and with federal agencies. Most processes execute at the point of service. Results are almost immediate."
@@ -90,7 +91,7 @@
         "question": "How accessible is the information in the process?",
         "levels": {
           "level_1": "SMA stores information in disparate systems including paper storage and obtains information manually. Goals and objectives are vague and incomplete.",
-          "level_2": "Goals and objectives are up-to-date and more accurate. SMA stores information in disparate systems, but automation and standards increase Develop Agency Goals and Objectives accessibility over Level 1.",
+          "level_2": "Goals and objectives are up-to-date and more accurate. SMA stores information in disparate systems, but automation and standards increase accessibility over Level 1.",
           "level_3": "SMA obtains information easily and exchanges with intrastate agencies and entities based on MITA Framework and industry standards. Goals and objectives are central, up-to-date and accurate. Accessibility is greater than Level 2.",
           "level_4": "SMA obtains information easily and exchanges with interstate agencies and entities. Accessibility is greater than Level 3.",
           "level_5": "SMA obtains information easily and exchanges with national agencies and entities. Accessibility is greater than Level 4."
@@ -101,7 +102,7 @@
         "question": "What is the cost of the process compared to the benefits of its results?",
         "levels": {
           "level_1": "High relative cost due to low number of automatic, standardized tasks.",
-          "level_2": "Automation improves process and allows focus on exception resolution, improving cost effectiveness ratio over Level 1. Develop Agency Goals and Objectives",
+          "level_2": "Automation improves process and allows focus on exception resolution, improving cost effectiveness ratio over Level 1.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards further improving cost effectiveness ratio over Level 2.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for clinical and interstate information exchange. SMA increases cost effectiveness ratio over Level 3.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national (and international) information exchange. SMA increases cost effectiveness ratio over level 4."
@@ -123,7 +124,7 @@
         "question": "How accurate are the results of the process?",
         "levels": {
           "level_1": "Manual processes result in greater opportunity for human error. Accuracy is low.",
-          "level_2": "Automation reduce error and improve accuracy above Level 1. Develop Agency Goals and Objectives",
+          "level_2": "Automation reduce error and improve accuracy above Level 1.",
           "level_3": "SMA adopts MITA Framework, industry standards and information exchange with intrastate agencies and entities improving accuracy to 90% or higher.",
           "level_4": "SMA adopts MITA Framework, industry standards and information exchange with interstate agencies and entities improving accuracy to 98% or higher.",
           "level_5": "SMA adopts MITA Framework, industry standards and information exchange with national agencies and entities improving accuracy to 98% or higher."

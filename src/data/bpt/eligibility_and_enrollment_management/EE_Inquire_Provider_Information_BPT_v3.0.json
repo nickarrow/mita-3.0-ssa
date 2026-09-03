@@ -6,6 +6,7 @@
   "sub_category": "Provider Enrollment",
   "process_name": "Inquire Provider Information",
   "process_code": "EE",
+  "process_id": "EE_INQUIRE_PROVIDER_INFORMATION",
   "process_details": {
     "description": "The Inquire Provider Information business process receives requests for provider enrollment verification from authorized providers, programs or business associates; performs the inquiry, and prepares the response information for the Send Outbound Transaction.",
     "trigger_events": {
@@ -17,8 +18,7 @@
       ]
     },
     "results": [
-      "Provider enrollment verification response that may include information such as",
-      "enrollment start/end dates, provider type, and specific specialties provided.",
+      "Provider enrollment verification response that may include information such as enrollment start/end dates, provider type, and specific specialties provided.",
       "If applicable, response sent with eligibility inquiry information via AVRS.",
       "Tracking information as needed for measuring performance and business activity monitoring."
     ],
@@ -33,21 +33,7 @@
     ],
     "diagrams": [],
     "shared_data": [
-      "Provider data store including: ",
-      "Provider demographics ",
-      "Provider network ",
-      "Contract information o",
-      "Type o",
-      "Specialty o",
-      "Enrolled Program o",
-      "Jurisdiction o",
-      "Payment Information ",
-      "Provider taxonomy ",
-      "Service Location Information o",
-      "Category of Service o",
-      "Services o",
-      "Limitations o",
-      "Business Arrangement"
+      "Provider data store including:\n  - Provider demographics\n  - Provider network\n  - Contract information\n    - Type\n    - Specialty\n    - Enrolled Program\n    - Jurisdiction\n    - Payment Information\n  - Provider taxonomy\n  - Service Location Information\n    - Category of Service\n    - Services\n    - Limitations\n    - Business Arrangement"
     ],
     "predecessor_processes": [
       "Receive Inbound Transaction"

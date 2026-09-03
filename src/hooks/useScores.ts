@@ -34,11 +34,17 @@ export function useScores() {
 
     // Get all ratings for progress calculation
     const allRatings = await db.ratings.toArray();
-    const ratingsByAssessment = new Map<string, number>();
+    // Keyed by assessment, holding the answered question indices rather than a count,
+    // so the range filter below can exclude rows pointing past the end of a
+    // capability's question list. Such a row is unreachable in the UI, so counting it
+    // let an invisible answer stand in for a real unanswered one and report a
+    // capability as complete when it is not.
+    const answeredIndicesByAssessment = new Map<string, number[]>();
     for (const rating of allRatings) {
       if (rating.level !== null) {
-        const count = ratingsByAssessment.get(rating.capabilityAssessmentId) || 0;
-        ratingsByAssessment.set(rating.capabilityAssessmentId, count + 1);
+        const indices = answeredIndicesByAssessment.get(rating.capabilityAssessmentId) ?? [];
+        indices.push(rating.questionIndex);
+        answeredIndicesByAssessment.set(rating.capabilityAssessmentId, indices);
       }
     }
 
@@ -74,7 +80,9 @@ export function useScores() {
       const totalQuestions = capability?.bcm.maturity_model.capability_questions.length ?? 0;
       const progressFor = (assessmentId: string) => {
         if (totalQuestions === 0) return 0;
-        const answeredCount = ratingsByAssessment.get(assessmentId) || 0;
+        const answeredCount = (answeredIndicesByAssessment.get(assessmentId) ?? []).filter(
+          (index) => index < totalQuestions
+        ).length;
         return Math.round((Math.min(answeredCount, totalQuestions) / totalQuestions) * 100);
       };
 

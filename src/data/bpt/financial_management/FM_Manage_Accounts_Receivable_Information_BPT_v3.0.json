@@ -6,6 +6,7 @@
   "sub_category": "Accounts Receivable Management",
   "process_name": "Manage Accounts Receivable Information",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_ACCOUNTS_RECEIVABLE_INFORMATION",
   "process_details": {
     "description": "The Manage Accounts Receivable Information business process is responsible for all operational aspects of collecting money owed to the State Medicaid Agency (SMA). Activities in this business process comply with CFR 45, Cash Management Improvement Act (CMIA), Governmental Accounting Standards Board (GASB) standards and Generally Accepted Accounting Principles (GAAP). Activities included in this business process can be as follows:\n• Periodic reconciliations between the State Medicaid Enterprise and the state accounting system.\n• Assign account coding to transactions processed in State Medicaid Enterprise.\n• Process accounts receivable invoicing (estate recovery, co-pay, drug rebate, recoupment, Third-Party Liability (TPL) recovery, and member premiums).\n• Manage cash receipting process.\n\n• Manage payment-offset process to collect receivables.\n• Respond to inquiries concerning accounts receivable.\nNOTE: States use a variety of solutions including outsourcing to another department or use of a Commercial Off-the-Shelf (COTS) package.",
     "trigger_events": {

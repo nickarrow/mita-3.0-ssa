@@ -6,6 +6,7 @@
   "sub_category": "Member Enrollment",
   "process_name": "Enroll Member",
   "process_code": "EE",
+  "process_id": "EE_ENROLL_MEMBER",
   "maturity_model": {
     "capability_questions": [
       {
@@ -25,7 +26,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of HIPAA and state- specific standards.",
+          "level_2": "SMA applies a mix of HIPAA and state-specific standards.",
           "level_3": "SMA adopts national standards (e.g. HIPAA, Administrative Simplification, Health Information Technology Enrollment and Standards Protocols) for exchange of enrollment information.",
           "level_4": "SMA adopts industry standards (e.g., HIPAA, Administrative Simplification, Health Information Technology Enrollment and Standards Protocols), and actively participates in the ongoing development of related standards.",
           "level_5": "SMA adopts industry standards e.g., HIPAA, Administrative Simplification, Health Information Technology Enrollment and Standards Protocols), actively participates in the ongoing development of standards, and works with other States and federal agencies to develop and adopt standards related to enrollment process, not limited to data exchange."
@@ -49,8 +50,8 @@
           "level_1": "SMA sometimes meets threshold or mandated requirements for timeliness (e.g., the process achieves results within the time specified by law, or regulation). SMA takes multiple weeks to complete paper handling, and does not have the capacity to process enrollments without human intervention.",
           "level_2": "SMA improves timeliness through increased use of automation. Timeliness always meets legal requirements. To the extent that SMA requires paper, SMA takes multiple weeks to complete paper handling.",
           "level_3": "SMA improves timeliness through increased use of automation. When an individual utilizes the electronic delivery system and plan selection process, SMA notifies delivery system or plan in overnight batch processing. SMA takes multiple days to complete paper handling.",
-          "level_4": "SMA further improves timeliness through increased use of automation. When an individual utilizes the electronic delivery system and plan selection process, SMA notifies delivery system or plan in near real- time. SMA processes all paper requests within 72 hours of receipt.",
-          "level_5": "SMA further improves timeliness through increased use of automation. When an individual utilizes the electronic delivery system and plan selection process, SMA notifies delivery system or plan in near real- time and provides temporary ID card. SMA processes all paper requests within 24 hours of receipt."
+          "level_4": "SMA further improves timeliness through increased use of automation. When an individual utilizes the electronic delivery system and plan selection process, SMA notifies delivery system or plan in near real-time. SMA processes all paper requests within 72 hours of receipt.",
+          "level_5": "SMA further improves timeliness through increased use of automation. When an individual utilizes the electronic delivery system and plan selection process, SMA notifies delivery system or plan in near real-time and provides temporary ID card. SMA processes all paper requests within 24 hours of receipt."
         }
       },
       {
@@ -70,9 +71,9 @@
         "levels": {
           "level_1": "SMA stores information in disparate systems including paper storage. Systems experience extended scheduled and unscheduled downtime.",
           "level_2": "SMA stores information in disparate systems, but use of electronic information, automation, and HIPAA standards increase accessibility over Level 1. Systems experience extended scheduled and unscheduled downtime.",
-          "level_3": "SMA easily exchanges information with delivery systems and plans based on MITA Framework and industry standards. SMA maintains individual information in an electronic account that is accessible to the individual for review and self- service. Self-service for non-MAGI populations is limited. Electronic account is accessible 24/7 through the portal except during state- approved maintenance timeframes.",
-          "level_4": "SMA easily exchanges information with delivery systems and plans based on MITA Framework and industry standards. SMA maintains individual information in an electronic account that is accessible to the individual for review and self- service. Self-service for non-MAGI populations has a greater level of automation then level 3. Electronic account is accessible 24/7 through the portal except during state- approved maintenance timeframes.",
-          "level_5": "SMA easily exchanges information with delivery systems and plans based on MITA Framework and industry standards. SMA maintains individual information in an electronic account that is accessible to the individual for review and self- service. Electronic account is accessible 24/7 through the portal except during state- approved maintenance timeframes."
+          "level_3": "SMA easily exchanges information with delivery systems and plans based on MITA Framework and industry standards. SMA maintains individual information in an electronic account that is accessible to the individual for review and self-service. Self-service for non-MAGI populations is limited. Electronic account is accessible 24/7 through the portal except during state-approved maintenance timeframes.",
+          "level_4": "SMA easily exchanges information with delivery systems and plans based on MITA Framework and industry standards. SMA maintains individual information in an electronic account that is accessible to the individual for review and self-service. Self-service for non-MAGI populations has a greater level of automation then level 3. Electronic account is accessible 24/7 through the portal except during state-approved maintenance timeframes.",
+          "level_5": "SMA easily exchanges information with delivery systems and plans based on MITA Framework and industry standards. SMA maintains individual information in an electronic account that is accessible to the individual for review and self-service. Electronic account is accessible 24/7 through the portal except during state-approved maintenance timeframes."
         }
       },
       {

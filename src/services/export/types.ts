@@ -69,6 +69,12 @@ export interface AssessmentExport {
   status: "in_progress" | "finalized";
   tags: string[];
   blueprintVersion: string;
+  /**
+   * Blueprint extraction this record's question indices refer to. Absent on files
+   * written before revisions were tracked, which is itself the signal that its
+   * indices predate the 2026-09-02 corrections.
+   */
+  blueprintRevision?: string;
   createdAt: string;
   updatedAt: string;
   finalizedAt?: string;
@@ -83,6 +89,16 @@ export interface ExportData {
   exportDate: string;
   appVersion: string;
   blueprintVersion: string;
+  /**
+   * Blueprint extraction this file was produced against, used as the fallback when
+   * an individual record carries no revision of its own.
+   *
+   * `exportVersion` is deliberately not bumped for this field: it is additive and
+   * optional, and `SUPPORTED_EXPORT_VERSIONS` is an equality check with no
+   * migration layer, so bumping it would make this build unable to read every
+   * backup users already have.
+   */
+  blueprintRevision?: string;
   scope: ExportScope;
   scopeDetails?: {
     businessArea?: string;

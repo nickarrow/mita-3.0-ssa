@@ -6,6 +6,7 @@
   "sub_category": "Accounts Receivable Management",
   "process_name": "Manage Provider Recoupment",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_PROVIDER_RECOUPMENT",
   "process_details": {
     "description": "The Manage Provider Recoupment business process manages the determination and recovery of overpayments to providers. The State Medicaid Agency (SMA) initiates provider recoupment upon the discovery of an overpayment, for example, as the result of a provider utilization review audit, receipt of a claims adjustment request, or for situations where provider owes monies to the SMA due to fraud or abuse.\nThe business thread begins with discovering the overpayment, then retrieving claims payment information, initiating the recoupment request, or adjudicating a claims adjustment request, and notifying the provider of audit results via the Manage Provider Communication business process, applying recoupments in the system via the Manage Accounts Receivable Information business process, and monitoring payment history until the provider satisfies the repayment.\nThe SMA collects recoupments via check sent by the provider or credited against future payments for services.",
     "trigger_events": {

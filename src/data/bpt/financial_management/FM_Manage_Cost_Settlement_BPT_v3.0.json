@@ -6,6 +6,7 @@
   "sub_category": "Accounts Receivable Management",
   "process_name": "Manage Cost Settlement",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_COST_SETTLEMENT",
   "process_details": {
     "description": "The Manage Cost Settlement business process begins with the submission of the provider’s annual Medicare Cost Report to Medicaid. Staff makes inquires for paid, denied, and adjusted claims information in the Claims data store. The business process includes:\n• Reviewing provider costs and establishing a basis for cost settlements or compliance reviews.\n• Receiving audited Medicare Cost Report from intermediaries.\n• Capturing the necessary provider cost settlement information.\n• Calculating the final annual cost settlement based on the Medicare Cost Report.\n• Generating the information for notification to the provider.\n• Verifying the information is correct.\n• Producing the notifications to providers.\n• Establishing interim reimbursement rates.\nNOTE: In some States, the State Medicaid Agency (SMA) may make cost settlements through the Apply Mass Adjustment business process.",
     "trigger_events": {

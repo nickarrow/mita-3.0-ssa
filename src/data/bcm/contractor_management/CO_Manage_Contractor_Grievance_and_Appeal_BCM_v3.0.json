@@ -6,6 +6,7 @@
   "sub_category": "Contractor Support",
   "process_name": "Manage Contractor Grievance and Appeal",
   "process_code": "CO",
+  "process_id": "CO_MANAGE_CONTRACTOR_GRIEVANCE_AND_APPEAL",
   "maturity_model": {
     "capability_questions": [
       {
@@ -21,7 +22,7 @@
       },
       {
         "category": "Business Capability Descriptions",
-        "question": "How central is the grievance and appeals process? appeals process?",
+        "question": "How central is the grievance and appeals process?",
         "levels": {
           "level_1": "Disparate programs file, manage, and resolve grievances and appeals from contractors. This contributes to inconsistent application of relevant laws and administrative policies inhibiting performance monitoring. Contractors have difficulty finding the right door for filing grievances and appeals.",
           "level_2": "Agencies begin to centralize or standardize the administration of the process to achieve economies of scale, thereby increasing coordination and improving consistency of application of business rules and appeals disposed. SMA clearly identifies the policy and procedures for filing grievances and appeals. SMA establishes a Review Board to review cases.",
@@ -80,7 +81,7 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
           "level_2": "Nationally recognized standards improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
           "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
           "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }

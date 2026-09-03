@@ -6,6 +6,7 @@
   "sub_category": "Claims Adjudication",
   "process_name": "Calculate Spend-Down Amount",
   "process_code": "OM",
+  "process_id": "OM_CALCULATE_SPEND_DOWN_AMOUNT",
   "process_details": {
     "description": "A person that is not eligible for medical coverage when they have income above the health plan standards may become eligible for coverage through a process called spend-down (see Determine Member Eligibility business process). The Calculate Spend-Down Amount business process is responsible for tracking spend-down amounts and determining if a member meets its responsibility through the submission of medical claims. The Process Claim business process automatically accounts for the spend-down amount during adjudication. Once the member has met the spend-down obligation, a modification of eligibility status allows Medicaid payments to begin and/or resume. This typically occurs in situations where a member has a chronic condition and is consistently above the resource levels, but it may also occur in other situations. The Calculate Spend-Down Amount business process begins with the receipt of member’s health plan information from Enroll Member business process that requires a predetermined amount the member will be financially responsible for prior to Medicaid payment for any medical services.",
     "trigger_events": {
@@ -18,7 +19,6 @@
       "Member has met spend-down obligation.",
       "Alert sent to Manage Member Information with spend-down information.",
       "Sent notification that Member has met spend-down obligation to member via Manage Applicant and Member Communication business process.",
-      "OM Claims Adjudication Calculate Spend-Do",
       "Tracking information as needed for measuring performance and business activity monitoring."
     ],
     "process_steps": [

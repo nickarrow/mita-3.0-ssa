@@ -6,6 +6,7 @@
   "sub_category": "Contractor Support",
   "process_name": "Perform Contractor Outreach",
   "process_code": "CO",
+  "process_id": "CO_PERFORM_CONTRACTOR_OUTREACH",
   "maturity_model": {
     "capability_questions": [
       {
@@ -25,7 +26,7 @@
         "levels": {
           "level_1": "Functionally, linguistically, culturally, and competency appropriate outreach and education materials are lacking because they are difficult and costly to produce.",
           "level_2": "Outreach material is functionally, linguistically, culturally, and competency appropriate, but at great expense. SMA limits outreach material by state defined parameters (e.g., only two (2) languages used).",
-          "level_3": "SMA automates process to the full extent possible across the intrastate. Use of electronic communications makes provision of functionally, linguistically, culturally, and competency appropriate outreach material more cost- effective.",
+          "level_3": "SMA automates process to the full extent possible across the intrastate. Use of electronic communications makes provision of functionally, linguistically, culturally, and competency appropriate outreach material more cost-effective.",
           "level_4": "SMA automates process to the full extent possible across the interstate.",
           "level_5": "SMA automates process to the full extent possible across the nation."
         }
@@ -35,7 +36,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of HIPAA and state- specific standards.",
+          "level_2": "SMA applies a mix of HIPAA and state-specific standards.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for intrastate exchange of information.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for clinical and interstate information exchange.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national exchange of information."
@@ -65,7 +66,7 @@
       },
       {
         "category": "Business Capability Quality: Timeliness of Process",
-        "question": "How timely is the process End-to- End?",
+        "question": "How timely is the process End-to-End?",
         "levels": {
           "level_1": "Process meets threshold or mandated requirements for timeliness (i.e., the process achieves results within the time specified by law or regulation). Timeliness depends on the type of outreach. It is ad hoc in nature. Outreach activity duration is relatively lengthy.",
           "level_2": "Process timeliness improves through use of automation and web portal distribution of information. Timeliness exceeds legal requirements.",
@@ -80,9 +81,9 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
           "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy is 95% or higher.",
-          "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision- making is automatic using regional standardized business rules definitions. Accuracy is 95% or higher.",
-          "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision- making is automatic using national standardized business rules definitions. Accuracy is 95% or higher."
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy is 95% or higher.",
+          "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy is 95% or higher.",
+          "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision-making is automatic using national standardized business rules definitions. Accuracy is 95% or higher."
         }
       },
       {
@@ -105,6 +106,17 @@
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards further improving cost effectiveness ratio over Level 2.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for interstate information exchange. SMA increases cost effectiveness ratio over Level 3.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national (and international) information exchange. SMA increases cost effectiveness ratio over level 4."
+        }
+      },
+      {
+        "category": "Business Capability Quality: Effort to Perform; Efficiency",
+        "question": "How efficient is the process.",
+        "levels": {
+          "level_1": "Process is labor intensive. There is wasted effort or expense to accomplish tasks. Process meets minimum state process guidelines and SMA performance standards. Efficiency is low.",
+          "level_2": "Automation and state standards increase productivity. Efficiency is higher than Level 1.",
+          "level_3": "SMA adopts MITA Framework, industry standards and information exchange with intrastate agencies and entities improving efficiency to 95% or higher.",
+          "level_4": "SMA adopts MITA Framework, industry standards and information exchange with interstate agencies and entities improving efficiency to 98% or higher.",
+          "level_5": "SMA adopts MITA Framework, industry standards and information exchange with national agencies and entities improving efficiency to 98% or higher."
         }
       },
       {

@@ -6,6 +6,7 @@
   "sub_category": "Payment and Reporting",
   "process_name": "Manage Data",
   "process_code": "OM",
+  "process_id": "OM_MANAGE_DATA",
   "process_details": {
     "description": "The Manage Data business process is responsible for the preparation of the data sets and delivery to federal agencies (e.g., Centers for Medicare & Medicaid Services (CMS), Social Security Administration (SSA).) Information exchange may include extraction of Medicaid and CHIP Business Information and Solutions (MACBIS) information needs (i.e., fee-for-services, managed care, eligibility and provider information). The Manage Data business process includes activity to extract the information, transform to the required format, encrypt for security, and load the electronic file to the target destination. The uses for the information include:\n• Research and evaluation of health care activities.\n• Staff can forecast the utilization and expenditures for a program.\n• Staff can analyze policy alternatives.\n• State and federal agencies can respond to congressional inquiries.\n• Matches to other health related databases.",
     "trigger_events": {

@@ -6,6 +6,7 @@
   "sub_category": "Case Management",
   "process_name": "Establish Case",
   "process_code": "CM",
+  "process_id": "CM_ESTABLISH_CASE",
   "maturity_model": {
     "capability_questions": [
       {
@@ -24,7 +25,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of HIPAA and state- specific standards.",
+          "level_2": "SMA applies a mix of HIPAA and state-specific standards.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for state Health Information Exchange (HIE).",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for clinical and interstate information exchange of information to a regional Health Information Exchange (HIE).",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national exchange of information via the NwHIN."
@@ -58,9 +59,9 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
           "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "Automation of information collection increases the reliability of a state Health Information Exchange (HIE)’s internal information. External sources of information use MITA Framework for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy is 99% or higher.",
+          "level_3": "Automation of information collection increases the reliability of a state Health Information Exchange (HIE)’s internal information. External sources of information use MITA Framework for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy is 99% or higher.",
           "level_4": "Automation of information collection increases the reliability of the regional SMA internal and external sources of information. SMA adopts MITA Framework for information exchange by regional Health Information Exchanges (HIE). Decision-making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
-          "level_5": "SMA adopts MITA Framework for national information exchange. Decision- making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
+          "level_5": "SMA adopts MITA Framework for national information exchange. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }
       },
       {

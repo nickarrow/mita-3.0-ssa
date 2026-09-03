@@ -6,8 +6,9 @@
   "sub_category": "Member Enrollment",
   "process_name": "Inquire Member Eligibility",
   "process_code": "EE",
+  "process_id": "EE_INQUIRE_MEMBER_ELIGIBILITY",
   "process_details": {
-    "description": "The Inquire Member Eligibility business process receives requests for eligibility verification from Health Insurance Marketplace, authorized providers, programs or business associates; performs the inquiry; and prepares the Eligibility, Coverage or Benefit Information response. The response information includes but is not limited to benefit status, explanation of benefits, coverage, effective dates, and amount for co- insurance, co-pays, deductibles, exclusions and limitations. The information may include details about the Medicaid health plans, health benefits, and the provider(s) from which the member may receive covered services.\nNOTE: This business process does not include Member requests for eligibility verification. Member initiated requests are handled by the Manage Member Information and or Manage Applicant and Member Communication business processes.",
+    "description": "The Inquire Member Eligibility business process receives requests for eligibility verification from Health Insurance Marketplace, authorized providers, programs or business associates; performs the inquiry; and prepares the Eligibility, Coverage or Benefit Information response. The response information includes but is not limited to benefit status, explanation of benefits, coverage, effective dates, and amount for co-insurance, co-pays, deductibles, exclusions and limitations. The information may include details about the Medicaid health plans, health benefits, and the provider(s) from which the member may receive covered services.\nNOTE: This business process does not include Member requests for eligibility verification. Member initiated requests are handled by the Manage Member Information and or Manage Applicant and Member Communication business processes.",
     "trigger_events": {
       "environment_based": [],
       "interaction_based": [

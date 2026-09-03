@@ -19,6 +19,7 @@ import type {
 } from "./types";
 import { generatePdfReport } from "./pdfExport";
 import { EXPORT_VERSION } from "../../constants/export";
+import { BLUEPRINT_REVISION } from "../../constants/blueprint";
 
 /** App version */
 const APP_VERSION = "3.0";
@@ -121,6 +122,7 @@ async function collectExportData(options: ExportOptions): Promise<ExportData> {
     status: a.status,
     tags: a.tags,
     blueprintVersion: a.blueprintVersion,
+    blueprintRevision: a.blueprintRevision,
     createdAt: a.createdAt.toISOString(),
     updatedAt: a.updatedAt.toISOString(),
     finalizedAt: a.finalizedAt?.toISOString(),
@@ -148,6 +150,7 @@ async function collectExportData(options: ExportOptions): Promise<ExportData> {
     exportDate: new Date().toISOString(),
     appVersion: APP_VERSION,
     blueprintVersion: BLUEPRINT_VERSION,
+    blueprintRevision: BLUEPRINT_REVISION,
     scope,
     scopeDetails,
     // Persist the state name the user supplied. Previously it was collected by
@@ -232,6 +235,7 @@ export async function exportAsZip(
     exportDate: exportData.exportDate,
     appVersion: APP_VERSION,
     blueprintVersion: BLUEPRINT_VERSION,
+    blueprintRevision: BLUEPRINT_REVISION,
     scope: options.scope,
     stateName: options.stateName,
     contents: {

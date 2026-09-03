@@ -6,6 +6,7 @@
   "sub_category": "Standards Management",
   "process_name": "Manage Business Relationship Information",
   "process_code": "BR",
+  "process_id": "BR_MANAGE_BUSINESS_RELATIONSHIP_INFORMATION",
   "process_details": {
     "description": "The Manage Business Relationship Information business process maintains the agreement between the State Medicaid Agency (SMA) and the other party such as the intrastate, interstate, and federal agencies. This includes routine modifications to required information such as authorized signers, addresses, terms of agreement, Key Performance Indicator (KPI), and data exchange standards.",
     "trigger_events": {

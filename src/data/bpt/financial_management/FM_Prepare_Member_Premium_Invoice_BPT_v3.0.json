@@ -6,6 +6,7 @@
   "sub_category": "Accounts Receivable Management",
   "process_name": "Prepare Member Premium Invoice",
   "process_code": "FM",
+  "process_id": "FM_PREPARE_MEMBER_PREMIUM_INVOICE",
   "process_details": {
     "description": "States may implement member cost sharing through the collection of premiums for medical coverage provided under Medicaid and Children’s Health Insurance Program (CHIP). The State Medicaid Agency (SMA) formulates the premium amounts on factors such as family size, income, age, benefit plan, and in some cases the selected health plan, if covered under managed care, during eligibility determination and enrollment. The Prepare Member Premium Invoice business process begins with a timetable (usually monthly) for scheduled invoicing. The business process includes:\n• Retrieving member premium information.\n• Performing required information manipulation according to business rules.\n• Formatting the results into required output information.\n• Sending member premium invoice alert to the Manage Applicant and Member Communication business process.\nNOTE: This business process does not include sending the member premium invoice Electronic Data Interchange (EDI) transaction.",
     "trigger_events": {
@@ -43,7 +44,7 @@
       "Manage Accounts Receivable Information",
       "Manage Accounts Receivable Funds"
     ],
-    "constraints": "The Prepare Member Premium Invoice business process will conform to the state- specific requirements.",
+    "constraints": "The Prepare Member Premium Invoice business process will conform to the state-specific requirements.",
     "failures": [
       "Member premium information not available."
     ],

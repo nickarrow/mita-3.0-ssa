@@ -6,6 +6,7 @@
   "sub_category": "Member Enrollment",
   "process_name": "Determine Member Eligibility",
   "process_code": "EE",
+  "process_id": "EE_DETERMINE_MEMBER_ELIGIBILITY",
   "maturity_model": {
     "capability_questions": [
       {
@@ -14,7 +15,7 @@
         "levels": {
           "level_1": "All applications require human involvement. All verifications require applicants to submit paper documentation.",
           "level_2": "All applications require human involvement; staff accesses verification information from electronic data sources.",
-          "level_3": "SMA adjudicates modified adjusted gross income (MAGI) eligibility for the majority of applicants without human involvement. SMA uses a well- developed automated interface with the Marketplace and CHIP agency. SMA uses interface to transmit case information without human involvement. SMA automates verification for MAGI eligibility and integrates into online application. SMA automates verification for MAGI population to the maximum extent possible. SMA manually executes verification for non-MAGI eligibility.",
+          "level_3": "SMA adjudicates modified adjusted gross income (MAGI) eligibility for the majority of applicants without human involvement. SMA uses a well-developed automated interface with the Marketplace and CHIP agency. SMA uses interface to transmit case information without human involvement. SMA automates verification for MAGI eligibility and integrates into online application. SMA automates verification for MAGI population to the maximum extent possible. SMA manually executes verification for non-MAGI eligibility.",
           "level_4": "SMA adjudicates MAGI eligibility for the majority of applicants without human involvement. SMA participates in a shared eligibility service with the Marketplace and CHIP agency that eliminates the need for any interfaces to support eligibility based on MAGI. SMA automates verification for MAGI population to the maximum extent possible. SMA manually executes verification for non-MAGI eligibility.",
           "level_5": "SMA adjudicates MAGI eligibility for the majority of applicants without human involvement. SMA participates in a shared eligibility service with the Marketplace and CHIP agency that accommodates MAGI and non-MAGI eligibility. SMA only utilizes manual processes when electronic verification is not possible."
         },
@@ -25,7 +26,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of national (e.g. HIPAA) and state- specific standards.",
+          "level_2": "SMA applies a mix of national (e.g. HIPAA) and state-specific standards.",
           "level_3": "SMA adopts national standards (e.g. HIPAA, Administrative Simplification, Health Information Technology Enrollment and Standards Protocols) for exchange of eligibility information.",
           "level_4": "SMA adopts national standards (e.g. HIPAA, Administrative Simplification, Health Information Technology Enrollment and Standards Protocols) and actively participates in the ongoing development of related standards.",
           "level_5": "SMA adopts national standards (e.g. HIPAA, Administrative Simplification, Health Information Technology Enrollment and Standards Protocols), actively participates in the ongoing development of related standards, and works with other States and Federal Government to develop and adopt standards related to eligibility process, not limited to data exchange."
@@ -37,7 +38,7 @@
         "levels": {
           "level_1": "Very little collaboration occurs with other agencies to standardize information exchange or business tasks.",
           "level_2": "The SMA collaborates with other agencies and entities to adopt HIPAA standards and EDI transactions.",
-          "level_3": "SMA adopts a well- developed data sharing arrangement with the Marketplace and CHIP agency that includes a shared understanding of workflow and a process for issue resolution. The SMA documents the arrangement in an agreement. The SMA maintains effective relationships with state and federal data sources to support verification.",
+          "level_3": "SMA adopts a well-developed data sharing arrangement with the Marketplace and CHIP agency that includes a shared understanding of workflow and a process for issue resolution. The SMA documents the arrangement in an agreement. The SMA maintains effective relationships with state and federal data sources to support verification.",
           "level_4": "SMA participates in a joint governance effort with the Marketplace and CHIP agency to manage the shared eligibility service and to conduct joint planning and population management efforts. The SMA documents the arrangement in an agreement that is dynamic and updated as conditions change.",
           "level_5": "SMA participates in a joint governance effort with the Marketplace and CHIP agency to manage the shared eligibility service and to conduct joint planning and population management efforts. The SMA documents the arrangement in an agreement that is dynamic and updated as conditions change. The SMA works with state and national data sources to establish data exchanges and supporting activities with programs in other States."
         }
@@ -50,7 +51,7 @@
           "level_2": "SMA improves timeliness through use of automation. Timeliness always meets requirements. To the extent that SMA requires paper, it takes multiple weeks to complete paper handling.",
           "level_3": "SMA improves timeliness through increased use of automation. When electronic data is available and consistent with an applicant’s attestation, applicants who submit the single, streamlined application electronically receive a MAGI determination in near real-time. When necessary, the SMA also transmits electronic application information to agencies administering other insurance affordability programs in near real-time. SMA accepts scanned documents, but takes multiple days or weeks to adjudicate documentation where necessary.",
           "level_4": "SMA further improves timeliness through increased use of automation. When electronic data is available and consistent with an applicant’s attestation, applicants who submit the single, streamlined application electronically receive a MAGI determination in near real-time. SMA decreases the time required for determinations that involve other insurance affordability programs using a shared eligibility service. SMA accepts scanned documents, and adjudicates all documents for MAGI-based eligibility within 72 hours of receipt, which further improves timeliness over Level 3.",
-          "level_5": "SMA further improves timeliness through increased use of automation. When electronic data is available and consistent with an applicant’s attestation, applicants who submit the single, streamlined application electronically receive a MAGI determination in near real-time. SMA decreases the time required for determinations that involve other insurance affordability programs or non- MAGI eligibility using a shared eligibility service. SMA accepts scanned documents, and adjudicates all documents for MAGI-based eligibility within 24 hours of receipt, and minimizes the time required to adjudicate documents for non- MAGI eligibility."
+          "level_5": "SMA further improves timeliness through increased use of automation. When electronic data is available and consistent with an applicant’s attestation, applicants who submit the single, streamlined application electronically receive a MAGI determination in near real-time. SMA decreases the time required for determinations that involve other insurance affordability programs or non-MAGI eligibility using a shared eligibility service. SMA accepts scanned documents, and adjudicates all documents for MAGI-based eligibility within 24 hours of receipt, and minimizes the time required to adjudicate documents for non-MAGI eligibility."
         }
       },
       {
@@ -61,7 +62,7 @@
           "level_2": "SMA uses electronic information improving accuracy of information but the decision-making process may be erroneous or misleading and human involvement leads to incorrect information. Accuracy is higher than at Level 1.",
           "level_3": "SMA adopts automation of verification process and eligibility determination based on MAGI, which eliminates the vast majority of human error from the process. Accuracy challenges still exist in the manual processing of documentation, but SMA reduces errors as much as possible through standard operating procedures.",
           "level_4": "SMA adopts automation of verification process and eligibility determination based on MAGI, which eliminates the vast majority of human error from the process. SMA uses shared eligibility service to eliminate inaccuracy in application of rules across insurance affordability programs. Accuracy challenges still exist in the manual processing of documentation, but SMA reduces errors as much as possible through standard operating procedures and increased reliance on electronic data.",
-          "level_5": "SMA adopts automation of verification process and eligibility determination for MAGI and non- MAGI, which eliminates the vast majority of human error from the process. SMA uses shared eligibility service to eliminate inaccuracy in application of rules across insurance affordability programs. Accuracy challenges still exist in the manual processing of documentation, but SMA reduces errors as much as possible through standard operating procedures and maximum use of electronic data."
+          "level_5": "SMA adopts automation of verification process and eligibility determination for MAGI and non-MAGI, which eliminates the vast majority of human error from the process. SMA uses shared eligibility service to eliminate inaccuracy in application of rules across insurance affordability programs. Accuracy challenges still exist in the manual processing of documentation, but SMA reduces errors as much as possible through standard operating procedures and maximum use of electronic data."
         }
       },
       {
@@ -70,8 +71,8 @@
         "levels": {
           "level_1": "SMA stores information in disparate systems including paper storage and obtains information manually.Verification requires manual contact via telephone, facsimile, or mail. Systems experience extended scheduled and unscheduled downtime.",
           "level_2": "SMA stores information in disparate systems, but use of electronic information, automation and HIPAA standards increase accessibility over Level 1. Systems experience extended scheduled and unscheduled downtime.",
-          "level_3": "SMA easily exchanges and uses information from the Marketplace, CHIP, Basic Health Program (BHP), and local data sources upon request based on MITA Framework and industry standards. SMA maintains individual information in an electronic account that is accessible to the individual for review and self- service. Self-service for non-MAGI individuals is limited. Electronic account is available 24/7 through the portal except during state- approved maintenance timeframes.",
-          "level_4": "SMA has full access to Marketplace, CHIP, and BHP information through use of shared eligibility service. SMA maintains individual information in an electronic account shared across insurance affordability programs that is accessible to the individual for review and self-service. Self-service for non- MAGI individuals is limited. Electronic account is available 24/7 through the portal except during state- approved maintenance timeframes.",
+          "level_3": "SMA easily exchanges and uses information from the Marketplace, CHIP, Basic Health Program (BHP), and local data sources upon request based on MITA Framework and industry standards. SMA maintains individual information in an electronic account that is accessible to the individual for review and self-service. Self-service for non-MAGI individuals is limited. Electronic account is available 24/7 through the portal except during state-approved maintenance timeframes.",
+          "level_4": "SMA has full access to Marketplace, CHIP, and BHP information through use of shared eligibility service. SMA maintains individual information in an electronic account shared across insurance affordability programs that is accessible to the individual for review and self-service. Self-service for non-MAGI individuals is limited. Electronic account is available 24/7 through the portal except during state-approved maintenance timeframes.",
           "level_5": "SMA has full access to Marketplace, CHIP, and BHP information through use of shared eligibility service. SMA maintains individual information in an electronic account shared across insurance affordability programs that is accessible to the individual for review and self-service. Electronic account is 24/7 through the portal except during state-approved maintenance timeframes."
         }
       },
@@ -116,7 +117,7 @@
           "level_2": "Automation and standardization provides clear and useful information. Stakeholder satisfaction is greater than Level 1.",
           "level_3": "Automation of MAGI process and reliance on electronic verification improve stakeholder satisfaction to 80% or higher.",
           "level_4": "Use of shared eligibility service increases the efficiency, speed, and accuracy of the process, improving stakeholder satisfaction to 90% or higher.",
-          "level_5": "Use of shared eligibility service that incorporates non- MAGI eligibility increases the efficiency, speed, and accuracy of the process, improving stakeholder satisfaction to 98% or higher."
+          "level_5": "Use of shared eligibility service that incorporates non-MAGI eligibility increases the efficiency, speed, and accuracy of the process, improving stakeholder satisfaction to 98% or higher."
         }
       }
     ]

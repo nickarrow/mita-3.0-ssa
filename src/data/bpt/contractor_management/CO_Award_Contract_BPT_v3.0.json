@@ -6,8 +6,9 @@
   "sub_category": "Contract Management",
   "process_name": "Award Contract",
   "process_code": "CO",
+  "process_id": "CO_AWARD_CONTRACT",
   "process_details": {
-    "description": "The Award Contract business process utilizes requirements, advanced planning documents, requests for information, request for proposal, and sole source documents to request and receive proposals, veri Request for Proposal (RFP) or sole source requirements, apply evaluation criteria, designate contractor/vendor, post award information, entertain protests, resolve protests, negotiate contracts, and notify parties. In some States, this business process makes a recommendation of award instead of the actual award itself.\nNOTE: The State Medicaid Agency (SMA) requires billing agents, clearinghouses, or other alternate payee (as defined by the Secretary) to register.",
+    "description": "The Award Contract business process utilizes requirements, advanced planning documents, requests for information, request for proposal, and sole source documents to request and receive proposals, verify proposal content against Request for Proposal (RFP) or sole source requirements, apply evaluation criteria, designate contractor/vendor, post award information, entertain protests, resolve protests, negotiate contracts, and notify parties. In some States, this business process makes a recommendation of award instead of the actual award itself.\nNOTE: The State Medicaid Agency (SMA) requires billing agents, clearinghouses, or other alternate payee (as defined by the Secretary) to register.",
     "trigger_events": {
       "environment_based": [
         "Receive respondent’s proposal or approval for sole source."

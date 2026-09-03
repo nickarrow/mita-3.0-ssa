@@ -6,6 +6,7 @@
   "sub_category": "Authorization Determination",
   "process_name": "Authorize Service",
   "process_code": "CM",
+  "process_id": "CM_AUTHORIZE_SERVICE",
   "maturity_model": {
     "capability_questions": [
       {
@@ -24,7 +25,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards. SMA develops its own unique paper forms to support this process; there may be different forms per provider type.",
-          "level_2": "SMA applies a mix of HIPAA and state- specific standards. SMA adopts the Accredited Standards Committee (ASC) X12 277 Health Care Information Status Notification and 278 Health Care Services Review Information transactions. Web portals may support Authorize Service error free submissions with information validations, member- side edits, and pre- populated fields, thereby facilitating the process.",
+          "level_2": "SMA applies a mix of HIPAA and state-specific standards. SMA adopts the Accredited Standards Committee (ASC) X12 277 Health Care Information Status Notification and 278 Health Care Services Review Information transactions. Web portals may support error free submissions with information validations, member-side edits, and pre-populated fields, thereby facilitating the process.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for intrastate exchange of information.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for clinical and regional information exchange.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national information exchange."
@@ -36,9 +37,9 @@
         "levels": {
           "level_1": "Manual rule changes require many business days for approval and implementation.",
           "level_2": "Although there may be some automation of standardized business rules definitions, changes and maintenance are labor intensive.",
-          "level_3": "Adoption of the separation of standardized intrastate business rules definitions from core programming, available in both human and machine- readable formats.",
-          "level_4": "Adoption of the separation of regionally standardized business rules definitions from core programming, available in both human and machine- readable formats.",
-          "level_5": "Adoption of the separation of nationally standardized business rules definitions from core programming, available in both human and machine- readable formats."
+          "level_3": "Adoption of the separation of standardized intrastate business rules definitions from core programming, available in both human and machine-readable formats.",
+          "level_4": "Adoption of the separation of regionally standardized business rules definitions from core programming, available in both human and machine-readable formats.",
+          "level_5": "Adoption of the separation of nationally standardized business rules definitions from core programming, available in both human and machine-readable formats."
         }
       },
       {
@@ -69,9 +70,9 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making. Information",
           "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy is 95% or higher.",
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy is 95% or higher.",
           "level_4": "Automation of information collection increases the reliability of regional sources of information. SMA adopts MITA Framework for information exchange by regional agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
-          "level_5": "SMA adopts MITA Framework for national information exchange. Decision- making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
+          "level_5": "SMA adopts MITA Framework for national information exchange. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }
       },
       {

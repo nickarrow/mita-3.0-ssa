@@ -6,6 +6,7 @@
   "sub_category": "Payment and Reporting",
   "process_name": "Inquire Payment Status",
   "process_code": "OM",
+  "process_id": "OM_INQUIRE_PAYMENT_STATUS",
   "process_details": {
     "description": "The Inquire Payment Status business process begins with receiving an Accredited Standards Committee (ASC) X12 276 Health Care Claim Status Request transaction or a request for information received through other means such as email, paper, telephone, facsimile, web, or Automated Voice Response (AVR). The business process handles the request for the status of a specified claim(s), retrieves information from the claims payment history, and generates the response information. In addition, the business process formats the information into the ASC X12 277 Health Care Information Status Notification transaction, or other mechanism for responding, via the media used to communicate the inquiry, and sends claim status response via the Send Outbound Transaction.",
     "trigger_events": {

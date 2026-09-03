@@ -6,6 +6,7 @@
   "sub_category": "Provider Support",
   "process_name": "Manage Provider Communication",
   "process_code": "PM",
+  "process_id": "PM_MANAGE_PROVIDER_COMMUNICATION",
   "process_details": {
     "description": "The Manage Provider Communication business process receives requests for information, provides publications, and assistance from prospective and current providers’ communications (e.g., inquiries related to eligibility of provider, covered services, reimbursement, enrollment requirements). The State Medicaid Agency (SMA) may communicate information using a variety of methods such as email, mail, publication, mobile device, facsimile, telephone, web or Electronic Data Interchange (EDI). This business process includes the log, research, development, approval and delivery of routine or ad hoc messages.\nNOTE: Manage Provider Communication business process handles inquiry from prospective and current providers by providing assistance and responses to individual entities (i.e., bi-directional communication). Also included are scheduled communications such as program memorandum, notifications of pending expired provider eligibility, or formal program notifications such as the disposition of appeals. The Perform Provider Outreach business process targets both prospective and current provider populations for distribution of information about programs, policies, and health care issues.",
     "trigger_events": {

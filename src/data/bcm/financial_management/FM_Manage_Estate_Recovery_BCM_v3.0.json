@@ -6,6 +6,7 @@
   "sub_category": "Accounts Receivable Management",
   "process_name": "Manage Estate Recovery",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_ESTATE_RECOVERY",
   "maturity_model": {
     "capability_questions": [
       {
@@ -65,14 +66,15 @@
       },
       {
         "category": "Business Capability Quality: Timeliness of Process",
-        "question": "How timely is the end-to-end process? Note: Due to the variables involved in estate recovery process (i.e., wills, lawsuits, claims and other procedural steps inherent in the probate process), it is difficult to estimate the end-to-end timeline.",
+        "question": "How timely is the end-to-end process?",
         "levels": {
           "level_1": "Process meets threshold or mandated requirements for timeliness (i.e., the process achieves results within the time specified by law or regulation).",
           "level_2": "Process timeliness improves through use of automation. Timeliness exceeds legal requirements.",
           "level_3": "Timeliness improves via state and federal collaboration, use of information sharing, standards, and regional information exchange hubs. Timeliness exceeds Level 2.",
           "level_4": "Information is available in near real time. Processes that use clinical information result in immediate action, response, and results. SMA has interstate interoperability, which further improves timeliness over Level 3.",
           "level_5": "Information is available in real time. Processes improve further through connectivity with other States and with federal agencies. Most processes execute at the point of service. Results are almost immediate."
-        }
+        },
+        "note": "Due to the variables involved in estate recovery process (i.e., wills, lawsuits, claims and other procedural steps inherent in the probate process), it is difficult to estimate the end-to-end timeline."
       },
       {
         "category": "Business Capability Quality: Data Access and Accuracy",
