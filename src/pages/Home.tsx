@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Alert, Box, Button, Card, CardContent, Container, Grid, Typography } from "@mui/material";
 import SecurityIcon from "@mui/icons-material/Security";
 import OfflineBoltIcon from "@mui/icons-material/OfflineBolt";
-import StorageIcon from "@mui/icons-material/Storage";
+import HistoryIcon from "@mui/icons-material/History";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import WarningIcon from "@mui/icons-material/Warning";
 import { getBusinessAreas, getCapabilities } from "../services/blueprint";
@@ -18,11 +18,20 @@ export default function Home() {
   const capabilityCount = useMemo(() => getCapabilities().length, []);
   const businessAreaCount = useMemo(() => getBusinessAreas().length, []);
 
+  /**
+   * Four cards, each saying something the others do not.
+   *
+   * "Privacy First" and "Local Storage" previously said the same thing in different words
+   * ("data stays in your browser" / "saved locally"), which — with the hero panel and the
+   * warning — meant the page made the same point four times. They are merged, and the
+   * freed slot covers assessment history, a real feature the page never mentioned.
+   */
   const features = [
     {
       icon: <SecurityIcon sx={{ fontSize: 40, color: "primary.main" }} />,
-      title: "Privacy First",
-      description: "All your data stays in your browser. Nothing is transmitted to any server.",
+      title: "Private by Design",
+      description:
+        "Assessments are saved in this browser and never sent to a server. No account needed.",
     },
     {
       icon: <OfflineBoltIcon sx={{ fontSize: 40, color: "primary.main" }} />,
@@ -30,52 +39,70 @@ export default function Home() {
       description: "After the first load, use the app anytime — even without internet.",
     },
     {
-      icon: <StorageIcon sx={{ fontSize: 40, color: "primary.main" }} />,
-      title: "Local Storage",
-      description: "Your assessments are saved locally and persist across sessions.",
+      icon: <HistoryIcon sx={{ fontSize: 40, color: "primary.main" }} />,
+      title: "Tracks Your History",
+      description:
+        "Re-assess a capability later and previous results are kept, so you can see maturity change.",
     },
     {
       icon: <AssessmentIcon sx={{ fontSize: 40, color: "primary.main" }} />,
       title: "MITA 3.0 Framework",
-      description: "Assess your maturity against the official CMS MITA 3.0 capabilities.",
+      description: `Assess against all ${capabilityCount} capabilities published by CMS.`,
     },
   ];
 
   return (
     <Container maxWidth="lg" sx={{ py: 3 }}>
-      <Box sx={{ textAlign: "center", py: 6 }}>
-        <Typography variant="h3" component="h1" gutterBottom fontWeight={600}>
+      {/*
+        Vertical rhythm is tightened on small screens so the call to action stays reachable
+        without scrolling. At 375x667 the desktop spacing pushed the button to y=665 — just
+        inside the viewport, but with only the top two pixels showing, which on a phone means
+        the primary action is effectively hidden.
+      */}
+      <Box sx={{ textAlign: "center", py: { xs: 3, md: 6 } }}>
+        <Typography
+          variant="h3"
+          component="h1"
+          gutterBottom
+          fontWeight={600}
+          sx={{ fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" } }}
+        >
           MITA Self-Assessment Tool
         </Typography>
-        <Typography variant="h5" color="text.secondary" paragraph>
+        <Typography
+          variant="h5"
+          color="text.secondary"
+          paragraph
+          sx={{ fontSize: { xs: "1.05rem", md: "1.5rem" } }}
+        >
           Evaluate your Medicaid IT maturity against the MITA 3.0 framework
         </Typography>
         <Typography
           variant="body1"
           color="text.secondary"
-          sx={{ maxWidth: 600, mx: "auto", mb: 4 }}
+          sx={{ maxWidth: 600, mx: "auto", mb: 2 }}
         >
           This tool helps Medicaid agencies assess their current capabilities and identify
-          opportunities for improvement across business processes defined in the Medicaid
+          opportunities for improvement across the business processes defined in the Medicaid
           Information Technology Architecture (MITA) framework.
         </Typography>
 
-        <Box
-          sx={{
-            backgroundColor: "primary.light",
-            color: "primary.contrastText",
-            py: 2,
-            px: 3,
-            borderRadius: 2,
-            maxWidth: 500,
-            mx: "auto",
-            mb: 4,
-          }}
+        {/*
+          The privacy promise as a line of text, not a filled box.
+          
+          It used to sit in a `primary.light` panel with white text and a 32px radius,
+          directly above the button — 5.4x the button's area and more rounded than it. It
+          read as the page's primary call to action, so the eye landed on something that
+          could not be clicked and the real button became the secondary element. Said
+          plainly here, it informs without competing.
+        */}
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ maxWidth: 600, mx: "auto", mb: { xs: 3, md: 4 }, fontWeight: 500 }}
         >
-          <Typography variant="body1" fontWeight={500}>
-            No accounts required. No data collection. Your assessments never leave your device.
-          </Typography>
-        </Box>
+          No accounts, no sign-up, no data collection — your assessments stay on this device.
+        </Typography>
 
         <Button
           variant="contained"
@@ -87,16 +114,8 @@ export default function Home() {
         </Button>
       </Box>
 
-      {/* Data Privacy Warning */}
-      <Alert severity="warning" icon={<WarningIcon />} sx={{ mb: 4, maxWidth: 700, mx: "auto" }}>
-        <Typography variant="body2">
-          <strong>Important:</strong> Your data is stored locally in your browser. Clearing browser
-          data will delete your assessments. Use the Import/Export page to create backups regularly.
-        </Typography>
-      </Alert>
-
       {/* How It Works */}
-      <Box sx={{ mb: 6 }}>
+      <Box sx={{ mb: 4 }}>
         <Typography variant="h5" component="h2" textAlign="center" gutterBottom>
           How It Works
         </Typography>
@@ -149,6 +168,23 @@ export default function Home() {
           ))}
         </Grid>
       </Box>
+
+      {/*
+        Placed after "How It Works" rather than under the call to action.
+        
+        It is real and stays prominent, but it is guidance for someone who has data, not
+        something a first-time visitor needs before clicking Get Started. Above the fold it
+        also broke the hero's flow — headline, promise, button, then a warning, then the
+        explanation of what the tool does. Here it follows step 3, "Export Results", so the
+        advice to keep backups sits next to the feature that provides them.
+      */}
+      <Alert severity="warning" icon={<WarningIcon />} sx={{ mb: 6, maxWidth: 700, mx: "auto" }}>
+        <Typography variant="body2">
+          <strong>Keep your own backups.</strong> Assessments live in this browser only. Clearing
+          your browser data will delete them, and they do not follow you to another computer. Use
+          Import/Export to save a copy.
+        </Typography>
+      </Alert>
 
       <Grid container spacing={3} sx={{ mb: 6 }}>
         {features.map((feature, index) => (
