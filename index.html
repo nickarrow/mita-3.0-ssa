@@ -2,19 +2,35 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/mita-3.0-ssa/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!--
       Explicit links for the raster and pinned-tab icons. The PWA plugin's
       includeAssets only precaches these files; it does not emit link tags. Because
       the app is served under a sub-path, the browser's root-level /favicon.ico
       probe never finds ours, and Safari pinned tabs need rel="mask-icon".
+
+      Paths are root-relative and must NOT include the base path. Vite rebases them onto
+      `base` exactly once, in both dev and build, so this is the one form that is correct
+      in both.
+
+      The two obvious alternatives are each wrong in one mode. A literal
+      "/mita-3.0-ssa/favicon.svg" (and %BASE_URL%favicon.svg, which expands to it) got
+      `base` prepended a second time by the dev server, giving
+      /mita-3.0-ssa/mita-3.0-ssa/favicon.svg — which the SPA fallback answered with
+      index.html, so every icon served HTML at HTTP 200 in dev while production was fine.
+      A document-relative "favicon.svg" fixes dev but breaks production at any nested
+      route: on /mita-3.0-ssa/processes/CM_Establish_Case it resolves to
+      /mita-3.0-ssa/processes/favicon.svg, and those routes are shareable URLs served by
+      the 404.html fallback.
+
+      This also removes the last hardcoded copy of the base path from this file.
     -->
-    <link rel="icon" type="image/x-icon" href="/mita-3.0-ssa/favicon.ico" sizes="32x32" />
-    <link rel="mask-icon" href="/mita-3.0-ssa/mask-icon.svg" color="#6B4E71" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="mask-icon" href="/mask-icon.svg" color="#6B4E71" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Self-assess your Medicaid IT maturity against the MITA 3.0 framework. Privacy-first, offline-capable PWA." />
     <meta name="theme-color" content="#6B4E71" />
-    <link rel="apple-touch-icon" href="/mita-3.0-ssa/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />

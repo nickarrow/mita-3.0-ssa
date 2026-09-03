@@ -19,7 +19,7 @@ import {
   MIN_MATURITY_LEVEL,
   SUPPORTED_EXPORT_VERSIONS,
 } from "../../constants/export";
-import { isValidTag, normalizeTag } from "../../utils/tags";
+import { isValidTag, normalizeTag, normalizeTagList } from "../../utils/tags";
 import type { AssessmentExport, ExportData, RatingExport, AttachmentMetadata } from "./types";
 import type { AssessmentHistory, HistoricalRating, Tag } from "../../types";
 
@@ -91,9 +91,23 @@ function normalizeDate(value: unknown): string | undefined {
   return Number.isNaN(parsed.getTime()) ? undefined : value;
 }
 
+/**
+ * Normalize the tags carried on an assessment or a history snapshot.
+ *
+ * Held to the same rules as a tag typed into the UI, via the shared
+ * `normalizeTagList`. This previously only filtered for non-empty strings, so an
+ * import could write `Provider` onto an assessment while the tag vocabulary stored
+ * `#provider` — and since the dashboard filter offers vocabulary entries but matches
+ * on the assessment's own list by string equality, selecting a tag could return
+ * nothing. Invalid entries (whitespace, punctuation, over-length) were written
+ * straight through and then rendered as chips.
+ *
+ * `refreshTagUsage` derives the vocabulary from these values after the merge, so
+ * normalizing here is also what keeps the two tables agreeing.
+ */
 function normalizeTags(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
-  return value.filter(isNonEmptyString);
+  return normalizeTagList(value.filter(isNonEmptyString));
 }
 
 /**

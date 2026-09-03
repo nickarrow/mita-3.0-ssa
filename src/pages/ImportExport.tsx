@@ -31,7 +31,9 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DescriptionIcon from "@mui/icons-material/Description";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import HistoryIcon from "@mui/icons-material/History";
+import { useLiveQuery } from "dexie-react-hooks";
 import { ImportDialog, StateNameDialog } from "../components/export";
+import { db } from "../services/db";
 import { useScores } from "../hooks/useScores";
 import { usePageTitle } from "../hooks/usePageTitle";
 import {
@@ -58,6 +60,11 @@ export default function ImportExport() {
   const { getStatusCounts, getOverallScore } = useScores();
   const statusCounts = getStatusCounts();
   const overallScore = getOverallScore();
+
+  // How many evidence files a JSON export would leave behind. The card said "without
+  // attachments" generically, which is easy to read past; naming the user's own count
+  // makes the trade-off concrete at the moment they choose a format.
+  const attachmentCount = useLiveQuery(() => db.attachments.count(), [], 0);
 
   const hasData = statusCounts.finalized > 0 || statusCounts.inProgress > 0;
 
@@ -319,9 +326,18 @@ export default function ImportExport() {
                       </Typography>
                     </Box>
                     <Typography variant="body2" color="text.secondary">
-                      Raw assessment data without attachments. Smaller file size, suitable for data
-                      backup or transfer between browsers.
+                      Raw assessment data without attachments. Smaller file size, suitable for
+                      transfer between browsers.
                     </Typography>
+                    {attachmentCount > 0 && (
+                      <Typography
+                        variant="body2"
+                        sx={{ mt: 1, color: "warning.dark", fontWeight: 500 }}
+                      >
+                        Excludes your {attachmentCount} uploaded file
+                        {attachmentCount === 1 ? "" : "s"}. Use the ZIP backup to keep them.
+                      </Typography>
+                    )}
                   </CardContent>
                   <CardActions>
                     <Button

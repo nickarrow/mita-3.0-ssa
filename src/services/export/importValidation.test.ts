@@ -238,6 +238,59 @@ describe("validateImportPayload", () => {
     });
   });
 
+  /**
+   * Tags on an assessment are a separate path from the tag vocabulary above, and they
+   * were not held to the same rules. The vocabulary was normalized while the assessment's
+   * own list was only filtered for non-empty strings — so an import could write
+   * `Provider` onto an assessment while the vocabulary stored `#provider`. The dashboard
+   * filter offers vocabulary entries and matches against the assessment's list by string
+   * equality, so selecting a tag could return nothing.
+   */
+  describe("tags carried on an assessment", () => {
+    const tagsOn = (tags: unknown) =>
+      validateImportPayload(buildExportPayload({ assessments: [{ tags }] })).data!.data
+        .assessments[0]!.tags;
+
+    it("lowercases, so the dashboard filter can match its own chips", () => {
+      expect(tagsOn(["#Provider"])).toEqual(["#provider"]);
+    });
+
+    it("adds the leading hash the vocabulary stores", () => {
+      expect(tagsOn(["provider"])).toEqual(["#provider"]);
+    });
+
+    it("drops structurally invalid entries instead of rendering them as chips", () => {
+      expect(tagsOn(["#ok", "#!!bad tag!!", "  "])).toEqual(["#ok"]);
+    });
+
+    it("drops an over-long entry", () => {
+      expect(tagsOn([`#${"z".repeat(300)}`])).toEqual([]);
+    });
+
+    it("collapses entries that differ only by case", () => {
+      expect(tagsOn(["#Wave1", "#wave1", "wave1"])).toEqual(["#wave1"]);
+    });
+
+    it("applies the same rules to a history snapshot's tags", () => {
+      const result = validateImportPayload(
+        buildExportPayload({
+          history: [
+            {
+              id: "h-1",
+              capabilityCode: firstCapability().code,
+              snapshotDate: "2026-01-01T00:00:00.000Z",
+              tags: ["#Provider", "#!!bad!!"],
+              score: 3,
+              ratings: [{ questionIndex: 0, level: 3, notes: "", attachmentIds: [] }],
+              blueprintVersion: "3.0",
+            },
+          ],
+        })
+      );
+      expect(result.data!.data.history[0]!.tags).toEqual(["#provider"]);
+    });
+  });
+
   describe("history entries", () => {
     const entry = (overrides: Record<string, unknown> = {}) => ({
       id: "history-1",

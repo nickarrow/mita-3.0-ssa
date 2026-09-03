@@ -1,21 +1,51 @@
 # MITA SS-A Implementation Status
 
-This document tracks what has been implemented, deviations from the original plan, and rationale for changes made during development.
+This document is a **historical record** of the v1.0 → v2.x → v3.0 build-out: what was
+implemented, where it deviated from the plan, and why. It is not a live status board.
 
-**Last Updated:** January 29, 2026
+For current state, read these instead — they are maintained:
+
+| Question | Where |
+|----------|-------|
+| What does the app do, and how do I run it? | [`README.md`](README.md) |
+| What was wrong and how was it fixed? | [`AUDIT_REMEDIATION_PLAN.md`](AUDIT_REMEDIATION_PLAN.md) |
+| Where does the blueprint data come from? | [`src/data/NOTICE.md`](src/data/NOTICE.md) |
+| Why is this code shaped this way? | The code. Non-obvious decisions carry the reason inline. |
+
+**Last reviewed:** September 3, 2026
 
 ---
 
-## Implementation Summary
+## Current state
 
-| Category | Planned | Implemented | Notes |
-|----------|---------|-------------|-------|
-| v1.0 Core Features | 100% | 100% | All MVP features complete |
-| v2.0 Redesign | 100% | 100% | Core refactor complete |
-| v3.0 Features | 100% | 100% | Attachments, Export/Import, PDF |
-| UI/UX | 100% | ~95% | Toast notifications deferred |
-| PWA | 100% | ~70% | Icons and testing remaining |
-| Deployment | 100% | 0% | Ready but not deployed |
+Deployed and live at https://nickarrow.github.io/mita-3.0-ssa/, built and released from
+`main` by GitHub Actions on every push, gated on lint, tests and the SPA-fallback check.
+
+| | |
+|---|---|
+| Capabilities | 76, across 9 business areas |
+| Maturity questions | 837 |
+| Tests | 246, under Vitest against `fake-indexeddb` |
+| Dexie schema | v7 |
+| Bundle | ~556 kB gzipped, single chunk |
+
+Everything in the phase tables below is complete. The items once listed here as
+outstanding — PWA icons, offline verification, responsive testing, the accessibility
+audit and deployment — were all done during the September 2026 audit and the two
+follow-ups; see `AUDIT_REMEDIATION_PLAN.md` for the reproductions and evidence.
+
+### Genuinely still open
+
+- **Toast/snackbar notifications.** Never built. Actions confirm through dialogs and
+  inline alerts instead, which has proved sufficient.
+- **Route-level code splitting.** The bundle is one chunk dominated by 1.9 MB of eagerly
+  inlined blueprint JSON, so every visitor downloads all 76 capabilities to read one
+  page. The win is time-to-interactive on a first visit, not total bytes — the service
+  worker precaches everything for offline use regardless — so it is worth measuring
+  before committing to.
+- **Manual assistive-technology testing.** The mechanically detectable accessibility
+  problems are fixed and verified in a browser. Full WCAG conformance needs testing with
+  real screen readers and expert review, which no automated pass substitutes for.
 
 ---
 
@@ -100,7 +130,7 @@ Major architectural change from multi-capability assessments to single-capabilit
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Update coverage table | ✅ | Shows all 72 capabilities |
+| Update coverage table | ✅ | Shows every capability (72 at the time; 76 today) |
 | Add Tags column | ✅ | Chips from latest finalized + aggregated on business areas |
 | Add action buttons (Assess/Resume/Edit) | ✅ | Replaced with menu system (v2.2) |
 | Implement row expansion for history | ✅ | Shows past assessments + current with badge |
@@ -233,7 +263,7 @@ Major architectural change from multi-capability assessments to single-capabilit
 5. Finalize entire assessment
 
 **After (v2.0):**
-1. View dashboard with all 72 capabilities
+1. View dashboard with every capability (72 at the time of this change; 76 today)
 2. Click "Assess" on any capability → creates new assessment
 3. Add tags (press Enter after each, or click away to commit)
 4. Answer questions (auto-saved)
@@ -445,37 +475,35 @@ mita-3.0-ssa/
 
 ## Remaining Work
 
-### PWA & Polish
-
-| Task | Status | Priority |
-|------|--------|----------|
-| Create PWA icons (192x192, 512x512) | ⬜ | High |
-| Test offline functionality | ⬜ | High |
-| Test "Add to Home Screen" | ⬜ | Medium |
-| Toast/snackbar notifications | ⬜ | Medium |
-| Responsive testing | ⬜ | High |
-| Accessibility audit | ⬜ | High |
-| Deploy to GitHub Pages | ⬜ | High |
-| Remove console.log debug statements | ✅ | Cleaned up |
+Superseded — see [Current state](#current-state) at the top of this file. The PWA icons
+exist, offline caching and installability work, responsive and accessibility problems were
+found and fixed in a browser, and the app is deployed.
 
 ---
 
 ## Known Issues & Technical Debt
 
-### 1. Bundle Size Warning
-- **Issue:** Bundle exceeds 500KB (currently ~1.7MB)
-- **Cause:** 144 JSON files bundled into app
-- **Impact:** Slower initial load
-- **Mitigation:** Acceptable for offline-first PWA
+### 1. Bundle size
+- **Issue:** One chunk, ~556 kB gzipped (2.6 MB raw), over Vite's 500 kB warning.
+- **Cause:** 152 blueprint JSON files inlined eagerly by `import.meta.glob`.
+- **Impact:** Slower first load. No impact on repeat visits — the service worker precaches
+  the bundle, and the app is offline-first by design.
+- **Status:** Open. Route-level or per-capability lazy loading is the next meaningful win.
+  Worth measuring first: whatever is deferred still has to be precached for offline use,
+  so the gain is time-to-interactive rather than bytes transferred.
+- **Note:** an earlier revision of this file claimed ~1.7 MB from 144 files. Both figures
+  were stale.
 
-### 2. Missing Toast Notifications
-- **Issue:** No user feedback for actions (finalize, etc.)
-- **Status:** Deferred to polish phase
+### 2. Missing toast notifications
+- **Issue:** No transient confirmation for actions such as finalize.
+- **Status:** Open, and arguably fine. Dialogs and inline alerts carry the confirmations
+  today, and the destructive actions all confirm before acting rather than after.
 
-### 3. Debug Console Logs
-- **Issue:** Several `console.log` statements added during debugging
-- **Status:** ✅ Removed (January 8, 2026)
-- **Files cleaned:** `useCapabilityAssessments.ts`, `Dashboard.tsx`
+### 3. Debug console logs
+- **Issue:** Several `console.log` statements added during debugging.
+- **Status:** Removed (January 8, 2026), in `useCapabilityAssessments.ts` and
+  `Dashboard.tsx`. The only remaining console output is a deliberate warning when a
+  blueprint record has no BCM/BPT pair.
 
 ---
 

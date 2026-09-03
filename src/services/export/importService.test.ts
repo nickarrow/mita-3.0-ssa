@@ -74,6 +74,79 @@ describe("importFromJson — rejection", () => {
   });
 });
 
+describe("importFromJson — attachments it cannot restore", () => {
+  const attachmentMeta = {
+    id: "att-1",
+    capabilityAssessmentId: "assessment-1",
+    ratingId: "rating-1",
+    fileName: "evidence.pdf",
+    fileType: "application/pdf",
+    fileSize: 1024,
+    uploadedAt: "2026-01-02T00:00:00.000Z",
+  };
+
+  it("says the files are not in the file, rather than dropping them silently", async () => {
+    // A JSON export records *which* files were attached but cannot carry the files
+    // themselves — blobs only travel in a ZIP. Restoring from JSON therefore brings back
+    // the assessment and loses its evidence, which the user should hear when it happens
+    // rather than discovering later that the paperclips are gone.
+    const result = await importPayload(buildExportPayload({ attachments: [attachmentMeta] }));
+
+    expect(result.success).toBe(true);
+    expect(result.warnings.some((w) => /does not contain the files themselves/i.test(w))).toBe(
+      true
+    );
+    expect(await db.attachments.count()).toBe(0);
+  });
+
+  it("names the number of files affected", async () => {
+    const result = await importPayload(
+      buildExportPayload({
+        attachments: [attachmentMeta, { ...attachmentMeta, id: "att-2", fileName: "b.pdf" }],
+      })
+    );
+
+    expect(result.warnings.some((w) => /lists 2 attached file/i.test(w))).toBe(true);
+  });
+
+  it("stays quiet when the backup had no attachments", async () => {
+    const result = await importPayload(buildExportPayload());
+
+    expect(result.warnings.some((w) => /attached file/i.test(w))).toBe(false);
+  });
+});
+
+describe("importFromJson — tags written onto assessments", () => {
+  it("normalizes them so the dashboard filter matches its own chips", async () => {
+    // The vocabulary was normalized while the assessment's own list was not, so an import
+    // could produce an assessment tagged `Provider` alongside a vocabulary row
+    // `#provider`. The dashboard offers vocabulary entries and matches on the
+    // assessment's list by string equality, so the filter returned nothing.
+    await importPayload(
+      buildExportPayload({ assessments: [{ tags: ["#Provider", "wave1", "#!!bad tag!!"] }] })
+    );
+
+    const [assessment] = await db.capabilityAssessments.toArray();
+    expect(assessment.tags).toEqual(["#provider", "#wave1"]);
+
+    // The derived vocabulary must agree with what was written.
+    const vocabulary = (await db.tags.toArray()).map((t) => t.name).sort();
+    expect(vocabulary).toEqual(["#provider", "#wave1"]);
+    for (const tag of assessment.tags) {
+      expect(vocabulary).toContain(tag);
+    }
+  });
+
+  it("derives usage counts from the normalized names", async () => {
+    await importPayload(buildExportPayload({ assessments: [{ tags: ["#Provider", "provider"] }] }));
+
+    const tags = await db.tags.toArray();
+    expect(tags).toHaveLength(1);
+    expect(tags[0]!.name).toBe("#provider");
+    expect(tags[0]!.usageCount).toBe(1);
+  });
+});
+
 describe("importFromJson — merge matrix", () => {
   it("imports a capability that has no local assessment", async () => {
     const result = await importPayload(buildExportPayload());
