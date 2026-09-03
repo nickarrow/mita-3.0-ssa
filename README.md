@@ -88,10 +88,14 @@ Tests run under [Vitest](https://vitest.dev/) against
 [`fake-indexeddb`](https://github.com/dumbmatter/fakeIndexedDB), a real in-memory IndexedDB
 implementation. Because the app talks to Dexie directly with no abstraction layer, the data-layer tests
 exercise the same code paths the browser does, including transactions and compound indexes.
+`src/test/setup.ts` also installs a minimal `FileReader`, which JSZip needs to read a `Blob` and Node
+does not provide — without it the entire ZIP export/import path is untestable, which is how an
+attachment-duplication bug once survived in the one code path that handles user files.
 
 Coverage is concentrated on the data-integrity surface — import validation, the assessment lifecycle
-(edit, revert, finalize), rating persistence and blueprint migrations — because that is where a silent
-bug costs a user their work. UI behaviour is verified by hand.
+(edit, revert, finalize), rating persistence, blueprint migrations and the export/import round trip —
+because that is where a silent bug costs a user their work. UI behaviour is verified by hand in a
+browser.
 
 ## Deployment
 

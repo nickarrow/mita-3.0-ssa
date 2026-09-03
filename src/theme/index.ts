@@ -1,7 +1,30 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, lighten } from "@mui/material/styles";
+
+/**
+ * A very pale tint of each semantic colour, for callout and highlight backgrounds.
+ *
+ * Nine call sites already asked for `info.50`, `warning.50`, `primary.50` and
+ * `success.50` — and got nothing. MUI's semantic palette entries carry only
+ * `main`/`light`/`dark`/`contrastText`, and an `sx` palette path that does not resolve is
+ * passed through as a raw string, so those backgrounds silently painted no colour at all.
+ * Measured in the browser: the Constraints callout computed to `rgb(255, 255, 255)` while
+ * its 3px left border resolved correctly, which is why the bug read as a styling choice.
+ *
+ * Defined once here rather than replaced with `alpha()` at each call site, so the theme
+ * stays the single source of truth and the existing usage becomes correct rather than
+ * having to change.
+ */
+declare module "@mui/material/styles" {
+  interface PaletteColor {
+    50: string;
+  }
+  interface SimplePaletteColorOptions {
+    50?: string;
+  }
+}
 
 // Theme adapted from HourKeep - warm, friendly, government-appropriate
-const theme = createTheme({
+const base = createTheme({
   palette: {
     primary: {
       main: "#6B4E71", // Muted purple
@@ -171,6 +194,30 @@ const theme = createTheme({
         },
       },
     },
+  },
+});
+
+/**
+ * Layer the tint shades on, derived from each colour's own `main`.
+ *
+ * Derived rather than hardcoded so a change to `main` carries through instead of leaving
+ * a tint that no longer belongs to it. `info` is included because the theme does not
+ * define it and therefore inherits MUI's default — the tint has to come from whatever
+ * `main` actually ends up being, which only the built palette knows.
+ *
+ * 0.92 is close to MUI's own `50` steps: readable dark text on top, while still clearly
+ * a tint rather than white.
+ */
+const TINT = 0.92;
+
+const theme = createTheme(base, {
+  palette: {
+    primary: { 50: lighten(base.palette.primary.main, TINT) },
+    secondary: { 50: lighten(base.palette.secondary.main, TINT) },
+    success: { 50: lighten(base.palette.success.main, TINT) },
+    warning: { 50: lighten(base.palette.warning.main, TINT) },
+    error: { 50: lighten(base.palette.error.main, TINT) },
+    info: { 50: lighten(base.palette.info.main, TINT) },
   },
 });
 

@@ -5,7 +5,7 @@
  * This is the shared rendering logic used by both BptSidebar and the Processes page.
  */
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Box, Chip, Collapse, Paper, Tooltip, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -34,11 +34,30 @@ export function Section({
   defaultExpanded?: boolean;
 }) {
   const [expanded, setExpanded] = useState(defaultExpanded);
+  const contentId = useId();
 
   return (
     <Box sx={{ mb: 2 }}>
+      {/*
+        A real <button>, not a clickable Box.
+        
+        Every BPT section toggle — in the process viewer and in the assessment sidebar —
+        was a plain div with onClick: tabIndex -1, no role, no aria-expanded. So none of
+        them could be reached or operated by keyboard, and a screen reader was given
+        nothing to announce. Sections default to expanded, so the content was readable,
+        but collapsing was mouse-only. The Dashboard's disclosure rows already do this
+        correctly, which made it an inconsistency as well as a gap.
+
+        `aria-expanded` plus `aria-controls` means the state is announced and the
+        controlled region is identified; the global focus-visible ring in the theme
+        handles the focus indicator.
+      */}
       <Box
+        component="button"
+        type="button"
         onClick={() => setExpanded(!expanded)}
+        aria-expanded={expanded}
+        aria-controls={contentId}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -46,10 +65,19 @@ export function Section({
           cursor: "pointer",
           py: 0.5,
           "&:hover": { opacity: 0.8 },
+          // Reset the native button chrome; this is a heading row, not a control surface.
+          width: "100%",
+          background: "none",
+          border: "none",
+          textAlign: "left",
+          font: "inherit",
+          color: "inherit",
+          px: 0,
         }}
       >
         <Typography
           variant="subtitle2"
+          component="span"
           sx={{
             color: "primary.main",
             fontWeight: 600,
@@ -58,9 +86,13 @@ export function Section({
         >
           {title}
         </Typography>
-        {expanded ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+        {expanded ? (
+          <ExpandLessIcon fontSize="small" aria-hidden="true" />
+        ) : (
+          <ExpandMoreIcon fontSize="small" aria-hidden="true" />
+        )}
       </Box>
-      <Collapse in={expanded}>
+      <Collapse in={expanded} id={contentId}>
         <Box
           sx={{
             mt: 1,
