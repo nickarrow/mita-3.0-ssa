@@ -6,6 +6,7 @@
   "sub_category": "Provider Support",
   "process_name": "Manage Provider Grievance and Appeal",
   "process_code": "PM",
+  "process_id": "PM_MANAGE_PROVIDER_GRIEVANCE_AND_APPEAL",
   "maturity_model": {
     "capability_questions": [
       {
@@ -13,7 +14,7 @@
         "question": "Is the process primarily manual or automatic?",
         "levels": {
           "level_1": "The process consists primarily of manual activity to accomplish tasks. The process is entirely paper-based, which results in cumbersome document management and process inefficiencies.",
-          "level_2": "SMA uses a mix of manual and automatic processes to accomplish tasks. The process conducts some of its activities electronically, except where the law Manage Provider Grievance and Appeal requires paper documents. In this case, SMA scans the documents for electronic information capture.",
+          "level_2": "SMA uses a mix of manual and automatic processes to accomplish tasks. The process conducts some of its activities electronically, except where the law requires paper documents. In this case, SMA scans the documents for electronic information capture.",
           "level_3": "SMA automates process to the full extent possible within the intrastate. The process conducts the majority of its activities electronically, except where the law requires paper documents. In this case, SMA scans documents for electronic information capture. SMA produces audit trail of grievance and appeal decision 100% of the time.",
           "level_4": "SMA fully automates the process regionally to the extent possible across the interstate.",
           "level_5": "SMA fully automates the process nationally to the extent possible across the nation."
@@ -21,10 +22,10 @@
       },
       {
         "category": "Business Capability Descriptions",
-        "question": "How central is the grievance and appeals process? grievance and appeals process?",
+        "question": "How central is the grievance and appeals process?",
         "levels": {
           "level_1": "Disparate programs file, manage, and resolve grievances and appeals from providers. This contributes to inconsistent application of relevant laws and administrative policies inhibiting performance monitoring. Providers have difficulty finding the right door for filing grievances and appeals.",
-          "level_2": "Agencies begin to centralize or standardize the administration of the process to achieve economies of scale, thereby increasing coordination and improving consistent application of business rules and Manage Provider Grievance and Appeal appeals disposed. SMA clearly identifies the policy and procedures for filing grievances and appeals. SMA establishes a Review Board to review cases.",
+          "level_2": "Agencies begin to centralize or standardize the administration of the process to achieve economies of scale, thereby increasing coordination and improving consistent application of business rules and appeals disposed. SMA clearly identifies the policy and procedures for filing grievances and appeals. SMA establishes a Review Board to review cases.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards within intrastate state further increases coordination and reuse of standardized Grievance & Appeal business services. SMA standardizes the process within the state.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards within interstate the region further increases coordination and reuse of standardized Grievance & Appeal business services. SMA standardizes the process within the region.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards across the national further increases coordination and reuse of standardized Grievance & Appeal business services. SMA standardizes the process across the nation."
@@ -46,7 +47,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of nationally recognized and state-specific standards. Manage Provider Grievance and Appeal",
+          "level_2": "SMA applies a mix of nationally recognized and state-specific standards.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for intrastate exchange of information.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for regional exchange of information.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national exchange of information."
@@ -68,7 +69,7 @@
         "question": "How timely is the end-to-end process?",
         "levels": {
           "level_1": "Process meets threshold or mandated requirements for timeliness (i.e., the process achieves results within the time specified by law or regulation). Cases typically require months to complete. Duration of process is 180 business days or longer.",
-          "level_2": "Process timeliness improves through use of automation. Timeliness exceeds legal requirements. Duration of process is 100 business days or less. Manage Provider Grievance and Appeal",
+          "level_2": "Process timeliness improves through use of automation. Timeliness exceeds legal requirements. Duration of process is 100 business days or less.",
           "level_3": "Timeliness improves via state and federal collaboration, use of information sharing, standards, and regional information exchange hubs. Duration of process is 45 business days or less. SMA distributes Notice of appeal rights 15 minutes or less 100% of the time.",
           "level_4": "Information is available in near real time. Processes that use clinical information result in immediate action, response, and results. SMA has regional interoperability, which further improves timeliness over Level 3.",
           "level_5": "Information is available in real time. Processes improve further through connectivity with other States and with federal agencies. Most processes execute at the point of service. Results are almost immediate."
@@ -79,8 +80,8 @@
         "question": "How accurate is the information in the process?",
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
-          "level_2": "Nationally recognized standards improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1. Manage Provider Grievance and Appeal",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_2": "Nationally recognized standards improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
           "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange by regional agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
           "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }
@@ -101,7 +102,7 @@
         "question": "What is the cost to perform the process compared to the benefits of its results?",
         "levels": {
           "level_1": "High relative cost due to low number of automatic, standardized tasks.",
-          "level_2": "Automation improves process and allows focus on exception resolution, improving cost effectiveness Manage Provider Grievance and Appeal ratio over Level 1.",
+          "level_2": "Automation improves process and allows focus on exception resolution, improving cost effectiveness ratio over Level 1.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards further improving cost effectiveness ratio over Level 2.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for regional information exchange improving cost effectiveness ratio over Level 3.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national (and international) information exchange. SMA increases cost effectiveness ratio over level 4."
@@ -112,7 +113,7 @@
         "question": "How efficient is the process?",
         "levels": {
           "level_1": "Process is labor intensive. There is wasted effort or expense to accomplish tasks. Process meets minimum state process guidelines and SMA performance standards. Cases may require months to complete. Efficiency is low.",
-          "level_2": "Automation and state standards increase productivity allowing for more time on improving process and working on exceptions. Efficiency is higher than Level 1. Manage Provider Grievance and Appeal",
+          "level_2": "Automation and state standards increase productivity allowing for more time on improving process and working on exceptions. Efficiency is higher than Level 1.",
           "level_3": "SMA adopts MITA Framework, industry standards and information exchange with intrastate agencies and entities. The process is consistent, orderly, and allows staff to spend even more time on quality outcomes and process improvement. Efficiency improves to 95% or higher.",
           "level_4": "SMA adopts MITA Framework, industry standards and information exchange with regional agencies and entities improving efficiency to 98% or higher.",
           "level_5": "SMA adopts MITA Framework, industry standards and information exchange with national agencies and entities improving efficiency to 98% or higher."

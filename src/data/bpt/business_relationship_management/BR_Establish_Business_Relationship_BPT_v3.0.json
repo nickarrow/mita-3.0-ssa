@@ -6,6 +6,7 @@
   "sub_category": "Standards Management",
   "process_name": "Establish Business Relationship",
   "process_code": "BR",
+  "process_id": "BR_ESTABLISH_BUSINESS_RELATIONSHIP",
   "process_details": {
     "description": "The Establish Business Relationship business process encompasses activities undertaken by the State Medicaid Agency (SMA) to enter into business partner relationships. Agreements are between state agency and its partners, including collaboration amongst intrastate agencies, the interstate and federal agencies. It contains functionality for interoperability, establishment of inter-agency service agreements, identification of the types of information exchanged, and security and privacy requirements. These include Trading Partner Agreements (TPA), Service Level Agreements (SLA), and Memoranda of Understanding (MOU) with other agencies; Electronic Data Interchange (EDI) agreements with providers, Managed Care Organizations (MCOs), and others; and Centers for Medicare & Medicaid Services (CMS), other federal agencies, and Regional Health Information Organizations (RHIO).",
     "trigger_events": {

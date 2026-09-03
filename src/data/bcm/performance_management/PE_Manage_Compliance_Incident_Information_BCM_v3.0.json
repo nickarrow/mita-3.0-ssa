@@ -6,6 +6,7 @@
   "sub_category": "Compliance Management",
   "process_name": "Manage Compliance Incident Information",
   "process_code": "PE",
+  "process_id": "PE_MANAGE_COMPLIANCE_INCIDENT_INFORMATION",
   "maturity_model": {
     "capability_questions": [
       {
@@ -13,7 +14,7 @@
         "question": "How integrated or central is the process?",
         "levels": {
           "level_1": "The duplicate process is in multiple parts of the organization. There is little coordination among SMA programs or between SMA and other stakeholders (e.g., other state agencies, CMS, intermediaries, other payers) in relation to the process.",
-          "level_2": "SMA integrates the process within SMA. SMA improves coordination between SMA and other Manage Compliance Incident Information stakeholders.",
+          "level_2": "SMA integrates the process within SMA. SMA improves coordination between SMA and other stakeholders.",
           "level_3": "SMA fully integrates the process with state and federal law enforcement, CMS, and other intrastate agencies to the extent possible within the intrastate.",
           "level_4": "SMA fully integrates the process with state, district and federal law enforcement, CMS, and interstate agencies to the extent possible across the interstate.",
           "level_5": "SMA fully integrates the process with state, district and federal law enforcement, CMS, and other federal agencies to the extent possible across the nation."
@@ -35,7 +36,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of HIPAA and state- specific standards. Manage Compliance Incident Information",
+          "level_2": "SMA applies a mix of HIPAA and state-specific standards.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for exchange of information with state and federal law enforcement, CMS, and other intrastate agencies.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards exchange of information with state, district and federal law enforcement, CMS, and other interstate agencies.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national exchange of information with state, district, and federal law enforcement, CMS, and other federal agencies."
@@ -68,9 +69,9 @@
         "question": "How accurate is the information in the process?",
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
-          "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level Manage Compliance Incident Information 1.",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
-          "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision- making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
           "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }
       },
@@ -101,7 +102,7 @@
         "question": "How efficient is the process?",
         "levels": {
           "level_1": "Process is labor intensive. There is wasted effort or expense to accomplish tasks. Process meets minimum state process guidelines and SMA performance standards. Efficiency is low.",
-          "level_2": "Automation and state standards increase productivity. Efficiency is higher than Level 1. Manage Compliance Incident Information",
+          "level_2": "Automation and state standards increase productivity. Efficiency is higher than Level 1.",
           "level_3": "SMA adopts MITA Framework, industry standards and information exchange with state and federal law enforcement, CMS, and intrastate agencies and entities improving efficiency to 95% or higher.",
           "level_4": "SMA adopts MITA Framework, industry standards and information exchange with state, district and federal law enforcement, CMS, and interstate agencies and entities improving efficiency to 98% or higher.",
           "level_5": "SMA adopts MITA Framework, industry standards and information exchange with state, district and federal law enforcement, CMS, and other federal agencies and entities improving efficiency to 98% or higher."
@@ -123,7 +124,7 @@
         "question": "Does the business process satisfy stakeholders?",
         "levels": {
           "level_1": "Stakeholders lack confidence in information negatively affecting stakeholder satisfaction with the process.",
-          "level_2": "Automation and standardization provides clear and useful information. Stakeholder satisfaction is greater Manage Compliance Incident Information than Level 1.",
+          "level_2": "Automation and standardization provides clear and useful information. Stakeholder satisfaction is greater than Level 1.",
           "level_3": "SMA adopts MITA Framework, industry standards and information exchange with state and federal law enforcement, CMS, and intrastate agencies and entities improving stakeholder satisfaction to 90% or higher. SMA uses survey or questionnaire for information collection.",
           "level_4": "SMA adopts MITA Framework, industry standards and information exchange with state, district and federal law enforcement, CMS, and interstate agencies and entities improving stakeholder satisfaction to 95% or higher.",
           "level_5": "SMA adopts MITA Framework, industry standards and information exchange with state, district and federal law enforcement, CMS, and federal agencies and entities improving stakeholder satisfaction to 98% or higher."

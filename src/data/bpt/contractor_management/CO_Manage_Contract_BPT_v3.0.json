@@ -6,6 +6,7 @@
   "sub_category": "Contract Management",
   "process_name": "Manage Contract",
   "process_code": "CO",
+  "process_id": "CO_MANAGE_CONTRACT",
   "process_details": {
     "description": "The Manage Contract business process receives the contract award information, implements contract-monitoring procedures, updates contract if needed, and continues to monitor the terms of the contract throughout its duration.",
     "trigger_events": {

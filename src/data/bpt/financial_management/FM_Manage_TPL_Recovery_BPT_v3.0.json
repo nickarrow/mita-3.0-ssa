@@ -6,6 +6,7 @@
   "sub_category": "Accounts Receivable Management",
   "process_name": "Manage TPL Recovery",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_TPL_RECOVERY",
   "process_details": {
     "description": "The Manage TPL Recovery business process begins by receiving Third-Party Liability (TPL) information from various sources such as external and internal information matches, tips, referrals, attorneys, compliance management incident, Medicaid Fraud Control Unit (MFCU), providers, and insurance companies. The business process:\n• Identifies the provider or TPL carrier, locates recoverable claims.\n• Creates the coordination of benefits file.\n• Creates post-payment recovery files.\n• Sends notification to other payer or provider from the Manage Provider Communication business process.",
     "trigger_events": {
@@ -39,12 +40,7 @@
       "Provider data store including provider network and carrier information",
       "Health Insurance Marketplace data store",
       "Compliance Management data store including compliance incident information",
-      "Other Agency Information: ",
-      "Department of Motor Vehicles (DMV) ",
-      "Veterans Administration (VA) ",
-      "Indian Health Service ",
-      "Immigration and Naturalization Service ",
-      "Medicaid Fraud Control Unit (MFCU)"
+      "Other Agency Information:\n  - Department of Motor Vehicles (DMV)\n  - Veterans Administration (VA)\n  - Indian Health Service\n  - Immigration and Naturalization Service\n  - Medicaid Fraud Control Unit (MFCU)"
     ],
     "predecessor_processes": [
       "Receive Inbound Transaction",

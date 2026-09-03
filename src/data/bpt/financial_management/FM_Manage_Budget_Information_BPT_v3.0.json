@@ -6,6 +6,7 @@
   "sub_category": "Fiscal Management",
   "process_name": "Manage Budget Information",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_BUDGET_INFORMATION",
   "process_details": {
     "description": "The Manage Budget Information business process is responsible for auditing all planned expenses and revenues of the State Medicaid Agency (SMA). Activities in this business process comply with Cash Management Act, Governmental Accounting Standards Board (GASB) standards and Generally Accepted Accounting Principles (GAAP).",
     "trigger_events": {

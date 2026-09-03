@@ -6,6 +6,7 @@
   "sub_category": "Accounts Payable Management",
   "process_name": "Manage Incentive Payment",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_INCENTIVE_PAYMENT",
   "process_details": {
     "description": "The Manage Incentive Payment business process accommodates administration of various incentive compensations to payers, providers, and members. Federal or state policy defines the programs, which are typically short duration and limited in scope. The policy defines specific periods, qualification criteria, and certification or verification requirements. The Manage Incentive Payment business process follows the Manage Program Policy business process that manages program administrative rules, whether federal or state, and concludes with paying the payer, provider, or member.",
     "trigger_events": {
@@ -32,9 +33,7 @@
     ],
     "diagrams": [],
     "shared_data": [
-      "Centers for Medicare & Medicaid Services (CMS) Health Information Technology for",
-      "Economic and Clinical Health (HITECH) Provider Electronic Health Record (EHR)",
-      "Incentive Program Registration and Attestation (R&A) System",
+      "Centers for Medicare & Medicaid Services (CMS) Health Information Technology for Economic and Clinical Health (HITECH) Provider Electronic Health Record (EHR) Incentive Program Registration and Attestation (R&A) System",
       "Financial data store including accounts payable information",
       "Contractor data store including contract information",
       "Member data store including demographics information",

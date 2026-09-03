@@ -6,6 +6,7 @@
   "sub_category": "Case Management",
   "process_name": "Manage Population Health Outreach",
   "process_code": "CM",
+  "process_id": "CM_MANAGE_POPULATION_HEALTH_OUTREACH",
   "process_details": {
     "description": "The Manage Population Health Outreach business process is responsible for the implementation of strategy to improve general population health. The State Medicaid Agency (SMA) identifies target populations or individuals for selection by cultural, diagnostic, or other demographic indicators. The inputs to this business process are census, vital statistics, immigration, and other information sources. This business process outputs materials for:\n• Campaigns to enroll new members in existing health plan or health benefit.\n• New health plan or health benefit offering.\n• Modification to existing health plan or health benefit offering. It includes production of information materials and communications to impacted members, providers, and contractors (e.g., program strategies and materials, etc.). The communication of information includes a variety of methods such as email, mail, publication, mobile device, facsimile, telephone, web or Electronic Data Interchange (EDI).",
     "trigger_events": {

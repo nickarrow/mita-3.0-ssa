@@ -6,6 +6,7 @@
   "sub_category": "Claims Adjudication",
   "process_name": "Calculate Spend-Down Amount",
   "process_code": "OM",
+  "process_id": "OM_CALCULATE_SPEND_DOWN_AMOUNT",
   "maturity_model": {
     "capability_questions": [
       {
@@ -13,7 +14,7 @@
         "question": "Is the process primarily manual or automatic?",
         "levels": {
           "level_1": "The process consists primarily of manual paper-based activity to accomplish tasks.",
-          "level_2": "SMA uses a mix of manual and automatic processes to accomplish Calculate Spend-Down Amount tasks.",
+          "level_2": "SMA uses a mix of manual and automatic processes to accomplish tasks.",
           "level_3": "SMA automates process to the full extent possible within the intrastate.",
           "level_4": "Maturity level is not applicable.",
           "level_5": "Maturity level is not applicable."
@@ -26,7 +27,7 @@
         "levels": {
           "level_1": "The member submits the claims and receipts to SMA. There is a manual process for tallying claim amounts, subtracting disallowed amounts, and determining if member has met the spend down in a given period.",
           "level_2": "An electronic tally adds member bills and reports on progress toward spend-down threshold.",
-          "level_3": "Members are eligible for Medicaid coverage with a deductible amount equal to their spend- down requirements for the specified period. Spend down is essentially eliminated as a distinct process.",
+          "level_3": "Members are eligible for Medicaid coverage with a deductible amount equal to their spend-down requirements for the specified period. Spend down is essentially eliminated as a distinct process.",
           "level_4": "Maturity level is not applicable.",
           "level_5": "Maturity level is not applicable."
         }
@@ -55,7 +56,7 @@
       },
       {
         "category": "Business Capability Descriptions",
-        "question": "How does the agency determine that the member has met the spend- down target?",
+        "question": "How does the agency determine that the member has met the spend-down target?",
         "levels": {
           "level_1": "Staff applies spend down business rules to decide whether the submitted costs are allowable and in the appropriate period to apply the costs, sometimes resulting in inconsistent determinations or controversy with the member. The process is manual.",
           "level_2": "SMA tests claims submitted by the member against Medicaid Program payment business rules. SMA identifies services and amounts that Medicaid will not pay",
@@ -103,7 +104,7 @@
         "levels": {
           "level_1": "Process meets threshold or mandated requirements for timeliness (i.e., the process achieves results within the time specified by law or regulation).",
           "level_2": "Process timeliness improves through use of automation. Timeliness exceeds legal requirements.",
-          "level_3": "Timeliness improves via state and federal collaboration, use of information sharing, standards, and regional information exchange hubs. Switch to auto- deductible accounting supports real-time reporting of spend down totals. Timeliness exceeds Level 2.",
+          "level_3": "Timeliness improves via state and federal collaboration, use of information sharing, standards, and regional information exchange hubs. Switch to auto-deductible accounting supports real-time reporting of spend down totals. Timeliness exceeds Level 2.",
           "level_4": "Maturity level is not applicable.",
           "level_5": "Maturity level is not applicable."
         }
@@ -114,7 +115,7 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
           "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
           "level_4": "Maturity level is not applicable.",
           "level_5": "Maturity level is not applicable."
         }
@@ -136,7 +137,7 @@
         "levels": {
           "level_1": "High relative cost due to low number of automatic, standardized tasks.",
           "level_2": "Automation improves process and allows focus on exception resolution, improving cost effectiveness ratio over Level 1.",
-          "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards. Auto- deductible accounting further improving cost effectiveness ratio over Level 2.",
+          "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards. Auto-deductible accounting further improving cost effectiveness ratio over Level 2.",
           "level_4": "Maturity level is not applicable.",
           "level_5": "Maturity level is not applicable."
         }

@@ -6,6 +6,7 @@
   "sub_category": "Case Management",
   "process_name": "Perform Screening and Assessment",
   "process_code": "CM",
+  "process_id": "CM_PERFORM_SCREENING_AND_ASSESSMENT",
   "process_details": {
     "description": "The Perform Screening and Assessment business process is responsible for the evaluation of member’s health information, facilitating evaluations and recording results. This business process assesses for certain health and behavioral health conditions (e.g., chronic illness, mental health, substance abuse), lifestyle and living conditions (e.g., employment, religious affiliation, living situation) factors. This business process:\n• Establishes risk categories and hierarchy, severity, and level of need.\n• Screens for required fields.\n• Edits required fields.\n• Verifies information from external sources if available.\n• Establishes severity scores and diagnoses.\n• Associates with applicable service needs. Health Information Exchange (HIE) verifies a member’s health information.",
     "trigger_events": {

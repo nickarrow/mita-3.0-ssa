@@ -6,6 +6,7 @@
   "sub_category": "Accounts Payable Management",
   "process_name": "Manage Accounts Payable Disbursement",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_ACCOUNTS_PAYABLE_DISBURSEMENT",
   "maturity_model": {
     "capability_questions": [
       {

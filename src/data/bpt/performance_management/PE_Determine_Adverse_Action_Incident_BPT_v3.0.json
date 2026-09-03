@@ -6,6 +6,7 @@
   "sub_category": "Compliance Management",
   "process_name": "Determine Adverse Action Incident",
   "process_code": "PE",
+  "process_id": "PE_DETERMINE_ADVERSE_ACTION_INCIDENT",
   "process_details": {
     "description": "The Determine Adverse Action Incident business process receives an incident from an investigative unit with the direction to pursue the case to closure. The case may result in civil or criminal charges, corrective action, removal of a provider, contractor, trading partner or member from the Medicaid Program, or the State Medicaid Agency (SMA) may terminate or suspend the case.\nIndividual state policy determines what evidence is necessary to support different types of cases:\n• Provider utilization review\n• Provider compliance review\n• Contractor utilization review (includes managed care organizations)\n• Contractor compliance review\n• Member utilization review\n• Investigation of potential fraud or abuse review\n• Drug utilization review\n• Quality review (e.g., Consumer Assessment of Healthcare Providers and Systems (CAPHS) and Healthcare Effectiveness Data and Information Set (HEDIS) measures)\n• Performance review (e.g., Key Performance Indicator (KPI))\n\n• Contract review\n• Erroneous payment review\n• Audit Review\n• Other evaluation of information Different criteria and rules, relationships, and information define each type of adverse action incident and require different types of external investigation.",
     "trigger_events": {

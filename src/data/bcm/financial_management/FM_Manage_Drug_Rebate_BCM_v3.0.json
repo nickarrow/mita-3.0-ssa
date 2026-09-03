@@ -6,6 +6,7 @@
   "sub_category": "Accounts Receivable Management",
   "process_name": "Manage Drug Rebate",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_DRUG_REBATE",
   "maturity_model": {
     "capability_questions": [
       {
@@ -69,7 +70,7 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
           "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy is 98% or higher.",
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy is 98% or higher.",
           "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy is 98% or higher.",
           "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision-making is automatic using national standardized business rules definitions. Accuracy is 98% or higher."
         }
@@ -100,7 +101,7 @@
         "category": "Business Capability Quality: Effort to Perform; Efficiency",
         "question": "How efficient is the process?",
         "levels": {
-          "level_1": "Process is labor intensive. There is wasted effort or expense to accomplish tasks. Process meets minimum state process guidelines and SMA performance standards. Non- standardized data and format makes any type of cross program management reporting and analysis for drug rebate purposes difficult and costly. Efficiency is low.",
+          "level_1": "Process is labor intensive. There is wasted effort or expense to accomplish tasks. Process meets minimum state process guidelines and SMA performance standards. Non-standardized data and format makes any type of cross program management reporting and analysis for drug rebate purposes difficult and costly. Efficiency is low.",
           "level_2": "Automation and state standards increase productivity. Efficiency is higher than Level 1.",
           "level_3": "SMA adopts MITA Framework, industry standards and information exchange with intrastate agencies and entities. Staff focuses on resolving disputes Improving efficiency to 95% or higher.",
           "level_4": "SMA adopts MITA Framework, industry standards and information exchange with interstate agencies and entities improving efficiency to 98% or higher.",

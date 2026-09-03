@@ -6,8 +6,9 @@
   "sub_category": "Accounts Payable Management",
   "process_name": "Manage Contractor Payment",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_CONTRACTOR_PAYMENT",
   "process_details": {
-    "description": "The Manage Contractor Payment business process includes the activities necessary to reimburse contractors for services rendered based on a contract executed between the State Medicaid Agency (SMA) and the contractor. When a contractor renders services on behalf of a Medicaid member, the contractor invoices Medicaid according to the specifics defined in the contract. Agen Administration process invoices according to the SMA policy including validation of the invoice content to reimbursement details defined in the contract.",
+    "description": "The Manage Contractor Payment business process includes the activities necessary to reimburse contractors for services rendered based on a contract executed between the State Medicaid Agency (SMA) and the contractor. When a contractor renders services on behalf of a Medicaid member, the contractor invoices Medicaid according to the specifics defined in the contract. Agency staff responsible for Contract Administration process invoices according to the SMA policy including validation of the invoice content to reimbursement details defined in the contract.",
     "trigger_events": {
       "environment_based": [
         "Receive invoice from contractor (e.g., email, mail, facsimile)."

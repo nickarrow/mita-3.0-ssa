@@ -13,7 +13,9 @@ import { v4 as uuidv4 } from "uuid";
 import { db } from "../db";
 import { extractAttachmentIdFromFileName } from "./exportService";
 import { validateImportPayload } from "./importValidation";
+import { migrateImportPayload } from "./importRevisionMigration";
 import { SCORE_TOLERANCE, TIMESTAMP_TOLERANCE_MS } from "../../constants/export";
+import { BLUEPRINT_REVISION } from "../../constants/blueprint";
 import { refreshTagUsage } from "../tagUsage";
 import type { ExportData, ImportResult, ImportItemResult, ImportProgressCallback } from "./types";
 import type {
@@ -82,6 +84,7 @@ function createHistorySnapshot(
     score,
     ratings: historicalRatings,
     blueprintVersion: assessment.blueprintVersion,
+    blueprintRevision: assessment.blueprintRevision ?? BLUEPRINT_REVISION,
   };
 }
 
@@ -105,6 +108,12 @@ export async function importFromJson(
   if (!data) {
     return failure(errors, warnings);
   }
+
+  // Re-align question indices before anything is written. A file produced against
+  // an older blueprint extraction carries indices that are valid-looking but point
+  // at the wrong questions.
+  const migration = migrateImportPayload(data);
+  warnings.push(...migration.warnings);
 
   onProgress?.(30, "Processing assessments...");
 
@@ -167,6 +176,8 @@ export async function importFromZip(
   if (!data) {
     return failure(errors, warnings);
   }
+
+  warnings.push(...migrateImportPayload(data).warnings);
 
   onProgress?.(40, "Processing assessments...");
 
@@ -455,6 +466,13 @@ async function processAssessmentImport(
       status: importedAssessment.status,
       tags: importedAssessment.tags,
       blueprintVersion: importedAssessment.blueprintVersion,
+      // Whatever the migration resolved, not an unconditional "current".
+      // `migrateImportPayload` sets this to the current revision for records it
+      // re-aligned, and leaves a foreign revision in place for records it declined to
+      // touch. Stamping current regardless asserted that indices had been checked when
+      // they had not — and the stamp is the only thing that would ever prompt another
+      // look at them.
+      blueprintRevision: importedAssessment.blueprintRevision,
       createdAt: new Date(importedAssessment.createdAt),
       updatedAt: importedDate,
       finalizedAt: importedAssessment.finalizedAt
@@ -583,6 +601,11 @@ async function processAssessmentImport(
         row.status = importedAssessment.status;
         row.tags = importedAssessment.tags;
         row.updatedAt = importedDate;
+        // The rating rows above have just been rewritten from the imported record, so
+        // the row now describes the imported extraction, not whatever it held before.
+        // Leaving the old revision here would claim indices had been verified against
+        // an extraction they no longer come from.
+        row.blueprintRevision = importedAssessment.blueprintRevision;
         delete row.editSnapshotId;
         if (importedAssessment.finalizedAt) {
           row.finalizedAt = new Date(importedAssessment.finalizedAt);
@@ -647,6 +670,7 @@ async function processAssessmentImport(
         score: importedScore,
         ratings: historicalRatings,
         blueprintVersion: importedAssessment.blueprintVersion,
+        blueprintRevision: importedAssessment.blueprintRevision,
       });
 
       return {

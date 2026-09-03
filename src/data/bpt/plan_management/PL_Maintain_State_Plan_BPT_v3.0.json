@@ -6,6 +6,7 @@
   "sub_category": "Plan Administration",
   "process_name": "Maintain State Plan",
   "process_code": "PL",
+  "process_id": "PL_MAINTAIN_STATE_PLAN",
   "process_details": {
     "description": "The Maintain State Plan business process responds to the scheduled and unscheduled prompts to update and revise the Medicaid State Plan. The Medicaid State Plan is the officially recognized statement describing the nature and scope of the State Medicaid program as required under Section 1902 of the Social Security Act.",
     "trigger_events": {

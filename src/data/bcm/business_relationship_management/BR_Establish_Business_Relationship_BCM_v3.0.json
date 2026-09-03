@@ -6,6 +6,7 @@
   "sub_category": "Standards Management",
   "process_name": "Establish Business Relationship",
   "process_code": "BR",
+  "process_id": "BR_ESTABLISH_BUSINESS_RELATIONSHIP",
   "maturity_model": {
     "capability_questions": [
       {
@@ -24,7 +25,7 @@
         "question": "Does State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of HIPAA and state- specific standards. SMA has a methodology to assist them in developing business relationships and their associated manual and electronic documentation.",
+          "level_2": "SMA applies a mix of HIPAA and state-specific standards. SMA has a methodology to assist them in developing business relationships and their associated manual and electronic documentation.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for intrastate exchange of information SMA defines in the Service Level Agreement (SLA) with trading partner.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for clinical and interstate information exchange of information SMA defines in the SLA with trading partner.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national exchange of information SMA defines in the SLA with trading partner."

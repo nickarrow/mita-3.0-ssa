@@ -6,6 +6,7 @@
   "sub_category": "Case Management",
   "process_name": "Manage Registry",
   "process_code": "CM",
+  "process_id": "CM_MANAGE_REGISTRY",
   "process_details": {
     "description": "The Manage Registry business process receives a member’s health outcome information, prepares updates for a specific registry (e.g., immunizations, cancer, disease) and responds to inquiries with response information. In the context of MITA, a medical registry consolidates related records from multiple sources (e.g., intrastate, interstate or federal agencies) into one comprehensive data store. This data store may or may not reside within the Medicaid information system.",
     "trigger_events": {

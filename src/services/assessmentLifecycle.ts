@@ -13,7 +13,9 @@
 
 import { v4 as uuidv4 } from "uuid";
 import { db } from "./db";
+import { BLUEPRINT_REVISION } from "../constants/blueprint";
 import { getBlueprintVersion, getCapabilityByCode } from "./blueprint";
+import { isKnownRevision, pendingShiftsFor, remapQuestionIndices } from "./blueprintRevision";
 import { normalizeTagList } from "../utils/tags";
 import { refreshTagUsage } from "./tagUsage";
 import type { CapabilityAssessment, Rating, AssessmentHistory } from "../types";
@@ -65,6 +67,7 @@ export async function startAssessment(
       status: "in_progress",
       tags: normalizedTags,
       blueprintVersion: getBlueprintVersion(),
+      blueprintRevision: BLUEPRINT_REVISION,
       createdAt: now,
       updatedAt: now,
     };
@@ -126,6 +129,15 @@ export async function editAssessment(assessmentId: string): Promise<void> {
             attachmentIds: r.attachmentIds || [],
           })),
         blueprintVersion: assessment.blueprintVersion,
+        // Inherited, not stamped as current: the snapshot's question indices *are* the
+        // assessment's, so it must describe the same extraction the assessment does.
+        // `revertEdit` writes these indices back onto live rating rows, so a snapshot
+        // claiming the wrong extraction would corrupt them.
+        //
+        // The fallback is unreachable because every path that creates an assessment
+        // stamps a revision — not because of the v7 upgrade, which a fresh IndexedDB
+        // never runs (Dexie creates the newest schema directly).
+        blueprintRevision: assessment.blueprintRevision ?? BLUEPRINT_REVISION,
       };
 
       await db.assessmentHistory.add(historyEntry);
@@ -187,8 +199,19 @@ export async function finalizeAssessment(assessmentId: string): Promise<void> {
         .equals(assessmentId)
         .toArray();
 
-      // Calculate score
-      const answeredRatings = ratings.filter((r) => r.level !== null);
+      // Calculate score from answers that refer to a question that exists.
+      //
+      // The range filter is not defensive noise: a rating whose index is at or beyond
+      // the question count renders nowhere, so it cannot be reviewed or removed, and
+      // averaging it in publishes a score partly derived from an answer the user never
+      // saw. An unknown capability code yields no question count, in which case there
+      // is nothing to bound against and every answer is kept.
+      const questionCount =
+        getCapabilityByCode(assessment.capabilityCode)?.bcm.maturity_model.capability_questions
+          .length ?? null;
+      const answeredRatings = ratings.filter(
+        (r) => r.level !== null && (questionCount === null || r.questionIndex < questionCount)
+      );
       const score =
         answeredRatings.length > 0
           ? answeredRatings.reduce((sum, r) => sum + (r.level || 0), 0) / answeredRatings.length
@@ -227,6 +250,7 @@ export async function finalizeAssessment(assessmentId: string): Promise<void> {
               attachmentIds: [],
             })),
           blueprintVersion: existingFinalized.blueprintVersion,
+          blueprintRevision: existingFinalized.blueprintRevision ?? BLUEPRINT_REVISION,
         };
 
         await db.assessmentHistory.add(historyEntry);
@@ -340,6 +364,35 @@ export async function revertEdit(assessmentId: string): Promise<void> {
     return;
   }
 
+  // Refuse to write indices from an extraction this build cannot place.
+  //
+  // The restore matches snapshot ratings onto live rows by `questionIndex`, so the
+  // snapshot has to be in the same coordinate system as the live row. That holds for
+  // snapshots this app created, but a snapshot can also arrive by import, and the
+  // date-based fallback above can select one. Rather than silently writing foreign
+  // indices onto real answers, leave the ratings alone and just restore the status —
+  // the same conservative outcome as having no snapshot at all.
+  if (!isKnownRevision(latestHistory.blueprintRevision)) {
+    await db.capabilityAssessments
+      .where("id")
+      .equals(assessmentId)
+      .modify((row) => {
+        row.status = "finalized";
+        row.updatedAt = new Date();
+        delete row.editSnapshotId;
+      });
+    return;
+  }
+
+  // Carry the snapshot's indices forward if it predates the current extraction. An
+  // imported snapshot can legitimately be older than the live row.
+  const snapshotShifts = pendingShiftsFor(latestHistory.blueprintRevision);
+  const snapshotRatings =
+    snapshotShifts.length === 0
+      ? latestHistory.ratings
+      : remapQuestionIndices(latestHistory.ratings, latestHistory.capabilityCode, snapshotShifts)
+          .remapped;
+
   await db.transaction(
     "rw",
     [db.capabilityAssessments, db.ratings, db.assessmentHistory, db.attachments],
@@ -357,7 +410,7 @@ export async function revertEdit(assessmentId: string): Promise<void> {
         .equals(assessmentId)
         .toArray();
       const existingByQuestion = new Map(existingRatings.map((r) => [r.questionIndex, r]));
-      const snapshotByQuestion = new Map(latestHistory.ratings.map((r) => [r.questionIndex, r]));
+      const snapshotByQuestion = new Map(snapshotRatings.map((r) => [r.questionIndex, r]));
 
       // Attachments are the source of truth for their own links. Rebuilding
       // attachmentIds from the table (rather than trusting the snapshot, which
@@ -374,7 +427,7 @@ export async function revertEdit(assessmentId: string): Promise<void> {
         attachmentIdsByRating.set(attachment.ratingId, ids);
       }
 
-      for (const snapshotRating of latestHistory.ratings) {
+      for (const snapshotRating of snapshotRatings) {
         const existing = existingByQuestion.get(snapshotRating.questionIndex);
         if (existing) {
           await db.ratings.update(existing.id, {

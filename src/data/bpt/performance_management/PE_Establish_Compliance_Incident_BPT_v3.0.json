@@ -6,6 +6,7 @@
   "sub_category": "Compliance Management",
   "process_name": "Establish Compliance Incident",
   "process_code": "PE",
+  "process_id": "PE_ESTABLISH_COMPLIANCE_INCIDENT",
   "process_details": {
     "description": "The Establish Compliance Incident business process is responsible registration of a case for incident tracking of utilization anomalies. It establishes an incident file, generates incident identification, assigns an incident manager, links to related cases, and collects related documentation.",
     "trigger_events": {

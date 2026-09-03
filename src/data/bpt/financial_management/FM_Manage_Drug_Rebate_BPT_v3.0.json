@@ -6,6 +6,7 @@
   "sub_category": "Accounts Receivable Management",
   "process_name": "Manage Drug Rebate",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_DRUG_REBATE",
   "process_details": {
     "description": "The Manage Drug Rebate business process describes the process of managing drug rebate that the State Medicaid Agency (SMA) collects from manufacturers. This business process:\n• Receives quarterly drug rebate information from Centers for Medicare & Medicaid Services (CMS).\n• Compares drug rebate to quarterly payment history information.\n• Identifies drug information matches based on manufacturer and drug code.\n• Applies the rebate factor and volume indicators.\n• Calculates the total rebate per manufacturer.\n• Prepares drug rebate invoices.\n• Sorts the invoices by manufacturer and drug code.\n• Sends the invoice information to the drug manufacturer via the Send Outbound Transaction.\n• Sends an alert to Manage Accounts Receivable Information to monitor for rebate payment.",
     "trigger_events": {
@@ -43,7 +44,7 @@
       "Manage Contractor Communication",
       "Manage Accounts Receivable Information"
     ],
-    "constraints": "The Manage Drug Rebate business process will be in accordance with state- specific drug formulary, business rules, and reporting requirements that may differ by state, and will comply with federal mandates.",
+    "constraints": "The Manage Drug Rebate business process will be in accordance with state-specific drug formulary, business rules, and reporting requirements that may differ by state, and will comply with federal mandates.",
     "failures": [
       "CMS does not send quarterly drug rebate information.",
       "There are no drug claims for rebate matching the manufacturer and drug codes based on the CMS Drug Product Data for the period. NOTE: the process could complete with errors (e.g., errors in rebate rates, drug payment file errors), and the SMA would correct these errors or disputed amounts in the Manage Accounts Receivable Information business process."

@@ -2,7 +2,7 @@
 
 A Progressive Web App (PWA) enabling Medicaid agencies to self-assess their IT maturity against the MITA 3.0 (Medicaid Information Technology Architecture) framework.
 
-🔗 **[Live Demo](https://naretakis.github.io/mita-3.0-ssa/)**
+🔗 **[Live Demo](https://nickarrow.github.io/mita-3.0-ssa/)**
 
 ## Overview
 
@@ -23,23 +23,21 @@ This tool allows state Medicaid agencies to evaluate their current IT capabiliti
 | Business Area | Capabilities |
 |---------------|--------------|
 | Business Relationship Management | 4 |
-| Care Management | 8 |
+| Care Management | 9 |
 | Contractor Management | 9 |
 | Eligibility and Enrollment Management | 8 |
 | Financial Management | 19 |
 | Operations Management | 9 |
 | Performance Management | 5 |
-| Plan Management | 7 |
+| Plan Management | 8 |
 | Provider Management | 5 |
-| **Total** | **74** |
+| **Total** | **76** |
 
-> **Note:** The source blueprint contains 76 BCM and 76 BPT files, but two capabilities
-> are currently excluded because their BCM and BPT filenames use mismatched capability
-> codes (`Treatment_Plans` vs `Treatment_Plan`, and `Maintain_Reference` vs
-> `Manage_Reference`). A capability requires both files to be usable. This is a data
-> issue in the upstream [MITA Open Blueprint](https://github.com/naretakis/mita-open-blueprint)
-> repository; the app logs a console warning in development when it detects unpaired
-> codes. Once the filenames agree, the count rises to 76 with no app changes needed.
+All 76 capabilities from the source blueprint are covered, across 837 maturity
+questions. Earlier releases covered 74: CMS spells two processes differently in its
+own appendices, the BCM and BPT filenames disagreed as a result, and pairing the two
+halves by filename silently dropped both. The halves are now paired on the upstream
+`process_id`, which is identical across a pair by construction.
 
 ## Tech Stack
 
@@ -61,7 +59,7 @@ This tool allows state Medicaid agencies to evaluate their current IT capabiliti
 
 ```bash
 # Clone the repository
-git clone https://github.com/naretakis/mita-3.0-ssa.git
+git clone https://github.com/nickarrow/mita-3.0-ssa.git
 cd mita-3.0-ssa
 
 # Install dependencies
@@ -82,6 +80,7 @@ npm run dev
 | `npm run test:watch` | Run tests in watch mode |
 | `npm run lint` | Run ESLint |
 | `npm run format` | Format `src/` with Prettier |
+| `npm run sync:blueprint` | Check the vendored blueprint against upstream (dry run) |
 
 ### Testing
 
@@ -91,8 +90,8 @@ implementation. Because the app talks to Dexie directly with no abstraction laye
 exercise the same code paths the browser does, including transactions and compound indexes.
 
 Coverage is concentrated on the data-integrity surface — import validation, the assessment lifecycle
-(edit, revert, finalize) and rating persistence — because that is where a silent bug costs a user their
-work. UI behaviour is verified by hand.
+(edit, revert, finalize), rating persistence and blueprint migrations — because that is where a silent
+bug costs a user their work. UI behaviour is verified by hand.
 
 ## Deployment
 
@@ -100,11 +99,24 @@ This project is configured for automatic deployment to GitHub Pages via GitHub A
 
 ## Data Source
 
-Business Capability Models (BCM) and Business Process Templates (BPT) are sourced from the [MITA Open Blueprint](https://github.com/naretakis/mita-open-blueprint) project.
+Business Capability Models (BCM) and Business Process Templates (BPT) are sourced from the
+[MITA Open Blueprint](https://github.com/nickarrow/mita-open-blueprint) project and vendored
+verbatim into `src/data`. Provenance, the pinned upstream commit and the dataset's license are
+recorded in [`src/data/NOTICE.md`](src/data/NOTICE.md). Do not hand-edit the JSON: fix it upstream
+and re-sync, so every consumer gets the correction.
+
+Run `npm run sync:blueprint` to compare the vendored copy against upstream. The script reports which
+files changed and, more importantly, whether any capability's question count moved — a stored rating
+identifies its question by array position, so a shift there invalidates existing answers and needs a
+migration in `src/services/blueprintRevision.ts` plus a Dexie version bump. It refuses to write in
+that case unless told the migration exists.
 
 ## License
 
 This project is licensed under the GPL-3.0 License — see the [LICENSE](LICENSE) file for details.
+The vendored MITA blueprint dataset in `src/data` is MIT licensed; see
+[`src/data/NOTICE.md`](src/data/NOTICE.md). The underlying CMS MITA framework content is a
+U.S. Government work in the public domain.
 
 ## Contributing
 

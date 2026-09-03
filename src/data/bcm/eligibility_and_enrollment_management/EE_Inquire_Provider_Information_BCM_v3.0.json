@@ -6,6 +6,7 @@
   "sub_category": "Provider Enrollment",
   "process_name": "Inquire Provider Information",
   "process_code": "EE",
+  "process_id": "EE_INQUIRE_PROVIDER_INFORMATION",
   "maturity_model": {
     "capability_questions": [
       {
@@ -13,7 +14,7 @@
         "question": "Is the process primarily manual or automatic?",
         "levels": {
           "level_1": "The process consists primarily of manual activity to accomplish tasks. SMA receives most requests via telephone, facsimile, or mail.",
-          "level_2": "SMA uses a mix of manual and automatic processes to accomplish tasks. SMA submits Inquire Provider Information response via automatic voice response system, web portal, Electronic Data Interchange (EDI) transaction, personal computer, terminal connection or within batch response parameters.",
+          "level_2": "SMA uses a mix of manual and automatic processes to accomplish tasks. SMA submits response via automatic voice response system, web portal, Electronic Data Interchange (EDI) transaction, personal computer, terminal connection or within batch response parameters.",
           "level_3": "The inquire provider process is fully automatic to the extent possible within the intrastate.",
           "level_4": "The inquire provider process is fully automatic to the extent possible within the region.",
           "level_5": "The inquire provider process is fully automatic to the extent possible across the nation."
@@ -58,9 +59,9 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
           "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "SMA automates the collection of provider inquiry information increasing the reliability of SMA’s internal information. External sources of provider inquiry information use MITA Framework and industry standards for information verification submission. Decision- making is automatic using a statewide provider inquiry standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_3": "SMA automates the collection of provider inquiry information increasing the reliability of SMA’s internal information. External sources of provider inquiry information use MITA Framework and industry standards for information verification submission. Decision-making is automatic using a statewide provider inquiry standardized business rules definitions. Accuracy rating is at 99% or higher.",
           "level_4": "SMA automates the collection of provider inquiry information increasing the reliability of regional sources of information. SMA adopts MITA Framework and industry standards for information exchange verification by regional agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
-          "level_5": "SMA adopts MITA Framework and provider inquiry standards for national information verification submission. Decision- making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
+          "level_5": "SMA adopts MITA Framework and provider inquiry standards for national information verification submission. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }
       },
       {

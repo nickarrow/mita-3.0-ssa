@@ -14,6 +14,18 @@ export interface CapabilityAssessment {
   status: AssessmentStatus;
   tags: string[]; // ["#provider-module", "#deloitte"]
   blueprintVersion: string; // "3.0"
+  /**
+   * Which extraction of the blueprint this row's `questionIndex` values refer to.
+   *
+   * Distinct from `blueprintVersion`, which is CMS's framework version and stays
+   * "3.0" across re-extractions. Question positions can move between extractions
+   * while the framework version does not change, so this is the only thing that
+   * says whether a stored rating still points at the question it answered.
+   *
+   * Absent on rows written before revisions were tracked; absence means the
+   * pre-2026-09-02 extraction. See `services/blueprintRevision.ts`.
+   */
+  blueprintRevision?: string;
   createdAt: Date;
   updatedAt: Date;
   finalizedAt?: Date;
@@ -74,6 +86,15 @@ export interface AssessmentHistory {
   score: number | null;
   ratings: HistoricalRating[]; // Full ratings snapshot
   blueprintVersion: string;
+  /**
+   * Extraction the snapshot's `questionIndex` values refer to. See the same field
+   * on `CapabilityAssessment`.
+   *
+   * Snapshots need this independently: they carry their own denormalized ratings,
+   * so a migration has to rewrite them too, and a snapshot restored by `revertEdit`
+   * writes its indices back onto live rating rows.
+   */
+  blueprintRevision?: string;
 }
 
 export interface HistoricalRating {
@@ -141,7 +162,32 @@ export interface MaturityLevel {
 export interface CapabilityQuestion {
   category: string;
   question: string;
+  /**
+   * Guidance CMS attaches to the question itself, where present.
+   *
+   * Upstream moved these out of the question text into their own field, so they
+   * must be rendered separately or they are lost. Some are load-bearing for
+   * rating: Calculate Spend-Down Amount records that levels 4 and 5 are not
+   * relevant to it, which a user cannot infer from the level descriptions.
+   */
+  note?: string;
   levels: MaturityLevel;
+}
+
+/**
+ * Provenance recorded on every upstream record.
+ *
+ * `source_process_name` appears only where CMS names a process differently in the
+ * appendix a record came from than in the framework index. `process_name` follows
+ * the index so a BCM pairs with its BPT; this field preserves the as-published
+ * wording. Currently on 2 records.
+ */
+export interface BlueprintMetadata {
+  source_file: string;
+  source_page_range?: string;
+  extracted_date: string;
+  source_process_name?: string;
+  manually_corrected?: boolean;
 }
 
 export interface BCM {
@@ -151,15 +197,21 @@ export interface BCM {
   business_area: string;
   process_name: string;
   process_code: string;
+  /**
+   * Canonical join key, identical across a BCM/BPT pair (e.g. `CM_ESTABLISH_CASE`).
+   *
+   * Read it; never derive it. It is usually the process code plus the
+   * upper-snake-case process name, but for the two processes CMS spells
+   * differently across appendices it follows the BPT spelling — so computing it
+   * from a BCM's `process_name` reproduces the mismatch this field exists to
+   * prevent, which is what silently dropped two capabilities from this app.
+   */
+  process_id: string;
   sub_category: string;
   maturity_model: {
     capability_questions: CapabilityQuestion[];
   };
-  metadata: {
-    source_file: string;
-    source_page_range?: string;
-    extracted_date: string;
-  };
+  metadata: BlueprintMetadata;
 }
 
 export interface AlternateProcessPath {
@@ -172,6 +224,18 @@ export interface TriggerEvents {
   interaction_based: string[];
 }
 
+/**
+ * A referenced diagram from the source PDF.
+ *
+ * Typed as an object because every one of the 76 BPT files carries objects; the
+ * previous `string[]` forced a runtime type probe and a cast at the render site.
+ */
+export interface BptDiagram {
+  filename: string;
+  description?: string;
+  page_reference?: string;
+}
+
 export interface BPT {
   document_type: "BPT";
   version: string;
@@ -179,13 +243,15 @@ export interface BPT {
   business_area: string;
   process_name: string;
   process_code: string;
+  /** Canonical join key, identical to the paired BCM's. See `BCM.process_id`. */
+  process_id: string;
   sub_category: string;
   process_details: {
     description: string;
     trigger_events: TriggerEvents;
     results: string[];
     process_steps: string[];
-    diagrams: string[];
+    diagrams: BptDiagram[];
     alternate_process_path?: AlternateProcessPath;
     shared_data: string[];
     predecessor_processes: string[];
@@ -194,15 +260,22 @@ export interface BPT {
     failures: string[];
     performance_measures: string[];
   };
-  metadata: {
-    source_file: string;
-    source_page_range?: string;
-    extracted_date: string;
-  };
+  metadata: BlueprintMetadata;
 }
 
 // Capability with both BCM and BPT data
 export interface Capability {
+  /**
+   * This app's stable identifier for a capability, and the value persisted as
+   * `CapabilityAssessment.capabilityCode` (e.g. `CM_Establish_Case`).
+   *
+   * Derived from the filename, deliberately kept rather than switched to the
+   * upstream `process_id`. Adopting `process_id` here would invalidate every stored
+   * row for no user-visible gain, and it is not merely a case change:
+   * `process_id` normalizes punctuation too, so `OM_Calculate_Spend-Down_Amount`
+   * becomes `OM_CALCULATE_SPEND_DOWN_AMOUNT`. Pairing the two halves uses
+   * `process_id`; identifying and persisting a capability uses this.
+   */
   code: string;
   processName: string;
   businessArea: string;

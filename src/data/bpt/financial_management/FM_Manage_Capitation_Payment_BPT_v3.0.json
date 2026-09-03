@@ -6,6 +6,7 @@
   "sub_category": "Accounts Payable Management",
   "process_name": "Manage Capitation Payment",
   "process_code": "FM",
+  "process_id": "FM_MANAGE_CAPITATION_PAYMENT",
   "process_details": {
     "description": "The Manage Capitation Payment business process includes the activities to prepare Primary Care Case Management (PCCM) or Managed Care Organization (MCO) capitation payments. Some States offer members the option of enrolling in a PCCM product that requires the selection of a Primary Care Physician (PCP). The PCP receives a Per-Member-Per-Month (PMPM) capitation payment amount for all members that the State Medicaid Agency (SMA) assigns. The provider payment schedule defines the PCCM capitation rates typically actuary based on an age and gender rating or flat rate. Provider may opt in or out of PCCM plan and does not have to belong to the MCO. A prevailing alternative to the SMA integrated managed care model is to delegate specific member populations to MCOs and pay the MCO a PMPM capitation amount for all assigned members. The Manage Capitation Payment business process interrogates the member, provider, and MCO, member assignment and contract capitation information, and creates the information extract necessary to generate the capitation payment. The data extract includes any processing rules and options including retroactive adjustments to member assignments that affect the capitation payment amount to the provider or MCO.",
     "trigger_events": {

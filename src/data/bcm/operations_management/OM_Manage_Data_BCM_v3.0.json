@@ -6,6 +6,7 @@
   "sub_category": "Payment and Reporting",
   "process_name": "Manage Data",
   "process_code": "OM",
+  "process_id": "OM_MANAGE_DATA",
   "maturity_model": {
     "capability_questions": [
       {
@@ -24,7 +25,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of industry and state- specific standards.",
+          "level_2": "SMA applies a mix of industry and state-specific standards.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for intrastate exchange of information.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for clinical and interstate information exchange.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national exchange of information."
@@ -68,7 +69,7 @@
         "question": "How accessible is the information in the process?",
         "levels": {
           "level_1": "SMA stores information in disparate systems including paper storage and obtains information manually.",
-          "level_2": "SMA stores information in disparate systems, but automation and Manage Data industry standards increase accessibility over Level 1.",
+          "level_2": "SMA stores information in disparate systems, but automation and industry standards increase accessibility over Level 1.",
           "level_3": "SMA obtains information easily and exchanges with intrastate agencies and entities based on industry standards. Accessibility is greater than Level 2.",
           "level_4": "SMA obtains information easily and exchanges with interstate agencies and entities. Accessibility is greater than Level 3.",
           "level_5": "SMA obtains information easily and exchanges with national agencies and entities. Accessibility is greater than Level 4."

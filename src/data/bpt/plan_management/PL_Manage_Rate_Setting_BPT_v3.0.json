@@ -6,6 +6,7 @@
   "sub_category": "Health Benefit Administration",
   "process_name": "Manage Rate Setting",
   "process_code": "PL",
+  "process_id": "PL_MANAGE_RATE_SETTING",
   "process_details": {
     "description": "The Manage Rate Setting business process responds to requests to add or modify rates for any service or product covered by the Medicaid Program.",
     "trigger_events": {

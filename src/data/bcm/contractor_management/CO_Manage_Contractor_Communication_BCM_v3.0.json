@@ -6,6 +6,7 @@
   "sub_category": "Contractor Support",
   "process_name": "Manage Contractor Communication",
   "process_code": "CO",
+  "process_id": "CO_MANAGE_CONTRACTOR_COMMUNICATION",
   "maturity_model": {
     "capability_questions": [
       {
@@ -35,7 +36,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of HIPAA and state- specific standards. SMA establishes a formal Communications Management Plan.",
+          "level_2": "SMA applies a mix of HIPAA and state-specific standards. SMA establishes a formal Communications Management Plan.",
           "level_3": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for intrastate exchange of information.",
           "level_4": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for interstate information exchange.",
           "level_5": "SMA adopts MITA Framework, industry standards, and other nationally recognized standards for national exchange of information."
@@ -57,7 +58,7 @@
         "question": "How timely is the end-to-end process?",
         "levels": {
           "level_1": "Process meets threshold or mandated requirements for timeliness (i.e., the process achieves results within the time specified by law or regulation). SMA responds to requests in three (3) to seven (7) business days.",
-          "level_2": "Process timeliness improves through use of automation. Contractors have access to self- services via a web portal resolving their inquiries themselves. Multiple web portals may exist as contractors may work with multiple agencies. Timeliness exceeds legal requirements. SMA answers most requests in 24 hours or less.",
+          "level_2": "Process timeliness improves through use of automation. Contractors have access to self-services via a web portal resolving their inquiries themselves. Multiple web portals may exist as contractors may work with multiple agencies. Timeliness exceeds legal requirements. SMA answers most requests in 24 hours or less.",
           "level_3": "Timeliness improves via state and federal collaboration, use of information sharing, standards, and regional information exchange hubs. SMA integrates web portals so contractors have consistent way of communicating. SMA responds to most common inquiries in real-time. Exceptions may require 24 hours or less.",
           "level_4": "Information is available in near real time. SMA has interstate interoperability, which further improves timeliness over Level 3.",
           "level_5": "Information is available in real time. Processes improve further through connectivity with other States and with federal agencies. Most processes execute at the point of service. Results are almost immediate."
@@ -69,9 +70,9 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making.",
           "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
-          "level_4": "Automation of information collection increases the Level 4 & 5 reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework for information exchange by interstate agencies. Decision- making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
-          "level_5": "SMA adopts MITA Framework for national information exchange. Decision- making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_4": "Automation of information collection increases the Level 4 & 5 reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework for information exchange by interstate agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_5": "SMA adopts MITA Framework for national information exchange. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }
       },
       {

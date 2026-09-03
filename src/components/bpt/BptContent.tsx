@@ -15,75 +15,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import type { BPT } from "../../types";
 import { getCapabilityByProcessName } from "../../services/blueprint";
-
-// ============================================
-// Text Parsing Utilities
-// ============================================
-
-interface ParsedLine {
-  type: "paragraph" | "note" | "bullet" | "dash" | "check" | "numbered" | "lettered" | "roman";
-  content: string;
-  indent: number;
-}
-
-/**
- * Parse a single line to determine its type and content
- */
-function parseLine(line: string): ParsedLine | null {
-  const trimmed = line.trim();
-  if (!trimmed) return null;
-
-  // Calculate indent level based on leading whitespace
-  const leadingSpaces = line.length - line.trimStart().length;
-  const indent = Math.floor(leadingSpaces / 2);
-
-  // NOTE: callout
-  if (trimmed.startsWith("NOTE:")) {
-    return {
-      type: "note",
-      content: trimmed.replace(/^NOTE:\s*/, ""),
-      indent: 0,
-    };
-  }
-
-  // Checkmark item (✓)
-  const checkMatch = trimmed.match(/^[✓]\s*(.+)$/);
-  if (checkMatch) {
-    return { type: "check", content: checkMatch[1], indent: indent + 2 };
-  }
-
-  // Bullet item (•)
-  const bulletMatch = trimmed.match(/^[•]\s*(.+)$/);
-  if (bulletMatch) {
-    return { type: "bullet", content: bulletMatch[1], indent };
-  }
-
-  // Dash item (- or –)
-  const dashMatch = trimmed.match(/^[-–]\s*(.+)$/);
-  if (dashMatch) {
-    return { type: "dash", content: dashMatch[1], indent: indent + 1 };
-  }
-
-  // Roman numeral (i., ii., iii., iv., etc.)
-  const romanMatch = trimmed.match(/^(i{1,3}|iv|vi{0,3}|ix|x)\.\s*(.+)$/i);
-  if (romanMatch) {
-    return { type: "roman", content: romanMatch[2], indent: indent + 2 };
-  }
-
-  // Lettered item (a., b., c., etc.)
-  const letterMatch = trimmed.match(/^([a-z])\.\s*(.+)$/i);
-  if (letterMatch) {
-    return { type: "lettered", content: letterMatch[2], indent: indent + 1 };
-  }
-
-  // Numbered item (1., 2., etc.)
-  const numberMatch = trimmed.match(/^(\d+)\.\s*(.+)$/);
-  if (numberMatch) {
-    return { type: "numbered", content: numberMatch[2], indent };
-  }
-
-  return { type: "paragraph", content: trimmed, indent };
-}
+import { parseLine, resolveIndentDepths, type ParsedLine } from "./bptTextParsing";
 
 // ============================================
 // Rendering Components
@@ -175,76 +107,62 @@ function NoteCallout({ content }: { content: string }) {
  * Render formatted text with support for bullets, notes, and nested lists
  */
 export function FormattedText({ text }: { text: string }) {
-  const lines = text.split("\n");
-  const elements: React.ReactNode[] = [];
+  // Parsed up front rather than line by line, because depth is relative to the
+  // other indents in this block and cannot be known from one line alone.
+  const parsedLines = text
+    .split("\n")
+    .map((line, index) => ({ parsed: parseLine(line), index }))
+    .filter((entry): entry is { parsed: ParsedLine; index: number } => entry.parsed !== null);
 
-  for (let i = 0; i < lines.length; i++) {
-    const parsed = parseLine(lines[i]);
-    if (!parsed) continue;
+  const depths = resolveIndentDepths(parsedLines.map((entry) => entry.parsed));
 
-    const key = `line-${i}`;
+  return (
+    <>
+      {parsedLines.map(({ parsed, index }) => {
+        const key = `line-${index}`;
+        const pl = (depths.get(parsed.rawIndent) ?? 0) * 1.5;
 
-    switch (parsed.type) {
-      case "note":
-        elements.push(<NoteCallout key={key} content={parsed.content} />);
-        break;
+        if (parsed.type === "note") {
+          return <NoteCallout key={key} content={parsed.content} />;
+        }
 
-      case "check":
-        elements.push(
-          <Box key={key} sx={{ display: "flex", gap: 1, pl: parsed.indent * 1.5, mb: 0.5 }}>
+        if (parsed.type === "paragraph") {
+          // Prose sits at depth 0 regardless of leading whitespace; see
+          // resolveIndentDepths for why indentation on a paragraph is not structure.
+          return (
+            <Typography key={key} variant="body2" sx={{ lineHeight: 1.6, mb: 1 }}>
+              {parsed.content}
+            </Typography>
+          );
+        }
+
+        // Every list type is a marker plus text in a flex row; only the marker glyph
+        // and its colour differ. Ordered items use their published marker, which is
+        // the part that was previously discarded.
+        const marker = parsed.type === "check" ? "✓" : parsed.type === "bullet" ? "•" : "–";
+        return (
+          <Box key={key} sx={{ display: "flex", gap: 1, pl, mb: 0.5 }}>
             <Typography
               component="span"
-              sx={{ color: "success.main", fontWeight: 600, flexShrink: 0 }}
+              sx={{
+                color: parsed.type === "check" ? "success.main" : "text.secondary",
+                fontWeight: parsed.type === "check" ? 600 : undefined,
+                flexShrink: 0,
+                // Ordered markers vary in width ("i." vs "viii."), so reserve a
+                // common gutter to keep their text left-aligned.
+                minWidth: parsed.type === "ordered" ? "1.75em" : undefined,
+              }}
             >
-              ✓
+              {parsed.type === "ordered" ? parsed.marker : marker}
             </Typography>
             <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
               {parsed.content}
             </Typography>
           </Box>
         );
-        break;
-
-      case "bullet":
-        elements.push(
-          <Box key={key} sx={{ display: "flex", gap: 1, pl: parsed.indent * 1.5, mb: 0.5 }}>
-            <Typography component="span" sx={{ color: "text.secondary", flexShrink: 0 }}>
-              •
-            </Typography>
-            <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
-              {parsed.content}
-            </Typography>
-          </Box>
-        );
-        break;
-
-      case "dash":
-        elements.push(
-          <Box key={key} sx={{ display: "flex", gap: 1, pl: parsed.indent * 1.5, mb: 0.5 }}>
-            <Typography component="span" sx={{ color: "text.secondary", flexShrink: 0 }}>
-              –
-            </Typography>
-            <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
-              {parsed.content}
-            </Typography>
-          </Box>
-        );
-        break;
-
-      default:
-        elements.push(
-          <Typography
-            key={key}
-            variant="body2"
-            sx={{ lineHeight: 1.6, mb: 1, pl: parsed.indent * 1.5 }}
-          >
-            {parsed.content}
-          </Typography>
-        );
-    }
-  }
-
-  return <>{elements}</>;
+      })}
+    </>
+  );
 }
 
 /**
@@ -345,13 +263,27 @@ export function SimpleList({ items }: { items: string[] }) {
 
   return (
     <Box component="ul" sx={{ m: 0, pl: 2.5 }}>
-      {items.map((item, i) => (
-        <Box component="li" key={i} sx={{ mb: 0.5 }}>
-          <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
-            {item}
-          </Typography>
-        </Box>
-      ))}
+      {items.map((item, i) => {
+        // A single entry can itself contain a nested list — upstream encodes depth with
+        // newlines and an indent inside one string, and `shared_data` in particular
+        // carries two levels below the entry. Rendering the raw string put all of it in
+        // one <li>, where CSS collapsed the newlines into a run-on line: "Provider data
+        // store including: - Provider demographics - Provider network - Contract
+        // information - Type - Specialty ...". Multi-line entries go through the same
+        // parser as `description` so their structure survives.
+        const isMultiLine = item.includes("\n");
+        return (
+          <Box component="li" key={i} sx={{ mb: 0.5 }}>
+            {isMultiLine ? (
+              <FormattedText text={item} />
+            ) : (
+              <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
+                {item}
+              </Typography>
+            )}
+          </Box>
+        );
+      })}
     </Box>
   );
 }
@@ -495,27 +427,23 @@ export function DiagramsSection({ diagrams }: { diagrams: BPT["process_details"]
         {diagrams.length} diagram{diagrams.length !== 1 ? "s" : ""} available
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        {diagrams.map((diagram, i) => {
-          // Handle both string and object formats
-          const isObject = typeof diagram === "object" && diagram !== null;
-          const filename = isObject ? (diagram as { filename: string }).filename : diagram;
-          const description = isObject
-            ? (diagram as { description?: string }).description
-            : undefined;
-
-          return (
-            <Paper key={i} elevation={0} sx={{ p: 1, backgroundColor: "grey.50" }}>
-              <Typography variant="caption" sx={{ fontWeight: 500 }}>
-                {filename}
+        {/*
+          Diagrams are objects in all 76 BPT records, so they are typed as such
+          (`BptDiagram`). This previously probed `typeof diagram === "object"` and
+          cast, to support a string form that does not occur in the data.
+        */}
+        {diagrams.map((diagram, i) => (
+          <Paper key={i} elevation={0} sx={{ p: 1, backgroundColor: "grey.50" }}>
+            <Typography variant="caption" sx={{ fontWeight: 500 }}>
+              {diagram.filename}
+            </Typography>
+            {diagram.description && (
+              <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
+                {diagram.description}
               </Typography>
-              {description && (
-                <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
-                  {description}
-                </Typography>
-              )}
-            </Paper>
-          );
-        })}
+            )}
+          </Paper>
+        ))}
       </Box>
     </Box>
   );

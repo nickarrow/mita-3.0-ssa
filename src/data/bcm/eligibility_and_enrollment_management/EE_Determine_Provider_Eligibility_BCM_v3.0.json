@@ -6,6 +6,7 @@
   "sub_category": "Provider Enrollment",
   "process_name": "Determine Provider Eligibility",
   "process_code": "EE",
+  "process_id": "EE_DETERMINE_PROVIDER_ELIGIBILITY",
   "maturity_model": {
     "capability_questions": [
       {
@@ -14,7 +15,7 @@
         "levels": {
           "level_1": "Meets state and federal requirements for processing applications timely and accurately.",
           "level_2": "SMA exceeds state and federal requirements for processing applications timely and accurately.",
-          "level_3": "SMA exceeds state and federal requirements for processing provider enrollment applications timely and accurately including includes one-stop collaboration across SMA including dual- eligibility with Medicare and CHIP as well as enhancing background check and screening by level of risk with federal agencies.",
+          "level_3": "SMA exceeds state and federal requirements for processing provider enrollment applications timely and accurately including includes one-stop collaboration across SMA including dual-eligibility with Medicare and CHIP as well as enhancing background check and screening by level of risk with federal agencies.",
           "level_4": "SMA exceeds state and federal requirements for processing provider enrollment applications timely and accurately. SMA collaborates with federal agencies for regional validation of background information and screening by level of risk in near-real time enrollment based on taxonomy.",
           "level_5": "SMA exceeds state and federal requirements for processing provider enrollment applications timely and accurately. SMA uses federated registries that identify providers across the country, who qualify to serve special populations or are disqualified based on criminal activity."
         }
@@ -35,7 +36,7 @@
         "question": "Does the State Medicaid Agency use standards in the process?",
         "levels": {
           "level_1": "SMA focuses on meeting compliance thresholds for state and federal regulations using state-specific standards.",
-          "level_2": "SMA applies a mix of HIPAA and state- specific standards.",
+          "level_2": "SMA applies a mix of HIPAA and state-specific standards.",
           "level_3": "SMA adopts MITA Framework, standard enrollment application interfaces, and other nationally recognized standards for intrastate exchange of information.",
           "level_4": "SMA adopts MITA Framework, standard enrollment application interfaces, and other nationally recognized standards for regional exchange of information.",
           "level_5": "SMA adopts MITA Framework, standard enrollment application interfaces, and other nationally recognized standards for national exchange of information."
@@ -45,7 +46,7 @@
         "category": "Business Capability Descriptions",
         "question": "Does the State Medicaid Agency use required screening requirements?",
         "levels": {
-          "level_1": "SMA uses state- specific screening requirements.",
+          "level_1": "SMA uses state-specific screening requirements.",
           "level_2": "SMA uses a mix of federal screening and state-specific requirements",
           "level_3": "SMA adopts all federal screening requirements for low, medium and high risk providers within the intrastate.",
           "level_4": "SMA adopts all federal screening requirements for low, medium and high risk providers within the region.",
@@ -57,7 +58,7 @@
         "question": "What provider identifier is used?",
         "levels": {
           "level_1": "SMA uses local identifier the state assigns to provider.",
-          "level_2": "SMA cross- references National Provider Identifier (NPI) to state identification.",
+          "level_2": "SMA cross-references National Provider Identifier (NPI) to state identification.",
           "level_3": "The NPI is the identification of record for all health care providers. SMA enumerates atypical providers differently. SMA retains legacy identifiers for some business purposes, but newly enrolled providers use national identifiers.",
           "level_4": "SMA widely uses the NPI for those providers that are required to do so. SMA uses atypical provider identification within the region.",
           "level_5": "SMA widely uses the NPI for those providers that are required to do so. SMA uses atypical provider identification across the nation."

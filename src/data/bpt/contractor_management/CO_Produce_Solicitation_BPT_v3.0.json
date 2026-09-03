@@ -6,6 +6,7 @@
   "sub_category": "Contract Management",
   "process_name": "Produce Solicitation",
   "process_code": "CO",
+  "process_id": "CO_PRODUCE_SOLICITATION",
   "process_details": {
     "description": "The Produce Solicitation business process gathers requirements, develops a solicitation (e.g., Request for Information (RFI), Request for Quotation (RFQ), or Request for Proposals (RFP)), receives approvals for the solicitation, and releases for response.",
     "trigger_events": {

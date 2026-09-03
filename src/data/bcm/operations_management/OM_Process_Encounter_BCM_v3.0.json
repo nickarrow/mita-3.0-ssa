@@ -6,6 +6,7 @@
   "sub_category": "Claims Adjudication",
   "process_name": "Process Encounter",
   "process_code": "OM",
+  "process_id": "OM_PROCESS_ENCOUNTER",
   "maturity_model": {
     "capability_questions": [
       {
@@ -68,7 +69,7 @@
         "question": "How timely is the end-to-end process?",
         "levels": {
           "level_1": "Process meets threshold or mandated requirements for timeliness (i.e., the process achieves results within the time specified by law or regulation). Manual processing steps may require multiple business days to complete encounter editing, auditing, or pricing. Suspended encounters require lengthy manual resolution.",
-          "level_2": "Process timeliness improves through use of automation. Timeliness exceeds legal requirements. Electronic encounter processing and point- of-sale adjudication greatly increase timeliness. The entire encounter process completes within 24 hours or less.",
+          "level_2": "Process timeliness improves through use of automation. Timeliness exceeds legal requirements. Electronic encounter processing and point-of-sale adjudication greatly increase timeliness. The entire encounter process completes within 24 hours or less.",
           "level_3": "Timeliness improves via state and federal collaboration, use of information sharing, standards, and regional information exchange hubs. Timeliness exceeds Level 2.",
           "level_4": "Information is available in near real time. Processes that use clinical information result in immediate action, response, and results. SMA has interstate interoperability, which further improves timeliness over Level 3.",
           "level_5": "Information is available in real time. Processes improve further through connectivity with other States and with federal agencies. Most processes execute at the point of service. Results are almost immediate."
@@ -80,9 +81,9 @@
         "levels": {
           "level_1": "Use of direct data entry for information collection is manually intensive and susceptible to inconsistent or incorrect information. Stakeholders are unable to rely on information for decision-making. It is difficult for reviewers to consistently interpret and apply adjudication business rules manually. Unstructured attachment data increases inconsistency of the review process.",
           "level_2": "HIPAA standard transactions improve accuracy of information but the decision-making process may be erroneous or misleading. Accuracy is higher than at Level 1.",
-          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision- making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
-          "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision- making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
-          "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision- making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
+          "level_3": "Automation of information collection increases the reliability of SMA’s internal information. External sources of information use MITA Framework and industry standards for information exchange. Decision-making is automatic using standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_4": "Automation of information collection increases the reliability of SMA’s internal and external sources of information. SMA adopts MITA Framework and industry standards for information exchange with interstate agencies. Decision-making is automatic using regional standardized business rules definitions. Accuracy rating is at 99% or higher.",
+          "level_5": "SMA adopts MITA Framework and industry standards for information exchange with national agencies. Decision-making is automatic using national standardized business rules definitions. Accuracy rating is at 99% or higher."
         }
       },
       {
@@ -90,7 +91,7 @@
         "question": "How accessible is the information in the process?",
         "levels": {
           "level_1": "SMA stores information in disparate systems including paper storage and obtains information manually.",
-          "level_2": "SMA stores information in disparate systems, but automation and HIPAA standards Process Encounter increase accessibility over Level 1.",
+          "level_2": "SMA stores information in disparate systems, but automation and HIPAA standards increase accessibility over Level 1.",
           "level_3": "SMA obtains information easily and exchanges with intrastate agencies and entities based on MITA Framework and industry standards. Accessibility is greater than Level 2.",
           "level_4": "SMA obtains information easily and exchanges with interstate agencies and entities. Accessibility is greater than Level 3.",
           "level_5": "SMA obtains information easily and exchanges with national agencies and entities. Accessibility is greater than Level 4."
@@ -134,7 +135,7 @@
         "question": "Does the business process satisfy stakeholders?",
         "levels": {
           "level_1": "Stakeholders lack confidence in information negatively affecting stakeholder satisfaction with the process.",
-          "level_2": "Automation and standardization provides clear and useful information. Stakeholder Process Encounter satisfaction is greater than Level 1.",
+          "level_2": "Automation and standardization provides clear and useful information. Stakeholder satisfaction is greater than Level 1.",
           "level_3": "SMA adopts MITA Framework, industry standards, by intrastate agencies and entities improving stakeholder satisfaction to 90% or higher. SMA uses survey or questionnaire for information collection.",
           "level_4": "SMA adopts MITA Framework, industry standards, by interstate agencies and entities improving stakeholder satisfaction to 95% or higher.",
           "level_5": "SMA adopts MITA Framework, industry standards, by national agencies and entities improving stakeholder satisfaction to 98% or higher."

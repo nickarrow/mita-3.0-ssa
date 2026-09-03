@@ -6,6 +6,7 @@
   "sub_category": "Contract Management",
   "process_name": "Close Out Contract",
   "process_code": "CO",
+  "process_id": "CO_CLOSE_OUT_CONTRACT",
   "process_details": {
     "description": "The Close Out Contract business process begins with an expired contract or an order to terminate a contract. The business process ensures the obligations of the current contract are complete and the turnover to the new contractor proceeds according to contractual obligations.",
     "trigger_events": {

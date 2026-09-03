@@ -11,6 +11,7 @@
     "test:watch": "vitest",
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
+    "sync:blueprint": "node tools/sync-blueprint.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

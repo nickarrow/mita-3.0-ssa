@@ -6,6 +6,7 @@
   "sub_category": "Provider Enrollment",
   "process_name": "Disenroll Provider",
   "process_code": "EE",
+  "process_id": "EE_DISENROLL_PROVIDER",
   "process_details": {
     "description": "The Disenroll Provider business process is responsible for managing disenrollment in the Medicaid Program. This business process covers the activity of disenrollment including the tracking of disenrollment requests and validation that the disenrollment meets state’s rules. Medicaid sends notifications to affected parties (e.g., provider, contractor, business partners) as well as alerts to other business processes to discontinue business activities.",
     "trigger_events": {
