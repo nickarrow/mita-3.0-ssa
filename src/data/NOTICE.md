@@ -10,9 +10,9 @@ the correction.
 |               |                                                    |
 | ------------- | -------------------------------------------------- |
 | Upstream      | https://github.com/nickarrow/mita-open-blueprint   |
-| Commit        | `19a7e6c4e82a93d66cf97f14f31afd542b6b45d5`         |
-| Upstream date | 2026-09-02                                         |
-| Synced        | 2026-09-02                                         |
+| Commit        | `cac547f154923e0846916dede53b45314fee0e56`         |
+| Upstream date | 2026-09-09                                         |
+| Synced        | 2026-09-09                                         |
 | Contents      | 76 BCM + 76 BPT JSON files, plus 76 diagram images |
 
 `BLUEPRINT_SOURCE_COMMIT` in `src/constants/blueprint.ts` carries the same commit

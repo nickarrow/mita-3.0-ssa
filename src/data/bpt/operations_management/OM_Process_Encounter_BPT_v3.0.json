@@ -38,7 +38,7 @@
       "7. Perform Pricing (Shadow-Pricing):\n  a. Calculates state allowed payment amount by applying pricing algorithms (e.g., member-specific pricing, DRG, APC).\n  b. Calculates to-be-paid amount by deducting:\n    i. Contributions provided by Member.\n    ii. Provider advances, liens, and recoupments.",
       "8. Send alert to Prepare Provider Payment business process for payment.",
       "9. END: Send alert to Generate Financial Report business process with payment information.",
-      "--- Alternate Path: Suspended Encounter ---",
+      "Alternate Path: Suspended Encounter",
       "1. START: Provider submits corrected information in response to an error notification.",
       "2. Process it as if it is an original encounter.\n  a. Go to step 2 of the Process Encounter business process.",
       "3. END: Business process stops."

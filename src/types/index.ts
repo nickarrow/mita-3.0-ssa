@@ -236,6 +236,20 @@ export interface BptDiagram {
   page_reference?: string;
 }
 
+/**
+ * A reference table a process's steps cite by name, e.g. "See Mandatory MAGI Groups Table 1".
+ *
+ * Present on exactly one record in the corpus — `EE_Determine_Member_Eligibility`, with 7
+ * tables and 57 rows of Medicaid eligibility groups. Declared so the type describes the data
+ * as it actually is; not rendered yet, since 57 rows across 7 tables needs UI of its own.
+ */
+export interface BptReferenceTable {
+  table_number: string;
+  title: string;
+  page_reference?: string;
+  rows: { authority: string; eligibility_group: string }[];
+}
+
 export interface BPT {
   document_type: "BPT";
   version: string;
@@ -259,6 +273,8 @@ export interface BPT {
     constraints: string;
     failures: string[];
     performance_measures: string[];
+    /** See `BptReferenceTable`. Only `EE_Determine_Member_Eligibility` carries these. */
+    reference_tables?: BptReferenceTable[];
   };
   metadata: BlueprintMetadata;
 }

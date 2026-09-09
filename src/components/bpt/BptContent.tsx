@@ -15,7 +15,14 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import type { BPT } from "../../types";
 import { getCapabilityByProcessName } from "../../services/blueprint";
-import { parseLine, resolveIndentDepths, type ParsedLine } from "./bptTextParsing";
+import {
+  groupStepsByScenario,
+  isNumberedStep,
+  parseLine,
+  resolveIndentDepths,
+  splitScenarioHeading,
+  type ParsedLine,
+} from "./bptTextParsing";
 
 // ============================================
 // Rendering Components
@@ -198,54 +205,56 @@ export function FormattedText({ text }: { text: string }) {
 }
 
 /**
- * Render process steps with alternate path support
+ * A scenario heading above the steps it labels.
+ *
+ * Wraps rather than truncates, because three of these are paragraph length. Any guidance
+ * after the label goes through `FormattedText`, since one heading
+ * (`EE_Determine_Provider_Eligibility`) carries a dash-bulleted sublist after a newline that
+ * would otherwise collapse into a run-on line.
+ */
+function ScenarioHeading({ text }: { text: string }) {
+  const { label, body } = splitScenarioHeading(text);
+
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        mt: 2,
+        mb: 1,
+        py: 1,
+        px: 1.5,
+        backgroundColor: "primary.50",
+        borderLeft: 3,
+        borderColor: "primary.main",
+      }}
+    >
+      <Typography
+        variant="subtitle2"
+        component="p"
+        sx={{ fontWeight: 600, color: "primary.dark", lineHeight: 1.5 }}
+      >
+        {label}
+      </Typography>
+      {body && (
+        <Box sx={{ mt: 0.5 }}>
+          <FormattedText text={body} />
+        </Box>
+      )}
+    </Paper>
+  );
+}
+
+/**
+ * Render process steps, grouped by scenario.
  */
 export function ProcessSteps({ steps }: { steps: string[] }) {
-  // Group steps by sections (main flow + alternate paths)
-  const sections: { title: string | null; steps: string[] }[] = [];
-  let currentSection: { title: string | null; steps: string[] } = {
-    title: null,
-    steps: [],
-  };
-
-  for (const step of steps) {
-    // Check for alternate path header: --- Alternate Path: ... ---
-    const altPathMatch = step.match(/^-{3}\s*(.+?)\s*-{3}$/);
-    if (altPathMatch) {
-      if (currentSection.steps.length > 0) {
-        sections.push(currentSection);
-      }
-      currentSection = { title: altPathMatch[1], steps: [] };
-    } else {
-      currentSection.steps.push(step);
-    }
-  }
-  if (currentSection.steps.length > 0) {
-    sections.push(currentSection);
-  }
+  const sections = groupStepsByScenario(steps);
 
   return (
     <>
       {sections.map((section, sectionIdx) => (
         <Box key={sectionIdx} sx={{ mb: 2 }}>
-          {section.title && (
-            <Paper
-              elevation={0}
-              sx={{
-                mt: 2,
-                mb: 1,
-                py: 0.75,
-                px: 1.5,
-                backgroundColor: "warning.50",
-                borderLeft: 3,
-                borderColor: "warning.main",
-              }}
-            >
-              <Typography variant="subtitle2" sx={{ fontWeight: 600, color: "warning.dark" }}>
-                {section.title}
-              </Typography>
-            </Paper>
-          )}
+          {section.heading !== null && <ScenarioHeading text={section.heading} />}
           {section.steps.map((step, i) => {
             // Parse step number and content
             const stepMatch = step.match(/^(\d+)\.\s*(.*)$/s);
@@ -530,7 +539,10 @@ export function BptContent({
   const { process_details } = bpt;
 
   // Count items for section headers
-  const stepCount = process_details.process_steps.length;
+  // Counted, not `process_steps.length`. The array also holds scenario headings, so the
+  // raw length conflates the two — it reported 18 steps for Determine Member Eligibility,
+  // which has 16 numbered steps under 2 headings.
+  const stepCount = process_details.process_steps.filter(isNumberedStep).length;
   const resultCount = process_details.results.length;
   const sharedDataCount = process_details.shared_data.length;
   const predecessorCount = process_details.predecessor_processes.length;

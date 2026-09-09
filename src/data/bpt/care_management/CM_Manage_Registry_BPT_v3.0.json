@@ -28,6 +28,7 @@
       "3. Validate that the provided information is authentic.",
       "4. Prepare submittal for member’s health outcome information to registry.",
       "5. END: Send member’s health outcome information to registry.",
+      "Alternate Path:",
       "1. START: Receive request for health outcome information.",
       "2. Validate requestor has authorization to receive desired information.",
       "3. Prepare submittal for member’s health outcome information to requestor.",

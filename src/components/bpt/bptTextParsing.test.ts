@@ -18,7 +18,14 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { parseLine, resolveIndentDepths, type ParsedLine } from "./bptTextParsing";
+import {
+  groupStepsByScenario,
+  isNumberedStep,
+  parseLine,
+  resolveIndentDepths,
+  splitScenarioHeading,
+  type ParsedLine,
+} from "./bptTextParsing";
 import { getCapabilities } from "../../services/blueprint";
 
 const parse = (line: string) => parseLine(line)!;
@@ -138,6 +145,118 @@ describe("resolveIndentDepths: relative, not fixed-width", () => {
   });
 });
 
+describe("isNumberedStep", () => {
+  it.each(["1. Receive request", "12. Assess categorical risk", "5.  extra space"])(
+    "treats %j as a step",
+    (entry) => expect(isNumberedStep(entry)).toBe(true)
+  );
+
+  it.each([
+    "Manage FFP",
+    "Capitation Payment",
+    "Alternate Path:",
+    "Alternate Scenario 1 - Auto Eligible",
+    "Alternate Path - Additional Requests",
+    // A CFR citation. Upstream had misparsed "42 CFR 435.330" into a step number and has
+    // since removed it, but the rule must not classify one as a step if it returns.
+    "435.330 Some eligibility provision",
+    "3.2 million records",
+  ])("treats %j as a heading", (entry) => expect(isNumberedStep(entry)).toBe(false));
+});
+
+describe("groupStepsByScenario", () => {
+  const shape = (steps: string[]) =>
+    groupStepsByScenario(steps).map((s) => [s.heading, s.steps.length]);
+
+  it("returns one unlabelled section when there are no headings", () => {
+    expect(shape(["1. a", "2. b", "3. c"])).toEqual([[null, 3]]);
+  });
+
+  it("handles a heading at the very start", () => {
+    // EE_Determine_Member_Eligibility opens with one.
+    expect(shape(["Full Eligibility Determination or Renewal", "1. a", "2. b"])).toEqual([
+      ["Full Eligibility Determination or Renewal", 2],
+    ]);
+  });
+
+  it("starts a new section at each heading", () => {
+    expect(shape(["1. a", "Alternate Path:", "1. b", "2. c"])).toEqual([
+      [null, 1],
+      ["Alternate Path:", 2],
+    ]);
+  });
+
+  it("keeps a trailing heading that labels no steps", () => {
+    // Three records end with one. Dropping it would lose published guidance.
+    expect(shape(["1. a", "Alternate Path: guidance"])).toEqual([
+      [null, 1],
+      ["Alternate Path: guidance", 0],
+    ]);
+  });
+
+  it("handles four scenarios in one array, as FM_Manage_Fund has", () => {
+    expect(
+      shape(["Manage Fund", "1. a", "Manage FMAP", "1. b", "Manage FFP", "1. c", "Draw", "1. d"])
+    ).toEqual([
+      ["Manage Fund", 1],
+      ["Manage FMAP", 1],
+      ["Manage FFP", 1],
+      ["Draw", 1],
+    ]);
+  });
+
+  it("handles consecutive headings without inventing empty sections badly", () => {
+    expect(shape(["A", "B", "1. x"])).toEqual([
+      ["A", 0],
+      ["B", 1],
+    ]);
+  });
+
+  it("returns nothing for an empty array", () => {
+    expect(groupStepsByScenario([])).toEqual([]);
+  });
+
+  it("preserves every entry exactly once", () => {
+    const steps = ["Heading one", "1. a", "2. b", "Heading two", "1. c"];
+    const flat = groupStepsByScenario(steps).flatMap((s) =>
+      s.heading === null ? s.steps : [s.heading, ...s.steps]
+    );
+    expect(flat).toEqual(steps);
+  });
+});
+
+describe("splitScenarioHeading", () => {
+  it("keeps a bare scenario name whole", () => {
+    expect(splitScenarioHeading("Manage FFP")).toEqual({ label: "Manage FFP", body: "" });
+  });
+
+  it("keeps a hyphenated name whole, since there is no colon", () => {
+    expect(splitScenarioHeading("Alternate Scenario 1 - Auto Eligible")).toEqual({
+      label: "Alternate Scenario 1 - Auto Eligible",
+      body: "",
+    });
+  });
+
+  it("splits a label from the guidance that follows it", () => {
+    const { label, body } = splitScenarioHeading(
+      "Alternate Path: For the authorization of some services, States may use the post-approval rather than the prior authorization business process."
+    );
+    expect(label).toBe("Alternate Path:");
+    expect(body.startsWith("For the authorization")).toBe(true);
+  });
+
+  it("keeps a bare label with a trailing colon", () => {
+    expect(splitScenarioHeading("Alternate Path:")).toEqual({ label: "Alternate Path:", body: "" });
+  });
+
+  it("does not split on a colon that appears late in a sentence", () => {
+    // Without the length guard most of the heading would end up in the label.
+    const text =
+      "Determine whether the individual meets the requirements described above and then: proceed.";
+    expect(splitScenarioHeading(text)).toEqual({ label: text, body: "" });
+  });
+});
+
 describe("against the real vendored blueprint", () => {
   /** Every multi-line string the BPT renderer feeds through parseLine. */
   function* renderedBlocks() {
@@ -180,6 +299,51 @@ describe("against the real vendored blueprint", () => {
     // If a re-sync introduces a new width this fails, prompting a look at whether
     // relative ranking still expresses the intended hierarchy.
     expect([...widths].sort((a, b) => a - b)).toEqual([0, 1, 2, 4]);
+  });
+
+  it("no process_steps entry begins with a bare CFR-style citation", () => {
+    // Upstream had misparsed "42 CFR 435.330" into a step numbered 435. Nothing crashed —
+    // it rendered as step 435 in Determine Member Eligibility. Fixed upstream; asserted here
+    // so a future extraction regression is caught by the suite rather than by a reader.
+    for (const capability of getCapabilities()) {
+      for (const entry of capability.bpt.process_details.process_steps) {
+        expect(entry, `${capability.code}: ${entry.slice(0, 60)}`).not.toMatch(/^4\d{2}\.\d/);
+      }
+    }
+  });
+
+  it("step numbers restart per scenario, so they are not unique within a record", () => {
+    // Documents why a step number must never be used as a key, id or anchor.
+    const restarting = getCapabilities().filter((c) => {
+      const nums = c.bpt.process_details.process_steps
+        .filter(isNumberedStep)
+        .map((s) => Number(s.match(/^(\d+)\./)![1]));
+      return nums.some((n, i) => i > 0 && n <= nums[i - 1]!);
+    });
+    expect(restarting.length).toBeGreaterThan(0);
+  });
+
+  it("every scenario heading survives grouping and carries a non-empty label", () => {
+    let headings = 0;
+    for (const capability of getCapabilities()) {
+      const steps = capability.bpt.process_details.process_steps;
+      for (const section of groupStepsByScenario(steps)) {
+        if (section.heading === null) continue;
+        headings += 1;
+        const { label } = splitScenarioHeading(section.heading);
+        expect(label.trim(), capability.code).not.toBe("");
+      }
+    }
+    // 20 across 12 records as of the 2026-09-09 extraction. A bare floor, so restoring
+    // more headings upstream does not fail the suite.
+    expect(headings).toBeGreaterThanOrEqual(20);
+  });
+
+  it("the counted step total excludes headings", () => {
+    const cap = getCapabilities().find((c) => c.code === "EE_Determine_Member_Eligibility")!;
+    const entries = cap.bpt.process_details.process_steps;
+    expect(entries).toHaveLength(18);
+    expect(entries.filter(isNumberedStep)).toHaveLength(16);
   });
 
   it("every ordered line in the corpus retains a marker", () => {

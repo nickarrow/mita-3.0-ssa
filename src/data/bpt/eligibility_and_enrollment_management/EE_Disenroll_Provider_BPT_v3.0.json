@@ -45,7 +45,7 @@
       "6. Remove provider or contractor from Medicaid participation.",
       "7. Send alert to notify Medicare/Medicaid Sanction, NPDB, HIPDB, and state licensing boards via Manage Business Relationship Communication business process of disenrollment information.",
       "8. If applicable, send alert to Manage Contractor Payment business process to stop payment arrangement.",
-      "9. Send alert to Close Out Contract business process with disenrollment",
+      "9. Send alert to Close Out Contract business process with disenrollment information.",
       "10. Send alert to Apply Mass Adjustment business process to associate members with alternate provider or contractor.",
       "11. Send alert to notify provider via Manage Provider Communication business process of disenrollment information.",
       "12. Send alert to notify contractor via Manage Contractor Communication business process of disenrollment.",

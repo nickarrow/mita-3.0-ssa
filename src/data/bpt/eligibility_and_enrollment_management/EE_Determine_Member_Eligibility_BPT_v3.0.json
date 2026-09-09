@@ -25,27 +25,303 @@
       "Tracking information as needed for measuring performance and business activity monitoring."
     ],
     "process_steps": [
-      "1. START:\n  a. Receive completed application from applicant via online or by other commonly available electronic means, in person, over the phone, or by mail, or receive initial assessment from another insurance affordability program; or\n  NOTE: The use of the internet website (online portal) will include not only field-level edits but will also perform data verification, as appropriate, throughout the application preparation and update process as well as determine if the account already exists (in the Health Insurance Marketplace, Medicaid and/or CHIP) and the status of application/account.\n  b. Initiate renewal process when member’s response to renewal notice is received or when changes to existing member account is updated with new information from other data source(s); or\n  c. Receive information about an auto-eligible. Go to Alternate Scenario 1.",
-      "2. Verify the following non-financial requirements for eligibility determination. CMS expects the State to use Federal or local electronic data sources as available. The State may also rely on self-attestation for all eligibility criteria other than citizenship and satisfactory immigration status, as described in Section H of the preamble of the Medicaid Final Eligibility Rule. Resolve discrepancies by identifying non-financial factors that do not meet verification based on data matches or self-attestation and request additional information as necessary.\n  a. Verify State residency.\n  b. Verify the SSN.\n  c. Verify citizenship or satisfactory immigration status.\n  d. If applicable, verify whether individual is an American Indian/Alaska Native, in accordance with established procedure. Note: American Indian/Alaska Native status is not a condition of eligibility for Medicaid.\n  e. If applicable, verify individual incarceration status. Note: Incarceration status is not a condition of eligibility for Medicaid.\n  f. Pregnancy. Note: The Agency must accept self-attestation of pregnancy unless the State has information that is not reasonably compatible with such attestation.\n  g. Age, date of birth and household size. Note: The Agency may accept self-attestation of date of birth and the individuals that comprise an individual’s household or may verify through other reasonable verification procedures.\n  h. Other non-financial factors (e.g., full-time student status, categorical eligibility as a parent or other caretaker relative as defined in 42 CFR",
-      "435. 4). Verify Other Health Coverage",
-      "3. Verify enrollment in other health coverage, including Medicare, other public programs, as well as private coverage. Note: Enrollment in private health coverage is not a barrier to Medicaid eligibility except as an optional targeted low-income child or as a woman needing treatment for breast or cervical cancer. Medicare recipients are exempted from certain eligibility groups, while Medicare coverage is required for certain other eligibility groups. Verify Financial Information",
-      "4. Verify financial information (42 CFR 435.948) provided by the applicant or member,",
-      "5. Verify asset information if applicant has requested to be evaluated for Medicaid eligibility based on a non-MAGI group that requires an asset test. Determine Individual Medicaid Eligibility Assess and Determine Individual Non-Financial Factors of Eligibility Verification Steps 2 -5 b c Flag individual for coverage of EMS only d e Step 6 - Assess Non-Financial Factors Assess and determine non-financial factors for eligibility a Does individual meet residency requirement? Is individual a verified citizen? Does individual meet immigration / lawful presence requiremen ts? Did individual request only a non-MAGI eligibility determination? Is individual under 65 or a parent / caretaker Step 7 - Assess Mandatory MAGI eligibility Step 10 - Screen for Potential Non-MAGI eligibility Step 12 - Deny Process No Yes Continue End Dual Paths No Yes No Yes No Yes No Yes No Yes",
+      "Full Eligibility Determination or Renewal",
+      "1. START:\n  a. Receive completed application from applicant via online or by other commonly available electronic means, in person, over the phone, or by mail, or receive initial assessment from another insurance affordability program; or\n  NOTE: The use of the internet website (online portal) will include not only field-level edits but will also perform data verification, as appropriate, throughout the application preparation and update process as well as determine if the account already exists (in the Health Insurance Marketplace, Medicaid and/or CHIP) and the status of application/account.\n  b. Initiate renewal process when member’s response to renewal notice is received or when changes to existing member account is updated with new information from other data source(s); or\n  c. Receive information about an auto-eligible. Go to Alternate Scenario 1.\n  NOTE: Conduct steps 2, 3, and 4 simultaneously or in any order in accordance with State’s established verification plan (42 CFR 435.945(j)). Financial Information will be verified if financial assistance is requested and the information is provided. Verify asset information if applicant has requested to be evaluated for Medicaid eligibility based on a non-MAGI group that requires an asset test.",
+      "2. Verify the following non-financial requirements for eligibility determination. CMS expects the State to use Federal or local electronic data sources as available. The State may also rely on self-attestation for all eligibility criteria other than citizenship and satisfactory immigration status, as described in Section H of the preamble of the Medicaid Final Eligibility Rule. Resolve discrepancies by identifying non-financial factors that do not meet verification based on data matches or self-attestation and request additional information as necessary.\n  a. Verify State residency.\n  b. Verify the SSN.\n  c. Verify citizenship or satisfactory immigration status.\n  d. If applicable, verify whether individual is an American Indian/Alaska Native, in accordance with established procedure. Note: American Indian/Alaska Native status is not a condition of eligibility for Medicaid.\n  e. If applicable, verify individual incarceration status. Note: Incarceration status is not a condition of eligibility for Medicaid.\n  f. Pregnancy. Note: The Agency must accept self-attestation of pregnancy unless the State has information that is not reasonably compatible with such attestation.\n  g. Age, date of birth and household size. Note: The Agency may accept self-attestation of date of birth and the individuals that comprise an individual’s household or may verify through other reasonable verification procedures.\n  h. Other non-financial factors (e.g., full-time student status, categorical eligibility as a parent or other caretaker relative as defined in 42 CFR 435.4).",
+      "3. Verify enrollment in other health coverage, including Medicare, other public programs, as well as private coverage. Note: Enrollment in private health coverage is not a barrier to Medicaid eligibility except as an optional targeted low-income child or as a woman needing treatment for breast or cervical cancer. Medicare recipients are exempted from certain eligibility groups, while Medicare coverage is required for certain other eligibility groups.",
+      "4. Verify financial information (42 CFR 435.948) provided by the applicant or member, including:\n  a. Information related to wages, net earnings from self-employment, and unearned income and resources with the appropriate source (e.g., State Wage Information Collection Agency (SWICA), IRS, Social Security Administration, State unemployment compensation, and State-administered supplementary payment programs)\n  b. Information related to the eligibility or enrollment from the Supplemental Nutrition Assistance Program, the State program funded under part A of Title IV of the Act, and other insurance affordability programs.",
+      "5. Verify asset information if applicant has requested to be evaluated for Medicaid eligibility based on a non-MAGI group that requires an asset test.",
       "6. Use results from verification processes and other application data to assess and determine whether the individual meets the non-financial factors for eligibility:\n  a. If individual meets residency requirement, go to Step 6b. If not, go to Step 12 to deny Medicaid.\n  b. If individual is a verified citizen, go to Step 6d. If not, continue to Step 6c.\n  c. If individual meets satisfactory immigration status requirements, go to Step 6d. If not, flag individual for coverage of emergency medical services and proceed to Step 6d.\n  d. If individual is requesting only a non-MAGI eligibility determination, go to Step 10 to screen for non-MAGI. If not, go to Step 6e.\n  e. If individual is under age 65 or a parent / caretaker, go to Step 7 to assess and determine eligibility for mandatory MAGI. If not, go to Step 10 to screen for potential non-MAGI eligibility.",
-      "7. Determine individual’s eligibility based on mandatory MAGI eligibility groups. Note: See Mandatory MAGI Groups Table 1.\n  a. Assess whether the applicant/member is eligible as an infant or a child under the age of 19. (42 CFR 435.118). If yes, go to Step 7f. If not, go to Step 7b.\n  b. Assess whether the applicant/member is eligible as a parent or other caretaker relative (42 CFR 435.110). If yes, go to Step 7f. If not, go to Step 7c.\n  c. Assess whether the applicant/member is eligible as a pregnant woman (42 CFR 435.116). If yes, go to Step 7f. If not, go to Step 7d.\n  d. Assess whether the applicant/member is eligible as a former foster care child (no income test) (42 CFR 435.150). If yes, go to Step 7f. If not, go to Step 7e.\n  e. Assess whether individual is age 19 or older and under age 65, not pregnant, is not receiving Medicare (42 CFR 435.119) and is therefore eligible as part of “the adult group”. If yes, go to 7f, if not, go to Step 8 to assess individual for optional MAGI groups.",
-      "8. Assess and determine individual’s eligibility based on optional MAGI groups. States may choose to offer any or all of the optional groups listed in Table 2. Verify (by self-attestation or otherwise) any additional non-financial factors of eligibility for the relevant optional group(s).",
-      "9. Prior to approving or denying Medicaid eligibility, assess and determine if individual is eligible for a Medicare Savings Program. Note: See Medicare Savings Program Groups Table 3.\n  a. Determine if individual is enrolled in Medicare Part A or B. If enrolled in Medicare Part A or B, go to Step 9b. If not, go to Step 9c.\n  b. Determine if individual is eligible for a Medicare Savings Program Group. If the individual is eligible based on MSP criteria, go to Step 14 to assign groups and benefit level. If not, go Step 9c.\n  c. If individual was previously determined eligible on another basis, go to Step 14 to assign groups and benefit level. If not, go to Step 12 to deny Medicaid. Table 3: Medicare Savings Program Groups Social Security Act, Sec. 1902(a)(10)(E)(i),1905(p) Qualified Medicare Beneficiary (QMB) Social Security Act, Sec. 1902(a)(10)(E)(iii), 1905(p)(3)(A)(ii) Specified Low Income Medicare Beneficiary (SLMB) Social Security Act, Sec. 1902(a)(10)(E)(iv), 1905(p)(3)(A)(ii) Qualifying Individuals (QI) Social Security Act, Sec. 1902(a)(10)(E)(ii), 1905(s), 1905(p)(3)(A)(i) Qualified Disabled and Working Individuals (QDWI) Screen for Potential non-MAGI eligibility",
-      "10. Screen individual for potential non-MAGI eligibility based on application information:\n  a. If individual has requested a non-MAGI eligibility determination or application data indicates potential eligibility for non-MAGI (e.g. indicators of disability, blindness, aged, or a need for long term care services), go to Step 11 to determine eligibility on basis other than MAGI. If not, go to Step 10b.\n  b. If individual was previously determined eligible based on MAGI, no further action required. If not, go to 10c.\n  c. If individual is flagged for emergency medical services only, go to Step 12 to deny Medicaid. If not go to Step 9 to assess and determine Medicare Savings Program (MSP) eligibility\n  NOTE: Although the individual was flagged for emergency medical services, the individual has failed all other income tests and the screening for potential non-MAGI and should be denied coverage for emergency medical services. Determine Eligibility on Basis Other than MAGI",
-      "11. Determine individual’s eligibility on basis other than MAGI. Note: See Optional Non-MAGI Groups Table 4, Age, Blind, Disabled (ABD) Optional Coverage Groups Table 5 and Medically Needy Groups Table 6.\n  a. Determine if information is sufficient for a near real-time determination. If yes, go to Step 11c. If not, go to Step 11b.\n  b. Request additional information from applicant, member, or authorized representative (e.g., electronic verifications for former foster care children). Proceed to Step 11d; and if necessary, transmit account (Manage Member Information) to the Health Insurance Marketplace for interim coverage.\n  c. Determine if further verifications are necessary. If yes, go to Step 11d. If not, go to Step 11e.\n  d. Verify additional non-financial and financial information (income and assets), as appropriate, according to methodologies for applicants or members who may be eligible on basis other than MAGI. Go to Step 11e.\n  e. If individual is eligible on a basis of other than MAGI, go to Step 11h. If not, go to Step 11f.\n  f. If individual was previously determined eligible based on MAGI, no further action is required. If not, go to 11g.\n  g. If individual is flagged for emergency medical services only, go to Step 12 to deny Medicaid. If not, go to Step 9 to assess and determine Medicare",
-      "435. 330 Aged 42 CFR 435.322,",
-      "435. 330, 435.340 Blind 42 CFR 435.324,",
-      "435. 330, 435.340 Disabled Deny Medicaid and Assess for Other Insurance Affordability Programs",
+      "7. Determine individual’s eligibility based on mandatory MAGI eligibility groups. Note: See Mandatory MAGI Groups Table 1.\n  a. Assess whether the applicant/member is eligible as an infant or a child under the age of 19. (42 CFR 435.118). If yes, go to Step 7f. If not, go to Step 7b.\n  b. Assess whether the applicant/member is eligible as a parent or other caretaker relative (42 CFR 435.110). If yes, go to Step 7f. If not, go to Step 7c.\n  c. Assess whether the applicant/member is eligible as a pregnant woman (42 CFR 435.116). If yes, go to Step 7f. If not, go to Step 7d.\n  d. Assess whether the applicant/member is eligible as a former foster care child (no income test) (42 CFR 435.150). If yes, go to Step 7f. If not, go to Step 7e.\n  e. Assess whether individual is age 19 or older and under age 65, not pregnant, is not receiving Medicare (42 CFR 435.119) and is therefore eligible as part of “the adult group”. If yes, go to 7f , if not, go to Step 8 to assess individual for optional MAGI groups.\n  f. If individual is flagged for emergency medical services only, go to Step 14 to assign groups and benefit level (limited coverage for emergency services). If not, go to Step 9 to assess and determine Medicare Savings Program (MSP) eligibility prior to assigning groups and benefit level (however, if the individual is determined eligible as part of the “adult group” they will pass through Step 9 to Step 14).",
+      "8. Assess and determine individual’s eligibility based on optional MAGI groups. States may choose to offer any or all of the optional groups listed in Table 2. Verify (by self-attestation or otherwise) any additional non-financial factors of eligibility for the relevant optional group(s).\n  a. If an individual meets non-financial factors and income standards for an optional MAGI group, go to Step 8b. If not, go to Step 10 to screen for potential non-MAGI eligibility.\n  b. If individual is flagged for emergency medical services only, go to Step 14 to assign groups and benefit level (limited coverage for emergency services). If not, go to Step 9 to assess and determine Medicare Savings Program (MSP) eligibility prior to assigning groups and benefit level.",
+      "9. Prior to approving or denying Medicaid eligibility, assess and determine if individual is eligible for a Medicare Savings Program. Note: See Medicare Savings Program Groups Table 3.\n  a. Determine if individual is enrolled in Medicare Part A or B. If enrolled in Medicare Part A or B, go to Step 9b. If not, go to Step 9c.\n  b. Determine if individual is eligible for a Medicare Savings Program Group. If the individual is eligible based on MSP criteria, go to Step 14 to assign groups and benefit level. If not, go Step 9c.\n  c. If individual was previously determined eligible on another basis, go to Step 14 to assign groups and benefit level. If not, go to Step 12 to deny Medicaid.",
+      "10. Screen individual for potential non-MAGI eligibility based on application information:\n  a. If individual has requested a non-MAGI eligibility determination or application data indicates potential eligibility for non-MAGI (e.g. indicators of disability, blindness, aged, or a need for long term care services), go to Step 11 to determine eligibility on basis other than MAGI. If not, go to Step 10b.\n  b. If individual was previously determined eligible based on MAGI, no further action required. If not, go to 10c.\n  c. If individual is flagged for emergency medical services only, go to Step 12 to deny Medicaid. If not go to Step 9 to assess and determine Medicare Savings Program (MSP) eligibility\n  NOTE: Although the individual was flagged for emergency medical services, the individual has failed all other income tests and the screening for potential non-MAGI and should be denied coverage for emergency medical services.",
+      "11. Determine individual’s eligibility on basis other than MAGI. Note: See Optional Non-MAGI Groups Table 4, Age, Blind, Disabled (ABD) Optional Coverage Groups Table 5 and Medically Needy Groups Table 6.\n  a. Determine if information is sufficient for a near real-time determination. If yes, go to Step 11c. If not, go to Step 11b.\n  b. Request additional information from applicant, member, or authorized representative (e.g., electronic verifications for former foster care children). Proceed to Step 11d; and if necessary, transmit account (Manage Member Information) to the Health Insurance Marketplace for interim coverage.\n  c. Determine if further verifications are necessary. If yes, go to Step 11d. If not, go to Step 11e.\n  d. Verify additional non-financial and financial information (income and assets), as appropriate, according to methodologies for applicants or members who may be eligible on basis other than MAGI. Go to Step 11e.\n  e. If individual is eligible on a basis of other than MAGI, go to Step 11h. If not, go to Step 11f.\n  f. If individual was previously determined eligible based on MAGI, no further action is required. If not, go to 11g.\n  g. If individual is flagged for emergency medical services only, go to Step 12 to deny Medicaid. If not, go to Step 9 to assess and determine Medicare Savings Program (MSP) eligibility.\n  NOTE: Although the individual requested coverage for emergency services, the individual has failed all income tests (MAGI and non-MAGI) and should be denied Medicaid..\n  h. If individual is flagged for emergency medical services only, go to Step 14 to assign groups and benefit level (limited coverage for emergency services). If not, go to Step 9 to assess and determine Medicare Savings Program (MSP) eligibility prior to assigning groups and benefit level.",
       "12. Deny Medicaid eligibility, update account (ME-01 Manage Member Information) and notify individual (Manage Applicant and Member Communication) of determination.",
-      "13. Assess individual for other Insurance Affordability Programs\n  a. Assess for potential eligibility in other insurance affordability programs. If individual is potentially eligible for other insurance affordability program refer/notify CHIP and/or Health Insurance Marketplace as applicable. (Manage Member Information). If not, no further action required. Assign Groups and Benefit Levels",
-      "14. Assign group and benefit levels as appropriate.\n  a. Assign Medicaid identification number to member if one was not previously assigned.\n  b. Assign individual to one or more eligibility groups based on their eligibility determination: MAGI group, Non-MAGI group, and/or Medicare Savings Program (MSP) group.\n  NOTE: Individual can be assigned to a Medicare Savings Program (MSP) group and another eligibility group (i.e. MAGI or non-MAGI). However, an individual cannot be assigned to both a MAGI and non-MAGI group simultaneously. An individual also cannot be assigned to an MSP group and receive coverage for emergency services simultaneously.\n  c. Flag individuals determined eligibile for emergency medical services.\n  NOTE: Individuals eligible for coverage of emergency medical services will receive a limited benefit plan.\n  d. If the individual was determined eligible for MAGI go to Step 10 to screen individual for non-MAGI eligibility and proceed to 14e. If not, the individual was determined eligible based on non-MAGI, continue to 14e.\n  e. Determine the health benefit level the member is eligible to receive and then proceed to 14f.\n  f. Go to Enroll member, to enroll individual in the appropriate eligibility",
-      "15. END Alternate Scenario 1 - Auto Eligible",
-      "1. Determine if applicant or member is automatically categorically eligible without a requirement for financial eligibility (e.g., SSI recipients, IV-E children, deemed newborns). Assess if the individual is a State resident. If so, approve Medicaid eligibility and go to step 14. If not, go to step 6. Note: See Mandatory Auto Eligible Groups Table 7. Table 7: Auto-Eligible Groups (Not inclusive of Closed Groups) Social Security Act, Sec. 1902(e)(4), 42 CFR 435.117 Deemed Newborns Social Security Act, Sec. 1902(a)(10)(A)(i)(II), 42 CFR 435.120 SSI in a 1634 State Social Security Act, Sec. 1902(a)(10)(A)(i)(I), 42 CFR 435.145 Title IV-E Foster Care, Adoption and Guardianship Social Security Act, Sec. 1902(a)(10)(A)(i)(II), 42 CFR 435.120 Individual Receiving SSI Social Security Act, Sec. 1902(a)(10)(A)(i)(II),1902(f), 42 CFR",
-      "435. 121 Aged, Blind, and Disabled in 209(b) States Social Security Act, Sec. 1619(b), 1902(10)(A)(i)(II), 1905(q) Working Disabled Individuals Social Security Act, Sec. 1634(c) Disabled Adult Children 42 CFR 435.130 Individuals Receiving Mandatory State Supplements 42 CFR 435.135 Individuals who would be eligible for SSI/SSP but for OASDI COLA increases since April, 1977 Social Security Act, Sec. 1634(b), 42 CFR 435.137 Disabled widows and widowers ineligible for SSI due to increase in OASDI"
+      "13. Assess individual for other Insurance Affordability Programs\n  a. Assess for potential eligibility in other insurance affordability programs. If individual is potentially eligible for other insurance affordability program refer/notify CHIP and/or Health Insurance Marketplace as applicable. (Manage Member Information). If not, no further action required.",
+      "14. Assign group and benefit levels as appropriate.\n  a. Assign Medicaid identification number to member if one was not previously assigned.\n  b. Assign individual to one or more eligibility groups based on their eligibility determination: MAGI group, Non-MAGI group, and/or Medicare Savings Program (MSP) group.\n  NOTE: Individual can be assigned to a Medicare Savings Program (MSP) group and another eligibility group (i.e. MAGI or non-MAGI). However, an individual cannot be assigned to both a MAGI and non-MAGI group simultaneously. An individual also cannot be assigned to an MSP group and receive coverage for emergency services simultaneously.\n  c. Flag individuals determined eligibile for emergency medical services.\n  NOTE: Individuals eligible for coverage of emergency medical services will receive a limited benefit plan.\n  d. If the individual was determined eligible for MAGI go to Step 10 to screen individual for non-MAGI eligibility and proceed to 14e. If not, the individual was determined eligible based on non-MAGI, continue to 14e.\n  e. Determine the health benefit level the member is eligible to receive and then proceed to 14f.\n  f. Go to Enroll member, to enroll individual in the appropriate eligibility group(s); and determine if individual was approved for a group that provides minimum essential coverage. If yes, individual is approved for a group that provides minimum essential coverage, go to 14g. If no, refer to CHIP and/or Health Insurance Marketplace as applicable (Manage Member Information); and notify individual (Manage Applicant and Member Communication) of determination.\n  g. If individual is currently enrolled in CHIP or the Health Insurance Marketplace, notify CHIP and/or the Health Insurance Marketplace as applicable of individual’s enrollment in Medicaid for potential disenrollment; and notify individual (Manage Applicant and Member Communication) of determination. If not currently enrolled in CHIP orHealth Insurance Marketplace, notify individual of determination.",
+      "15. END",
+      "Alternate Scenario 1 - Auto Eligible",
+      "1. Determine if applicant or member is automatically categorically eligible without a requirement for financial eligibility (e.g., SSI recipients, IV-E children, deemed newborns). Assess if the individual is a State resident. If so, approve Medicaid eligibility and go to step 14. If not, go to step 6. Note: See Mandatory Auto Eligible Groups Table 7."
+    ],
+    "reference_tables": [
+      {
+        "table_number": 1,
+        "title": "Mandatory MAGI Groups",
+        "page_reference": 6,
+        "rows": [
+          {
+            "authority": "42 CFR 435.118",
+            "eligibility_group": "Less Than 19"
+          },
+          {
+            "authority": "42 CFR 435.110",
+            "eligibility_group": "Parent / Caretaker Relative"
+          },
+          {
+            "authority": "42 CFR 435.116",
+            "eligibility_group": "Pregnant"
+          },
+          {
+            "authority": "42 CFR 435.150",
+            "eligibility_group": "Former Foster Care Child"
+          },
+          {
+            "authority": "42 CFR 435.119",
+            "eligibility_group": "Adult Group"
+          }
+        ]
+      },
+      {
+        "table_number": 2,
+        "title": "Optional MAGI Groups",
+        "page_reference": 7,
+        "rows": [
+          {
+            "authority": "42 CFR 435.220",
+            "eligibility_group": "Optional Parent / Caretaker Relative"
+          },
+          {
+            "authority": "42 CFR 435.222",
+            "eligibility_group": "Optional Reasonable Classifications of Children <21"
+          },
+          {
+            "authority": "42 CFR 435.227",
+            "eligibility_group": "Optional State Adoption Assistance Children <21"
+          },
+          {
+            "authority": "42 CFR 435.229",
+            "eligibility_group": "Optional Targeted Low-Income Children <19"
+          },
+          {
+            "authority": "42 CFR 435.226",
+            "eligibility_group": "Optional Chafee Independent Foster Care Adolescents <21"
+          },
+          {
+            "authority": "42 CFR 435.218",
+            "eligibility_group": "Optional Individuals Above 133% FPL <65"
+          },
+          {
+            "authority": "Social Security Act Sec. 1902(a)(10)(F)",
+            "eligibility_group": "Optional COBRA Continuation Group"
+          },
+          {
+            "authority": "42 CFR 435.215",
+            "eligibility_group": "Optional Tuberculosis Group (TB)"
+          },
+          {
+            "authority": "42 CFR 435.214",
+            "eligibility_group": "Optional Family Planning Group"
+          }
+        ]
+      },
+      {
+        "table_number": 3,
+        "title": "Medicare Savings Program Groups",
+        "page_reference": 8,
+        "rows": [
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(E)(i),1905(p)",
+            "eligibility_group": "Qualified Medicare Beneficiary (QMB)"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(E)(iii), 1905(p)(3)(A)(ii)",
+            "eligibility_group": "Specified Low Income Medicare Beneficiary (SLMB)"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(E)(iv), 1905(p)(3)(A)(ii)",
+            "eligibility_group": "Qualifying Individuals (QI)"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(E)(ii), 1905(s), 1905(p)(3)(A)(i)",
+            "eligibility_group": "Qualified Disabled and Working Individuals (QDWI)"
+          }
+        ]
+      },
+      {
+        "table_number": 4,
+        "title": "Non MAGI Optional Groups",
+        "page_reference": 11,
+        "rows": [
+          {
+            "authority": "42 CFR 435.213",
+            "eligibility_group": "Optional Individuals with Breast / Cervical Cancer 21-64 (No Income Test)"
+          },
+          {
+            "authority": "42 CFR 435.222",
+            "eligibility_group": "Optional Reasonable Classifications of Children <21 (No Income Test)"
+          },
+          {
+            "authority": "42 CFR 435.227",
+            "eligibility_group": "Optional State Adoption Assistance Children <21 (No Income Test)"
+          },
+          {
+            "authority": "42 CFR 435.226",
+            "eligibility_group": "Optional Chafee Independent Foster Care Adolescents <21 (No Income Test)"
+          },
+          {
+            "authority": "See Table 5",
+            "eligibility_group": "Aged, Blind or Disabled"
+          },
+          {
+            "authority": "42 CFR 435.236",
+            "eligibility_group": "Special Income - Level Group"
+          },
+          {
+            "authority": "42 CFR 435.217",
+            "eligibility_group": "Individual eligible for Home and Community based services using institutional rules"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(A)(ii)(XXII), 1915(i)",
+            "eligibility_group": "Individual eligible for Home and Community based services (150% FPL)"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(A)(ii)(XXII), 1915(i)",
+            "eligibility_group": "Individual eligible for Home and Community based services Special Income Level"
+          }
+        ]
+      },
+      {
+        "table_number": 5,
+        "title": "ABD Groups",
+        "page_reference": 11,
+        "rows": [
+          {
+            "authority": "42 CFR 435.210",
+            "eligibility_group": "Individuals Eligible for but not Receiving Cash"
+          },
+          {
+            "authority": "42 CFR 435.211",
+            "eligibility_group": "Individuals Eligible for Cash except for Institutionalization"
+          },
+          {
+            "authority": "42 CFR 435.212",
+            "eligibility_group": "Individuals in HMOs Guaranteed Eligibility"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1934",
+            "eligibility_group": "Individuals participating in a PACE program under Institutional Rules"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(A)(ii)(VII), 1905(o)",
+            "eligibility_group": "Individuals Receiving Hospice Care"
+          },
+          {
+            "authority": "42 CFR 435.232",
+            "eligibility_group": "Optional State Supplemental Recipients - 1634 States, and SSI Criteria States with 1616 Agreements"
+          },
+          {
+            "authority": "42 CFR 435.234",
+            "eligibility_group": "Optional State Supplemental Recipients - 209(b) States, and SSI Criteria States without 1616 Agreements"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(e)(3)",
+            "eligibility_group": "Qualified Disabled Children under 19 (TEFRA Kids)"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(A)(ii)(X), 1902(m)(1)",
+            "eligibility_group": "Poverty Level Aged or Disabled"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(A)(ii)(XIII)",
+            "eligibility_group": "Work Incentives Eligibility Group (BBA)"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(A)(ii)(XV)",
+            "eligibility_group": "Ticket to Work Basic Group (TWWIIA)"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(A)(ii)(XVI)",
+            "eligibility_group": "Ticket to Work Medical Improvements Group (TWWIIA MI)"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(A)(ii)(XIX)",
+            "eligibility_group": "Family Opportunity Act for Children with Disabilities (FOA)"
+          }
+        ]
+      },
+      {
+        "table_number": 6,
+        "title": "Medically Needy Groups",
+        "page_reference": 12,
+        "rows": [
+          {
+            "authority": "42 CFR 435.301",
+            "eligibility_group": "Less than 18"
+          },
+          {
+            "authority": "42 CFR 435.308",
+            "eligibility_group": "18-20"
+          },
+          {
+            "authority": "42 CFR 435.301",
+            "eligibility_group": "Pregnant Women"
+          },
+          {
+            "authority": "42 CFR 435.310",
+            "eligibility_group": "Parent / Caretaker Relative"
+          },
+          {
+            "authority": "42 CFR 435.320, 435.330",
+            "eligibility_group": "Aged"
+          },
+          {
+            "authority": "42 CFR 435.322, 435.330, 435.340",
+            "eligibility_group": "Blind"
+          },
+          {
+            "authority": "42 CFR 435.324, 435.330, 435.340",
+            "eligibility_group": "Disabled"
+          }
+        ]
+      },
+      {
+        "table_number": 7,
+        "title": "Auto-Eligible Groups (Not inclusive of Closed Groups)",
+        "page_reference": 15,
+        "rows": [
+          {
+            "authority": "Social Security Act, Sec. 1902(e)(4), 42 CFR 435.117",
+            "eligibility_group": "Deemed Newborns"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(A)(i)(II), 42 CFR 435.120",
+            "eligibility_group": "SSI in a 1634 State"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(A)(i)(I), 42 CFR 435.145",
+            "eligibility_group": "Title IV-E Foster Care, Adoption and Guardianship"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(A)(i)(II), 42 CFR 435.120",
+            "eligibility_group": "Individual Receiving SSI"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1902(a)(10)(A)(i)(II),1902(f), 42 CFR 435.121",
+            "eligibility_group": "Aged, Blind, and Disabled in 209(b) States"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1619(b), 1902(10)(A)(i)(II), 1905(q)",
+            "eligibility_group": "Working Disabled Individuals"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1634(c)",
+            "eligibility_group": "Disabled Adult Children"
+          },
+          {
+            "authority": "42 CFR 435.130",
+            "eligibility_group": "Individuals Receiving Mandatory State Supplements"
+          },
+          {
+            "authority": "42 CFR 435.135",
+            "eligibility_group": "Individuals who would be eligible for SSI/SSP but for OASDI COLA increases since April, 1977"
+          },
+          {
+            "authority": "Social Security Act, Sec. 1634(b), 42 CFR 435.137",
+            "eligibility_group": "Disabled widows and widowers ineligible for SSI due to increase in OASDI"
+          }
+        ]
+      }
     ],
     "diagrams": [
       {

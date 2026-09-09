@@ -25,11 +25,13 @@
       "Tracking information as needed for measuring performance and business activity monitoring."
     ],
     "process_steps": [
+      "HCBS Payment",
       "1. START: Receive alert from Process Claim business process.",
       "2. Perform required information manipulation according to business rules,",
       "3. Calculate payment amount.",
       "4. Generate payment report.",
-      "5. END: Send alert to submit HCBS payment information to member. Capitation Payment",
+      "5. END: Send alert to submit HCBS payment information to member.",
+      "Capitation Payment",
       "1. START: Periodic timetable is due for capitation payment.",
       "2. Perform required information manipulation according to business rules, including the reporting of any edit or audit errors that resulted in denials or modifications of payment from the reimbursement amount submitted on the claim, such as bundling or unbundling of services.",
       "3. Calculate payment amount.",
