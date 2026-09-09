@@ -126,3 +126,74 @@ export function parseLine(line: string): ParsedLine | null {
 
   return { type: "paragraph", content: trimmed, rawIndent };
 }
+
+/** True when a `process_steps` element is a numbered step rather than a scenario heading. */
+export function isNumberedStep(entry: string): boolean {
+  return /^\d+\.\s/.test(entry);
+}
+
+/**
+ * Split `process_steps` into scenarios.
+ *
+ * `process_steps` is a flat array mixing two kinds of element: a numbered step, and a
+ * scenario heading transcribed verbatim from the source PDF that labels the steps
+ * following it. Whether an element is a heading is a property of the element, not of any
+ * line within it, which is why this lives here and not in `parseLine` — that sees one line
+ * at a time and cannot tell a heading from the first line of a step body.
+ *
+ * Upstream restored these headings in the 2026-09-09 extraction; there are now 20 across 12
+ * of the 76 records, and `FM_Manage_Fund` has four scenarios in one array. Before this they
+ * fell through to `parseLine` as plain paragraphs and rendered as step prose,
+ * indistinguishable from the body of the preceding step.
+ *
+ * The previous implementation looked for a `--- Alternate Path: X ---` delimiter. That
+ * convention no longer appears anywhere in the corpus (verified: zero occurrences), so that
+ * branch was dead and is replaced rather than kept alongside.
+ *
+ * A section with no steps is still emitted, so a trailing heading — which three records have
+ * — is not silently dropped. The one section never emitted is an empty leading one, for a
+ * record that opens with a heading, as `EE_Determine_Member_Eligibility` does.
+ */
+export function groupStepsByScenario(
+  steps: readonly string[]
+): { heading: string | null; steps: string[] }[] {
+  type Section = { heading: string | null; steps: string[] };
+  const isEmpty = (s: Section) => s.heading === null && s.steps.length === 0;
+
+  const sections: Section[] = [];
+  let current: Section = { heading: null, steps: [] };
+
+  for (const entry of steps) {
+    if (isNumberedStep(entry)) {
+      current.steps.push(entry);
+      continue;
+    }
+    // A heading closes the section before it and opens a new one.
+    if (!isEmpty(current)) sections.push(current);
+    current = { heading: entry, steps: [] };
+  }
+  if (!isEmpty(current)) sections.push(current);
+
+  return sections;
+}
+
+/**
+ * Split a scenario heading into a short label and any guidance that follows it.
+ *
+ * Most headings are a bare scenario name ("Manage FFP", "Capitation Payment"). Three are a
+ * paragraph of CMS guidance 278–422 characters long, and every one of those leads with a
+ * short label and a colon ("Alternate Path:", "Alternate Business Process Path:"). Splitting
+ * on the first colon therefore emphasises the label without setting a whole paragraph in
+ * bold.
+ *
+ * The length guard matters: without it, a heading with a colon late in a sentence would put
+ * most of itself in the label. No colon, or a late one, means the whole string is the label —
+ * correct for every short heading in the corpus.
+ */
+export function splitScenarioHeading(text: string): { label: string; body: string } {
+  const colon = text.indexOf(":");
+  if (colon > 0 && colon <= 40) {
+    return { label: text.slice(0, colon + 1), body: text.slice(colon + 1).trim() };
+  }
+  return { label: text.trim(), body: "" };
+}
