@@ -28,7 +28,7 @@ export const BLUEPRINT_REVISION = "2026-09-02";
  *
  * Must match the commit recorded in `src/data/NOTICE.md`.
  */
-export const BLUEPRINT_SOURCE_COMMIT = "cac547f154923e0846916dede53b45314fee0e56";
+export const BLUEPRINT_SOURCE_COMMIT = "abef1206b6eba4ae4312e0d1f17ed51f5ce62732";
 
 /**
  * Marker for data written before revisions were tracked.

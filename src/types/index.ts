@@ -230,10 +230,19 @@ export interface TriggerEvents {
  * Typed as an object because every one of the 76 BPT files carries objects; the
  * previous `string[]` forced a runtime type probe and a cast at the render site.
  */
+/**
+ * A figure published in the process's chapter of the MITA Framework.
+ *
+ * `filename` is a bare basename; the file lives in `images/` beside the record's JSON, and
+ * `services/diagramAssets.ts` resolves it to a bundled URL.
+ *
+ * `page_reference` is a number. It was declared `string` here, which no value in the dataset
+ * has ever been — harmless only because nothing rendered it.
+ */
 export interface BptDiagram {
   filename: string;
   description?: string;
-  page_reference?: string;
+  page_reference?: number;
 }
 
 /**

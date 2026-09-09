@@ -13,8 +13,9 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import type { BPT } from "../../types";
+import type { BPT, BptDiagram } from "../../types";
 import { getCapabilityByProcessName } from "../../services/blueprint";
+import { getDiagramUrl } from "../../services/diagramAssets";
 import {
   groupStepsByScenario,
   isNumberedStep,
@@ -457,6 +458,85 @@ export function TriggerEvents({ events }: { events: BPT["process_details"]["trig
 }
 
 /**
+ * One published figure.
+ *
+ * The figure's own title is drawn inside the raster — CMS sets it in the image, not in the
+ * page's text layer. So `description` is the image's text alternative rather than a visible
+ * caption: repeating it below would show sighted users something they can already read, and
+ * announce it twice to a screen reader. The caption carries the page number instead, which is
+ * the one piece of provenance the image does not contain.
+ *
+ * Linked to the full-size asset because `BptContent` also renders inside the assessment
+ * sidebar, which the user can drag narrow. These are dense flowcharts; at 320px the step
+ * labels are unreadable, and a new tab is the cheapest escape hatch that needs no lightbox.
+ */
+function DiagramFigure({ diagram }: { diagram: BptDiagram }) {
+  const url = getDiagramUrl(diagram.filename);
+  const label = diagram.description || diagram.filename;
+
+  // The JSON and the images are separate files synced together, so they can drift. Falling
+  // back to a caption keeps a named-but-missing figure visible and diagnosable instead of
+  // rendering a broken image icon.
+  if (!url) {
+    return (
+      <Paper elevation={0} sx={{ p: 1.5, backgroundColor: "grey.50" }}>
+        <Typography variant="caption" sx={{ fontWeight: 500, display: "block" }}>
+          {label}
+        </Typography>
+        <Typography variant="caption" color="text.secondary">
+          Image not included in this build ({diagram.filename})
+        </Typography>
+      </Paper>
+    );
+  }
+
+  return (
+    <Box component="figure" sx={{ m: 0 }}>
+      <Box
+        component="a"
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Open full size: ${label}`}
+        sx={{ display: "block", lineHeight: 0 }}
+      >
+        <Box
+          component="img"
+          src={url}
+          alt={label}
+          loading="lazy"
+          sx={{
+            display: "block",
+            // `maxWidth`, not `width`. These are 715-776px of line art with 8pt labels
+            // baked in; `width: 100%` stretched them to whatever the column was and
+            // softened the text. Capped instead, so they shrink on narrow viewports and
+            // sit at native resolution everywhere else.
+            maxWidth: "100%",
+            height: "auto",
+            // White, because the figures are line art on a transparent background and would
+            // otherwise pick up whatever sits behind them.
+            backgroundColor: "common.white",
+            border: 1,
+            borderColor: "divider",
+            borderRadius: 1,
+            cursor: "zoom-in",
+          }}
+        />
+      </Box>
+      <Typography
+        component="figcaption"
+        variant="caption"
+        color="text.secondary"
+        sx={{ display: "block", mt: 0.5 }}
+      >
+        {diagram.page_reference !== undefined && `Page ${diagram.page_reference} · `}
+        Opens full size in a new tab
+      </Typography>
+    </Box>
+  );
+}
+
+/**
  * Render diagrams section
  */
 export function DiagramsSection({ diagrams }: { diagrams: BPT["process_details"]["diagrams"] }) {
@@ -464,26 +544,21 @@ export function DiagramsSection({ diagrams }: { diagrams: BPT["process_details"]
 
   return (
     <Box>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
         {diagrams.length} diagram{diagrams.length !== 1 ? "s" : ""} available
       </Typography>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
         {/*
           Diagrams are objects in all 76 BPT records, so they are typed as such
           (`BptDiagram`). This previously probed `typeof diagram === "object"` and
           cast, to support a string form that does not occur in the data.
+
+          Keyed on filename, not index: `EE_Determine_Member_Eligibility` is the only record
+          with diagrams and upstream has already replaced its entire array once, so index
+          identity is not stable across a sync.
         */}
-        {diagrams.map((diagram, i) => (
-          <Paper key={i} elevation={0} sx={{ p: 1, backgroundColor: "grey.50" }}>
-            <Typography variant="caption" sx={{ fontWeight: 500 }}>
-              {diagram.filename}
-            </Typography>
-            {diagram.description && (
-              <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
-                {diagram.description}
-              </Typography>
-            )}
-          </Paper>
+        {diagrams.map((diagram) => (
+          <DiagramFigure key={diagram.filename} diagram={diagram} />
         ))}
       </Box>
     </Box>
