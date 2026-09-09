@@ -7,13 +7,19 @@ the correction.
 
 ## Provenance
 
-|               |                                                    |
-| ------------- | -------------------------------------------------- |
-| Upstream      | https://github.com/nickarrow/mita-open-blueprint   |
-| Commit        | `cac547f154923e0846916dede53b45314fee0e56`         |
-| Upstream date | 2026-09-09                                         |
-| Synced        | 2026-09-09                                         |
-| Contents      | 76 BCM + 76 BPT JSON files, plus 76 diagram images |
+|               |                                                   |
+| ------------- | ------------------------------------------------- |
+| Upstream      | https://github.com/nickarrow/mita-open-blueprint  |
+| Commit        | `abef1206b6eba4ae4312e0d1f17ed51f5ce62732`        |
+| Upstream date | 2026-09-09                                        |
+| Synced        | 2026-09-09                                        |
+| Contents      | 76 BCM + 76 BPT JSON files, plus 9 diagram images |
+
+The 9 images all belong to one record, `EE_Determine_Member_Eligibility`, which is the
+only BPT with a non-empty `diagrams` array. They are the figures CMS publishes in that
+process's chapter. An earlier extraction emitted 76 raster fragments instead — a figure
+exists in the source only as a region of a page, assembled from dozens of slivers, and
+each sliver was mistaken for a diagram. Upstream `abef120` replaced them.
 
 `BLUEPRINT_SOURCE_COMMIT` in `src/constants/blueprint.ts` carries the same commit
 so the running app can report which extraction it was built from. Keep the two in

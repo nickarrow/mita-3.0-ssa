@@ -325,384 +325,49 @@
     ],
     "diagrams": [
       {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_2.png",
-        "description": "Process diagram from page 2",
+        "filename": "EE_Determine_Member_Eligibility_diagram_page02.png",
+        "description": "High Level Mapping to Determine Member Eligibility",
         "page_reference": 2
       },
       {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_3.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_5.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_7.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_8.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_9.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_10.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_13.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_14.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_16.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_18.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_20.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_24.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_25.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_26.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_27.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_30.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_31.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_33.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_34.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_35.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_37.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_38.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_41.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_46.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_48.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_52.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_58.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_61.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_62.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_63.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_65.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_66.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_68.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_69.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_73.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_74.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_75.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_81.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_82.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_84.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_85.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_88.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_90.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_91.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_92.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_94.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_95.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_97.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_101.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_104.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_105.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_106.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_111.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_112.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_113.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_115.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_117.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_119.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_120.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_121.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_123.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_124.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_130.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_131.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_132.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_133.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_136.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
-      },
-      {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_137.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
+        "filename": "EE_Determine_Member_Eligibility_diagram_page04.png",
+        "description": "Step 6 - Assess Non-Financial Factors",
+        "page_reference": 4
       },
       {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_139.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
+        "filename": "EE_Determine_Member_Eligibility_diagram_page05.png",
+        "description": "Step 7 - Mandatory MAGI",
+        "page_reference": 5
       },
       {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_141.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
+        "filename": "EE_Determine_Member_Eligibility_diagram_page06.png",
+        "description": "Step 8 - Optional MAGI",
+        "page_reference": 6
       },
       {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_145.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
+        "filename": "EE_Determine_Member_Eligibility_diagram_page07.png",
+        "description": "Step 9 - Assess and Determine MSP",
+        "page_reference": 7
       },
       {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_146.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
+        "filename": "EE_Determine_Member_Eligibility_diagram_page09.png",
+        "description": "Step 10 - Screen Potential Non-MAGI Eligibility",
+        "page_reference": 9
       },
       {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_153.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
+        "filename": "EE_Determine_Member_Eligibility_diagram_page10.png",
+        "description": "Step 11 - Determine Eligibility on Basis Other than MAGI",
+        "page_reference": 10
       },
       {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_156.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
+        "filename": "EE_Determine_Member_Eligibility_diagram_page13.png",
+        "description": "Step 12 &13 - Deny Medicaid & Assess for Other Insurance Affordability Program",
+        "page_reference": 13
       },
       {
-        "filename": "EE_Determine_Member_Eligibility_diagram_2_157.png",
-        "description": "Process diagram from page 2",
-        "page_reference": 2
+        "filename": "EE_Determine_Member_Eligibility_diagram_page14.png",
+        "description": "Step 14 - Assign Group(s) and Benefit Level",
+        "page_reference": 14
       }
     ],
     "shared_data": [
